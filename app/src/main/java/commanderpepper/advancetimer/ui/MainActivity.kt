@@ -1,8 +1,12 @@
 package commanderpepper.advancetimer.ui
 
+import android.app.Notification
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationBuilderWithBuilderAccessor
+import commanderpepper.advancetimer.R
 import commanderpepper.advancetimer.services.MyIntentService
 
 
