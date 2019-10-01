@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Advance Timer</string>
+    <string name="create_notification_text">Press button to create notification.</string>
+    <string name="make_notification">Make Notification</string>
 </resources>

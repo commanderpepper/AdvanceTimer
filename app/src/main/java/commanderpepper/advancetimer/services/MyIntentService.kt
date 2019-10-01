@@ -56,11 +56,12 @@ class MyIntentService : IntentService("MyIntentService") {
         serviceScope.launch {
             delay(50000)
             val sstring = intent?.getStringExtra("TEST") ?: "Meow"
-            Log.d("TEST", "Whahey $sstring")
+            withContext(Dispatchers.Main)
+            {
+                Log.d("TEST", "Whahey $sstring")
+                Toast.makeText(applicationContext, string, Toast.LENGTH_LONG).show()
+            }
         }
-
-
-        Toast.makeText(applicationContext, string, Toast.LENGTH_LONG).show()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -70,7 +71,7 @@ class MyIntentService : IntentService("MyIntentService") {
             channelName, NotificationManager.IMPORTANCE_NONE
         )
         chan.lightColor = Color.BLUE
-        chan.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
+        chan.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
         val service = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         service.createNotificationChannel(chan)
         return channelId
