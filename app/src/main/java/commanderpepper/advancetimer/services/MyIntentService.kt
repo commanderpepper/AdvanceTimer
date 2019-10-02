@@ -11,6 +11,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import commanderpepper.advancetimer.ui.MainActivity
 import kotlinx.coroutines.*
+import timber.log.Timber
 
 
 /**
@@ -51,14 +52,14 @@ class MyIntentService : IntentService("MyIntentService") {
 
     override fun onHandleIntent(intent: Intent?) {
         val string = intent?.getStringExtra("TEST") ?: "Meow"
-        Log.d("TEST", string)
+        Timber.d(string)
 
         serviceScope.launch {
-            delay(50000)
+            delay(10000)
             val sstring = intent?.getStringExtra("TEST") ?: "Meow"
             withContext(Dispatchers.Main)
             {
-                Log.d("TEST", "Whahey $sstring")
+                Timber.d("Whahey $sstring")
                 Toast.makeText(applicationContext, string, Toast.LENGTH_LONG).show()
             }
         }

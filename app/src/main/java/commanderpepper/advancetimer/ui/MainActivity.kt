@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
 
         makeNotifcationButton.setOnClickListener {
             val intent = Intent(this, MyIntentService::class.java)
-            intent.putExtra("TEST", "Woof")
+            intent.putExtra("TESTA", "Woof")
             startService(intent)
         }
 //        val intent = Intent(this, MyIntentService::class.java)
