@@ -13,8 +13,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <service
-            android:name=".services.MyIntentService"
+            android:name=".services.LocalService"
+            android:enabled="true"
             android:exported="false"></service>
+        <service
+            android:name=".services.MyIntentService"
+            android:exported="false" />
 
         <activity android:name=".ui.MainActivity">
             <intent-filter>
