@@ -22,7 +22,7 @@ import timber.log.Timber
 class MyIntentService : IntentService("MyIntentService") {
 
     private val job = Job()
-    private val serviceScope = CoroutineScope(Dispatchers.Main + job)
+    private val serviceScope = CoroutineScope(Dispatchers.IO + job)
 
     override fun onCreate() {
         super.onCreate()
