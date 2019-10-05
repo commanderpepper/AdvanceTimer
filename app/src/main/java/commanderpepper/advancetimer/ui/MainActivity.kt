@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import commanderpepper.advancetimer.R
+import commanderpepper.advancetimer.intents.AlarmReceiver
 import commanderpepper.advancetimer.services.MyIntentService
 import java.util.*
 
@@ -25,11 +26,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(commanderpepper.advancetimer.R.layout.activity_main)
 
         alarmMgr = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarmIntent = Intent(this, AlarmReceiver::class.java).let { intent ->
+        alarmIntent = Intent(this, MyIntentService::class.java).let { intent ->
             PendingIntent.getBroadcast(this, 0, intent, 0)
         }
 
         makeNotifcationButton = findViewById(R.id.create_button)
+        alarmButton = findViewById(R.id.create_alarm)
 
         makeNotifcationButton.setOnClickListener {
             val intent = Intent(this, MyIntentService::class.java)
@@ -38,20 +40,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         alarmButton.setOnClickListener {
-            // Set the alarm to start at approximately 2:00 p.m.
-            val calendar: Calendar = Calendar.getInstance().apply {
-                timeInMillis = System.currentTimeMillis()
-                set(Calendar.HOUR_OF_DAY, 14)
-            }
-
-// With setInexactRepeating(), you have to use one of the AlarmManager interval
-// constants--in this case, AlarmManager.INTERVAL_DAY.
-            alarmMgr?.setInexactRepeating(
-                AlarmManager.RTC_WAKEUP,
-                calendar.timeInMillis,
-                AlarmManager.INTERVAL_DAY,
-                alarmIntent
-            )
+            alarmMgr?.setExact(AlarmManager.RTC, System.currentTimeMillis() + 1000, alarmIntent)
         }
 
 //        val intent = Intent(this, MyIntentService::class.java)

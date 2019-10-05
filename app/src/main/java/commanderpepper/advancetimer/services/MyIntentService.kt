@@ -27,6 +27,8 @@ class MyIntentService : IntentService("MyIntentService") {
     override fun onCreate() {
         super.onCreate()
 
+        Timber.d("This has been created")
+
         val notificationIntent = Intent(this, MainActivity::class.java)
 
         val pendingIntent = PendingIntent.getActivity(
