@@ -26,8 +26,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(commanderpepper.advancetimer.R.layout.activity_main)
 
         alarmMgr = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarmIntent = Intent(this, MyIntentService::class.java).let { intent ->
-            PendingIntent.getBroadcast(this, 0, intent, 0)
+//        alarmIntent = Intent(this, MyIntentService::class.java).let { intent ->
+//            PendingIntent.getBroadcast(this, 0, intent, 0)
+//        }
+        alarmIntent = Intent(this, AlarmManagerActivity::class.java).let {
+            intent -> PendingIntent.getActivities(this, 0, arrayOf(intent), 0)
         }
 
         makeNotifcationButton = findViewById(R.id.create_button)
@@ -40,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         alarmButton.setOnClickListener {
-            alarmMgr?.setExact(AlarmManager.RTC, System.currentTimeMillis() + 1000, alarmIntent)
+            alarmMgr?.setExact(AlarmManager.RTC, System.currentTimeMillis() + 20000, alarmIntent)
         }
 
 //        val intent = Intent(this, MyIntentService::class.java)
