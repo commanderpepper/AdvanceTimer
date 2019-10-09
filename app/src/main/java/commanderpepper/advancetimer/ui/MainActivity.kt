@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import commanderpepper.advancetimer.R
 import commanderpepper.advancetimer.intents.AlarmReceiver
@@ -43,7 +44,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         alarmButton.setOnClickListener {
-            alarmMgr?.setExact(AlarmManager.RTC, System.currentTimeMillis() + 20000, alarmIntent)
+            val time = findViewById<EditText>(R.id.secondsInput).text.toString()
+            if (time != ""){
+                alarmMgr?.setExact(AlarmManager.RTC, System.currentTimeMillis() + time.toLong(), alarmIntent)
+            }
         }
 
 //        val intent = Intent(this, MyIntentService::class.java)
