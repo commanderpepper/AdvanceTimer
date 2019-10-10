@@ -5,12 +5,14 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import commanderpepper.advancetimer.R
 import commanderpepper.advancetimer.intents.AlarmReceiver
 import commanderpepper.advancetimer.services.MyIntentService
+import timber.log.Timber
 import java.util.*
 
 
@@ -46,7 +48,9 @@ class MainActivity : AppCompatActivity() {
         alarmButton.setOnClickListener {
             val time = findViewById<EditText>(R.id.secondsInput).text.toString()
             if (time != ""){
-                alarmMgr?.setExact(AlarmManager.RTC, System.currentTimeMillis() + time.toLong(), alarmIntent)
+                val seconds = time.toLong() * 1000
+                Timber.tag("TIME").d(System.currentTimeMillis().toString())
+                alarmMgr?.setExact(AlarmManager.RTC, System.currentTimeMillis() + seconds, alarmIntent)
             }
         }
 
