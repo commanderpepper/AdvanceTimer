@@ -29,6 +29,12 @@
             android:name=".services.MyIntentService"
             android:exported="false" />
 
+        <receiver
+            android:name="receivers.AlarmReceiver"
+            android:enabled="true"
+            android:exported="true">
+        </receiver>
+
         <activity android:name=".ui.MainActivity">
         </activity>
     </application>

@@ -5,15 +5,13 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import commanderpepper.advancetimer.R
-import commanderpepper.advancetimer.intents.AlarmReceiver
+import commanderpepper.advancetimer.receivers.AlarmReceiver
 import commanderpepper.advancetimer.services.MyIntentService
 import timber.log.Timber
-import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -32,8 +30,8 @@ class MainActivity : AppCompatActivity() {
 //        alarmIntent = Intent(this, MyIntentService::class.java).let { intent ->
 //            PendingIntent.getBroadcast(this, 0, intent, 0)
 //        }
-        alarmIntent = Intent(this, AlarmManagerActivity::class.java).let {
-            intent -> PendingIntent.getActivities(this, 0, arrayOf(intent), 0)
+        alarmIntent = Intent(this, AlarmManagerActivity::class.java).let { intent ->
+            PendingIntent.getActivities(this, 0, arrayOf(intent), 0)
         }
 
         makeNotifcationButton = findViewById(R.id.create_button)
@@ -45,13 +43,37 @@ class MainActivity : AppCompatActivity() {
             startService(intent)
         }
 
+//        alarmButton.setOnClickListener {
+//            val time = findViewById<EditText>(R.id.secondsInput).text.toString()
+//            if (time != ""){
+//                val seconds = time.toLong() * 1000
+//                Timber.tag("TIME").d(System.currentTimeMillis().toString())
+//                alarmMgr?.setExact(AlarmManager.RTC, System.currentTimeMillis() + seconds, alarmIntent)
+//            }
+//        }
+
         alarmButton.setOnClickListener {
-            val time = findViewById<EditText>(R.id.secondsInput).text.toString()
-            if (time != ""){
-                val seconds = time.toLong() * 1000
-                Timber.tag("TIME").d(System.currentTimeMillis().toString())
-                alarmMgr?.setExact(AlarmManager.RTC, System.currentTimeMillis() + seconds, alarmIntent)
-            }
+            // Get AlarmManager instance
+            val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+            // Intent part
+            val intent = Intent(this, AlarmReceiver::class.java)
+            intent.action = "BASIC"
+            intent.putExtra("MESSAGE", "Medium AlarmManager Demo")
+
+            val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
+
+            // Alarm time
+            val ALARM_DELAY_IN_SECOND = 10
+            val alarmTimeAtUTC = System.currentTimeMillis() + ALARM_DELAY_IN_SECOND * 1_000L
+
+            // Set with system Alarm Service
+            // Other possible functions: setExact() / setRepeating() / setWindow(), etc
+            alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                alarmTimeAtUTC,
+                pendingIntent
+            )
         }
 
 //        val intent = Intent(this, MyIntentService::class.java)
