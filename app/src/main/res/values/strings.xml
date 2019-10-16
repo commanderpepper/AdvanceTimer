@@ -3,4 +3,5 @@
     <string name="create_notification_text">Press button to create notification.</string>
     <string name="make_notification">Make Notification</string>
     <string name="local_service_started">12333</string>
+
 </resources>
