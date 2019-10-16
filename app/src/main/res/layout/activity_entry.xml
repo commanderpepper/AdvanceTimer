@@ -7,10 +7,15 @@
     android:layout_height="match_parent"
     tools:openDrawer="start">
 
-    <fragment
+    <FrameLayout
+        android:id="@+id/entry_fragment_placeholder"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:name="commanderpepper.advancetimer.ui.fragments.AlarmList"/>
+        android:layout_height="match_parent"/>
+
+<!--    <fragment-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:name="commanderpepper.advancetimer.ui.fragments.AlarmList"/>-->
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
