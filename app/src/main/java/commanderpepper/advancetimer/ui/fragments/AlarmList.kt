@@ -1,14 +1,19 @@
 package commanderpepper.advancetimer.ui.fragments
 
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.Context
-import android.net.Uri
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.core.content.ContextCompat.getSystemService
 
 import commanderpepper.advancetimer.R
+import commanderpepper.advancetimer.receivers.AlarmReceiver
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -36,6 +41,34 @@ class AlarmList : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_alarm_list, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val button: Button = getView()!!.findViewById(R.id.startAlarm)
+        button.setOnClickListener {
+            // Get AlarmManager instance
+            val alarmManager = activity!!.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+            // Intent part
+            val intent = Intent(activity, AlarmReceiver::class.java)
+            intent.action = "BASIC"
+            intent.putExtra("MESSAGE", "Medium AlarmManager Demo")
+
+            val pendingIntent = PendingIntent.getBroadcast(activity, 0, intent, 0)
+
+            // Alarm time
+            val ALARM_DELAY_IN_SECOND = 2
+            val alarmTimeAtUTC = System.currentTimeMillis() + ALARM_DELAY_IN_SECOND * 1_000L
+
+            // Set with system Alarm Service
+            // Other possible functions: setExact() / setRepeating() / setWindow(), etc
+            alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                alarmTimeAtUTC,
+                pendingIntent
+            )
+        }
     }
 
     override fun onAttach(context: Context) {
