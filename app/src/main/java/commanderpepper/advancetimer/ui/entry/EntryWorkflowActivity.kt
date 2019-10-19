@@ -1,12 +1,14 @@
-package commanderpepper.advancetimer.ui
+package commanderpepper.advancetimer.ui.entry
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.squareup.workflow.ui.ExperimentalWorkflowUi
 import commanderpepper.advancetimer.R
 import commanderpepper.advancetimer.ui.fragments.AlarmList
 import timber.log.Timber
 
-class EntryActivity : AppCompatActivity() {
+@UseExperimental(ExperimentalWorkflowUi::class)
+class EntryWorkflowActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
