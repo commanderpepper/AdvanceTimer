@@ -15,7 +15,7 @@
 <!--    <fragment-->
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="match_parent"-->
-<!--        android:name="commanderpepper.advancetimer.ui.fragments.AlarmList"/>-->
+<!--        android:name="commanderpepper.advancetimer.ui.alarmlist.AlarmList"/>-->
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"

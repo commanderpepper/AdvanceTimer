@@ -1,4 +1,4 @@
-package commanderpepper.advancetimer.ui.fragments
+package commanderpepper.advancetimer.ui.alarmlist
 
 import android.app.AlarmManager
 import android.app.PendingIntent
@@ -10,7 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import androidx.core.content.ContextCompat.getSystemService
+import com.squareup.workflow.ui.ExperimentalWorkflowUi
 
 import commanderpepper.advancetimer.R
 import commanderpepper.advancetimer.receivers.AlarmReceiver
@@ -28,7 +28,9 @@ private const val ARG_PARAM2 = "param2"
  * Use the [AlarmList.newInstance] factory method to
  * create an instance of this fragment.
  */
-class AlarmList : Fragment() {
+
+@UseExperimental(ExperimentalWorkflowUi::class)
+class AlarmListWorkflowFragment : Fragment() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,7 +94,7 @@ class AlarmList : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            AlarmList().apply {
+            AlarmListWorkflowFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
