@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion 29
     defaultConfig {
@@ -50,5 +52,13 @@ dependencies {
     //Square Workflow
     implementation 'com.squareup.workflow:workflow-ui-android:0.20.0'
     testImplementation 'com.squareup.workflow:workflow-testing-jvm:0.20.0'
+
+    //Room
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    kapt "android.arch.persistence.room:compiler:1.1.1"
+    kapt "androidx.room:room-compiler:$room_version"
+
 
 }
