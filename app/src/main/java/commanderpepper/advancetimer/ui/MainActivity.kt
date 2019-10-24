@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
 
         alarmButton.setOnClickListener {
             // Get AlarmManager instance
-            val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+//            alarmMgr  = getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
             // Intent part
             val intent = Intent(this, AlarmReceiver::class.java)
@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
 
             // Set with system Alarm Service
             // Other possible functions: setExact() / setRepeating() / setWindow(), etc
-            alarmManager.setExactAndAllowWhileIdle(
+            alarmMgr!!.setExactAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,
                 alarmTimeAtUTC,
                 pendingIntent
