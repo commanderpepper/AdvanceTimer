@@ -14,6 +14,8 @@ data class AlarmTimer (
     val enabled : Boolean,
     @ColumnInfo(name = "parentID")
     val parentID: String?,
+    @ColumnInfo(name = "requestCode")
+    val requestCode: Int,
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     val id : String
