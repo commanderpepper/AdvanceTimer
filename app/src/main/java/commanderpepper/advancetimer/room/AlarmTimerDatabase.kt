@@ -1,9 +1,31 @@
 package commanderpepper.advancetimer.room
 
-import android.app.AlarmManager
-import android.app.Application
-import android.app.PendingIntent.getActivity
 import android.content.Context
-import androidx.core.content.ContextCompat.getSystemService
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
 
-class AlarmTimerDatabase
+@Database(entities = [AlarmTimerDAO::class], version = 1)
+abstract class AlarmTimerDatabase : RoomDatabase() {
+    abstract fun alarmTimerDAO(): AlarmTimerDAO
+
+    companion object {
+        @Volatile
+        private var INSTANCE: AlarmTimerDatabase? = null
+
+        fun getInstance(context: Context): AlarmTimerDatabase {
+            synchronized(this) {
+                var instance = INSTANCE
+                if(instance == null){
+                    instance = Room.databaseBuilder(
+                        context.applicationContext,
+                        AlarmTimerDatabase::class.java,
+                        "alarmtimer-db"
+                    )
+                        .build()
+                }
+                return instance
+            }
+        }
+    }
+}
