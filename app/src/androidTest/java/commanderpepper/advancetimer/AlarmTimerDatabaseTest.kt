@@ -23,7 +23,7 @@ class AlarmTimerDatabaseTest {
         db = Room.inMemoryDatabaseBuilder(context, AlarmTimerDatabase::class.java)
             .allowMainThreadQueries()
             .build()
-        
+
         alarmTimerDao = db.alarmTimerDAO()
     }
 

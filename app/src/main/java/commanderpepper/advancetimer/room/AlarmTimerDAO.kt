@@ -1,9 +1,6 @@
 package commanderpepper.advancetimer.room
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
+import androidx.room.*
 
 @Dao
 interface AlarmTimerDAO {
@@ -13,4 +10,16 @@ interface AlarmTimerDAO {
 
     @Delete
     suspend fun deleteAlarmTimer(alarmTimer: AlarmTimer)
+
+    @Query("SELECT * FROM AlarmTimer")
+    suspend fun getAlarmTimerList(): List<AlarmTimer>
+
+    @Query("SELECT 1 FROM AlarmTimer WHERE id == :primaryId")
+    suspend fun getAlarmTimer(primaryId: String): AlarmTimer
+
+    @Query("SELECT * FROM AlarmTimer WHERE parentID == null")
+    suspend fun getParentAlarmTimerList(): List<AlarmTimer>
+
+    @Query("SELECT * FROM AlarmTimer WHERE parentID == :parentId")
+    suspend fun getChildrenAlarmTimerList(parentId: String): List<AlarmTimer>
 }
