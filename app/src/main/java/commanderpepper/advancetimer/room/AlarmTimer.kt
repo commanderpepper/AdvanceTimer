@@ -5,18 +5,20 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "AlarmTimer")
-data class AlarmTimer (
+data class AlarmTimer(
     @ColumnInfo(name = "title")
-    var title : String,
+    var title: String,
     @ColumnInfo(name = "type")
-    val type : String,
+    val type: String,
     @ColumnInfo(name = "enabled")
-    val enabled : Boolean,
+    val enabled: Boolean,
     @ColumnInfo(name = "parentID")
-    val parentID: String?,
+    val parentID: Long?,
     @ColumnInfo(name = "requestCode")
     val requestCode: Int,
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    val id : String
-)
+    var id: Long = 0
+) {
+
+}
