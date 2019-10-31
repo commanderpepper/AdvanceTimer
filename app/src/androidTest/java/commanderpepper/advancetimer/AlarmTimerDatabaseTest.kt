@@ -40,6 +40,18 @@ class AlarmTimerDatabaseTest {
     }
 
     @Test
+    fun createAlarmTimer() {
+        val testTimer = AlarmTimer(
+            "te",
+            "al",
+            true,
+            null,
+            1
+        )
+        assertThat(testTimer.id, CoreMatchers.equalTo(1))
+    }
+
+    @Test
     fun insertAlarmTimerTest() = runBlocking {
         alarmTimerDao.insertAlarmTimer(timer)
         val retrievedTimer = alarmTimerDao.getAlarmTimer(timer.id)

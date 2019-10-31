@@ -13,12 +13,13 @@ data class AlarmTimer(
     @ColumnInfo(name = "enabled")
     val enabled: Boolean,
     @ColumnInfo(name = "parentID")
-    val parentID: Long?,
+    val parentID: Int?,
     @ColumnInfo(name = "requestCode")
-    val requestCode: Int,
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id")
-    var id: Long = 0
+    val requestCode: Int
+//    @PrimaryKey(autoGenerate = true)
+//    var id: Int
 ) {
-
+    @PrimaryKey(autoGenerate = true)
+//    @ColumnInfo(name = "id")
+    var id: Int = 1
 }
