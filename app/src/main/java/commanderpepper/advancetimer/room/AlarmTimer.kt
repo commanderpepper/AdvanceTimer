@@ -20,6 +20,6 @@ data class AlarmTimer(
 //    var id: Int
 ) {
     @PrimaryKey(autoGenerate = true)
-//    @ColumnInfo(name = "id")
+    @ColumnInfo(name = "id")
     var id: Int = 1
 }
