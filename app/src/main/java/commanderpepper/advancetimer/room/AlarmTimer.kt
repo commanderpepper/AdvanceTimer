@@ -15,11 +15,8 @@ data class AlarmTimer(
     @ColumnInfo(name = "parentID")
     val parentID: Int?,
     @ColumnInfo(name = "requestCode")
-    val requestCode: Int
-//    @PrimaryKey(autoGenerate = true)
-//    var id: Int
-) {
+    val requestCode: Int,
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    var id: Int = 1
-}
+    val id: Int = 0
+)

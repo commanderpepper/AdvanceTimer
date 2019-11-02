@@ -48,7 +48,7 @@ class AlarmTimerDatabaseTest {
             null,
             1
         )
-        assertThat(testTimer.id, CoreMatchers.equalTo(1))
+        assertThat(testTimer.id, CoreMatchers.equalTo(0))
     }
 
     @Test
@@ -58,6 +58,32 @@ class AlarmTimerDatabaseTest {
         val retrievedTimer = alarmTimerDao.getAlarmTimerList().first()
         assertThat(retrievedTimer.id, CoreMatchers.notNullValue())
     }
+
+    @Test
+    fun insertSameTimerTwice() = runBlocking {
+        alarmTimerDao.insertAlarmTimer(timer)
+        alarmTimerDao.insertAlarmTimer(timer)
+        val timerList = alarmTimerDao.getAlarmTimerList()
+        assertThat(timerList.size, CoreMatchers.equalTo(2))
+    }
+
+    @Test
+    fun insertTwoTimers() = runBlocking {
+        alarmTimerDao.insertAlarmTimer(timer)
+        alarmTimerDao.insertAlarmTimer(childTimer)
+        val timerList = alarmTimerDao.getAlarmTimerList()
+        assertThat(timerList.size, CoreMatchers.equalTo(2))
+    }
+
+    @Test
+    fun insertThenDeleteTimer() = runBlocking {
+        alarmTimerDao.insertAlarmTimer(timer)
+        val timerList = alarmTimerDao.getAlarmTimerList()
+        alarmTimerDao.deleteAlarmTimer(timerList.first())
+        val emptyTimer = alarmTimerDao.getAlarmTimerList()
+        assertThat(emptyTimer.size, CoreMatchers.equalTo(0))
+    }
+
 
     companion object {
         private val timer = AlarmTimer(
