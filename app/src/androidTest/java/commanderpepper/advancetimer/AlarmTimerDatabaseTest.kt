@@ -52,7 +52,7 @@ class AlarmTimerDatabaseTest {
     }
 
     @Test
-    fun insertAlarmTimer() = runBlocking {
+    fun insertAlarmTimer_AssertNotNull() = runBlocking {
         alarmTimerDao.insertAlarmTimer(timer)
 //        val retrievedTimer = alarmTimerDao.getAlarmTimer(timer.id)
         val retrievedTimer = alarmTimerDao.getAlarmTimerList().first()
@@ -60,7 +60,7 @@ class AlarmTimerDatabaseTest {
     }
 
     @Test
-    fun insertSameTimerTwice() = runBlocking {
+    fun insertManyAlarmTimer_GetAlarmTimerList_ListSizeGreaterThanTwo() = runBlocking {
         alarmTimerDao.insertAlarmTimer(timer)
         alarmTimerDao.insertAlarmTimer(timer)
         val timerList = alarmTimerDao.getAlarmTimerList()
@@ -68,7 +68,7 @@ class AlarmTimerDatabaseTest {
     }
 
     @Test
-    fun insertThenDeleteTimer() = runBlocking {
+    fun insertAlarmTimer_DeleteAlarmTimer_GetAlarmTimerList_ListSizeIsZero() = runBlocking {
         alarmTimerDao.insertAlarmTimer(timer)
         val timerList = alarmTimerDao.getAlarmTimerList()
         alarmTimerDao.deleteAlarmTimer(timerList.first())
@@ -82,17 +82,67 @@ class AlarmTimerDatabaseTest {
     }
 
     // TODO : Insert a timer and get a timer list of 1
-    fun insertTimerAndGetTimerList() = runBlocking {
+    fun insertAlarmTimer_GetAlarmTimerList_ListSizeIsOne() = runBlocking {
 
     }
 
-    // TODO : Insert many timers and get a timer list size great than 1
-    fun insertManyTimersAndGetTimerList() = runBlocking {
+    // TODO : Insert many timers and get a timer list size greater than 1
+    fun insertManyAlarmTimers_GetAlarmTimerList_ListSizeIsGreaterThanOne() = runBlocking {
 
     }
 
     // TODO : Get a timer list and expect an empty list
-    fun getEmptyTimerList() = runBlocking {
+    fun insertNothing_getEmptyAlarmTimerList() = runBlocking {
+
+    }
+
+    // TODO: Insert a timer and get a timer with the ID. Should have similar properties.
+    fun insertAlarmTimer_GetAlarmTimerWithPrimaryID() = runBlocking {
+
+    }
+
+    // TODO: Get a timer and get an error I guess
+    fun insertNoAlarmTimers_GetNoAlarmTimerWithPrimaryID() = runBlocking {
+
+    }
+
+    // TODO: Insert a parent timer and get a timer with null has the parent ID parameter
+    fun insertParentAlarmTimer_GetParentAlarmTimer() = runBlocking {
+
+    }
+
+    // TODO: Insert multiple parent timers
+    fun insertMultipleParentAlarmTimers_getAlarmTimerList_ListSizeIsGreaterThanOne() = runBlocking {
+
+    }
+
+    // TODO: Insert no timers and get an empty list
+    fun insertNoAlarmTimers_GetEmptyParentAlarmTimersList() = runBlocking {
+
+    }
+
+    // TODO: Insert a child timer and get an empty list
+    fun insertChildAlarmTimer_GetEmptyParentAlarmTimerList() = runBlocking {
+
+    }
+
+    // TODO: Insert a child timer and get a child timer of list of size 1
+    fun insertChildAlarmTimer_GetAlarmTimerListOfOne() = runBlocking {
+
+    }
+
+    // TODO: Insert many child timers and get a list of sizer greater than 1
+    fun insertManyChildAlarmTimers_GetListOfChildTimers_ListSizeGreaterThanOne() = runBlocking {
+
+    }
+
+    // TODO: Insert no child timers and get an empty list
+    fun insertNoChildAlarmTimers_GetChildAlarmTimerList_ListIsEmpty() = runBlocking {
+
+    }
+
+    // TODO: Insert a parent timer and get an empty child timer list
+    fun insertParentAlarmTimer_GetChildTimerList_ListIsEmpty() = runBlocking {
 
     }
 
