@@ -17,7 +17,7 @@ interface AlarmTimerDAO {
     @Query("SELECT * FROM AlarmTimer WHERE id == :primaryId")
     suspend fun getAlarmTimer(primaryId: Int): AlarmTimer
 
-    @Query("SELECT * FROM AlarmTimer WHERE parentID == null")
+    @Query("SELECT * FROM AlarmTimer WHERE parentID IS NULL")
     suspend fun getParentAlarmTimerList(): List<AlarmTimer>
 
     @Query("SELECT * FROM AlarmTimer WHERE parentID == :parentId")

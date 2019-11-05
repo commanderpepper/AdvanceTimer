@@ -60,7 +60,7 @@ class AlarmTimerDatabaseTest {
     }
 
     @Test
-    fun insertManyAlarmTimer_GetAlarmTimerList_ListSizeGreaterThanTwo() = runBlocking {
+    fun insertManyAlarmTimers_GetAlarmTimerList_ListSizeGreaterThanOne() = runBlocking {
         alarmTimerDao.insertAlarmTimer(timer)
         alarmTimerDao.insertAlarmTimer(timer)
         val timerList = alarmTimerDao.getAlarmTimerList()
@@ -77,73 +77,104 @@ class AlarmTimerDatabaseTest {
     }
 
     // TODO : Try to delete a timer not found on the database
+    @Test
     fun deleteNonExistentTimer() = runBlocking {
-
+        alarmTimerDao.deleteAlarmTimer(timer)
     }
 
     // TODO : Insert a timer and get a timer list of 1
+    @Test
     fun insertAlarmTimer_GetAlarmTimerList_ListSizeIsOne() = runBlocking {
-
-    }
-
-    // TODO : Insert many timers and get a timer list size greater than 1
-    fun insertManyAlarmTimers_GetAlarmTimerList_ListSizeIsGreaterThanOne() = runBlocking {
-
+        alarmTimerDao.insertAlarmTimer(timer)
+        val timerList = alarmTimerDao.getAlarmTimerList()
+        assertThat(timerList.size, CoreMatchers.equalTo(1))
     }
 
     // TODO : Get a timer list and expect an empty list
+    @Test
     fun insertNothing_getEmptyAlarmTimerList() = runBlocking {
-
+        val timerList = alarmTimerDao.getAlarmTimerList()
+        assertThat(timerList.size, CoreMatchers.equalTo(0))
     }
 
     // TODO: Insert a timer and get a timer with the ID. Should have similar properties.
+    @Test
     fun insertAlarmTimer_GetAlarmTimerWithPrimaryID() = runBlocking {
-
+        alarmTimerDao.insertAlarmTimer(timer)
+        val retrievedTimer = alarmTimerDao.getAlarmTimer(1)
+        assertThat(retrievedTimer, CoreMatchers.notNullValue())
+        assertThat(timer.title, CoreMatchers.equalTo(retrievedTimer.title))
     }
 
     // TODO: Get a timer and get an error I guess
+    @Test
     fun insertNoAlarmTimers_GetNoAlarmTimerWithPrimaryID() = runBlocking {
-
+        val retrievedTimer = alarmTimerDao.getAlarmTimer(1)
+        assertThat(retrievedTimer, CoreMatchers.nullValue())
     }
 
     // TODO: Insert a parent timer and get a timer with null has the parent ID parameter
+    @Test
     fun insertParentAlarmTimer_GetParentAlarmTimer() = runBlocking {
-
+        alarmTimerDao.insertAlarmTimer(timer)
+        val parentTimer = alarmTimerDao.getParentAlarmTimerList().first()
+        assertThat(parentTimer.title, CoreMatchers.equalTo(timer.title))
     }
 
     // TODO: Insert multiple parent timers
+    @Test
     fun insertMultipleParentAlarmTimers_getAlarmTimerList_ListSizeIsGreaterThanOne() = runBlocking {
-
+        alarmTimerDao.insertAlarmTimer(timer)
+        alarmTimerDao.insertAlarmTimer(timer)
+        val parentTimerList = alarmTimerDao.getParentAlarmTimerList()
+        assertThat(parentTimerList.size, CoreMatchers.equalTo(2))
     }
 
     // TODO: Insert no timers and get an empty list
+    @Test
     fun insertNoAlarmTimers_GetEmptyParentAlarmTimersList() = runBlocking {
-
+        val parentTimerList = alarmTimerDao.getParentAlarmTimerList()
+        assertThat(parentTimerList.size, CoreMatchers.equalTo(0))
     }
 
     // TODO: Insert a child timer and get an empty list
+    @Test
     fun insertChildAlarmTimer_GetEmptyParentAlarmTimerList() = runBlocking {
-
+        alarmTimerDao.insertAlarmTimer(childTimer)
+        val parentTimerList = alarmTimerDao.getParentAlarmTimerList()
+        assertThat(parentTimerList.size, CoreMatchers.equalTo(0))
     }
 
     // TODO: Insert a child timer and get a child timer of list of size 1
+    @Test
     fun insertChildAlarmTimer_GetAlarmTimerListOfOne() = runBlocking {
-
+        alarmTimerDao.insertAlarmTimer(childTimer)
+        val retrievedChildAlarmTimer = alarmTimerDao.getChildrenAlarmTimerList(1)
+        assertThat(retrievedChildAlarmTimer.size, CoreMatchers.equalTo(1))
     }
 
     // TODO: Insert many child timers and get a list of sizer greater than 1
+    @Test
     fun insertManyChildAlarmTimers_GetListOfChildTimers_ListSizeGreaterThanOne() = runBlocking {
-
+        alarmTimerDao.insertAlarmTimer(childTimer)
+        alarmTimerDao.insertAlarmTimer(childTimer)
+        val retrievedChildAlarmTimer = alarmTimerDao.getChildrenAlarmTimerList(1)
+        assertThat(retrievedChildAlarmTimer.size, CoreMatchers.equalTo(2))
     }
 
     // TODO: Insert no child timers and get an empty list
+    @Test
     fun insertNoChildAlarmTimers_GetChildAlarmTimerList_ListIsEmpty() = runBlocking {
-
+        val retrievedChildAlarmTimer = alarmTimerDao.getChildrenAlarmTimerList(1)
+        assertThat(retrievedChildAlarmTimer.size, CoreMatchers.equalTo(0))
     }
 
     // TODO: Insert a parent timer and get an empty child timer list
+    @Test
     fun insertParentAlarmTimer_GetChildTimerList_ListIsEmpty() = runBlocking {
-
+        alarmTimerDao.insertAlarmTimer(timer)
+        val retrievedChildAlarmTimer = alarmTimerDao.getChildrenAlarmTimerList(1)
+        assertThat(retrievedChildAlarmTimer.size, CoreMatchers.equalTo(0))
     }
 
     @Test
@@ -153,8 +184,6 @@ class AlarmTimerDatabaseTest {
         val timerList = alarmTimerDao.getAlarmTimerList()
         assertThat(timerList.size, CoreMatchers.equalTo(2))
     }
-
-
 
     @Test
     fun insertAlarmTimerCheckForId() = runBlocking {
@@ -200,7 +229,7 @@ class AlarmTimerDatabaseTest {
             "test",
             "ALARM",
             true,
-            null,
+            1,
             2
         )
     }
