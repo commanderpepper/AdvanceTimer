@@ -14,16 +14,17 @@ class RequestCodeTest {
 
     @Test
     fun getCode() {
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
         val int =
-            RequestCodeGenerator.getRequestCode(InstrumentationRegistry.getInstrumentation().targetContext)
+            RequestCodeGenerator.getRequestCode(context)
         assertEquals(1, int)
 
         val secondInt =
-            RequestCodeGenerator.getRequestCode(InstrumentationRegistry.getInstrumentation().targetContext)
+            RequestCodeGenerator.getRequestCode(context)
         assertEquals(2, secondInt)
 
         val thirdInt =
-            RequestCodeGenerator.getRequestCode(InstrumentationRegistry.getInstrumentation().targetContext)
+            RequestCodeGenerator.getRequestCode(context)
         assertEquals(3, thirdInt)
 
     }
