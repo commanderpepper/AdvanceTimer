@@ -13,18 +13,24 @@ import kotlinx.coroutines.launch
  * This class creates alarms and maybe saves some of the data to Room
  */
 
-class AlarmCreator(val context: Context) : CoroutineScope by CoroutineScope(Dispatchers.IO){
+class AlarmCreator(val context: Context) : CoroutineScope by CoroutineScope(Dispatchers.Main) {
 
     private val alarmMgr: AlarmManager =
         context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-    fun makeAlarm(pendingIntent: PendingIntent, triggerAtMillis: Long){
+    fun makeAlarm(pendingIntent: PendingIntent, triggerAtMillis: Long) {
         launch {
             createAlarm(pendingIntent, triggerAtMillis)
         }
     }
 
-    private suspend fun createAlarm(pendingIntent: PendingIntent, triggerAtMillis: Long) {
+    fun makeTimer(pendingIntent: PendingIntent, triggerAtMillis: Long) {
+        launch {
+            createTimer(pendingIntent, triggerAtMillis)
+        }
+    }
+
+    private fun createAlarm(pendingIntent: PendingIntent, triggerAtMillis: Long) {
         alarmMgr.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
             triggerAtMillis,
@@ -32,4 +38,37 @@ class AlarmCreator(val context: Context) : CoroutineScope by CoroutineScope(Disp
         )
     }
 
+    private fun createTimer(pendingIntent: PendingIntent, triggerAtMillis: Long) {
+        alarmMgr.setExactAndAllowWhileIdle(
+            AlarmManager.ELAPSED_REALTIME_WAKEUP,
+            triggerAtMillis,
+            pendingIntent
+        )
+    }
+
+    private fun createRepeatingAlarm(
+        pendingIntent: PendingIntent,
+        triggerAtMillis: Long,
+        intervalAtMillis: Long
+    ) {
+        alarmMgr.setInexactRepeating(
+            AlarmManager.RTC_WAKEUP,
+            triggerAtMillis,
+            intervalAtMillis,
+            pendingIntent
+        )
+    }
+
+    private fun createRepeatingTimer(
+        pendingIntent: PendingIntent,
+        triggerAtMillis: Long,
+        intervalAtMillis: Long
+    ){
+        alarmMgr.setInexactRepeating(
+            AlarmManager.ELAPSED_REALTIME_WAKEUP,
+            triggerAtMillis,
+            intervalAtMillis,
+            pendingIntent
+        )
+    }
 }
