@@ -18,6 +18,14 @@ class AlarmCreator(val context: Context) : CoroutineScope by CoroutineScope(Disp
     private val alarmMgr: AlarmManager =
         context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
+    fun makeAlarm(intent: Intent, triggerAtMillis: Long) {
+        launch {
+            val pendingIntent =
+                PendingIntent.getActivity(context, RequestCodeGenerator.getRequestCode(context), intent, 0)
+            createAlarm(pendingIntent, triggerAtMillis)
+        }
+    }
+
     fun makeAlarm(pendingIntent: PendingIntent, triggerAtMillis: Long) {
         launch {
             createAlarm(pendingIntent, triggerAtMillis)
@@ -63,7 +71,7 @@ class AlarmCreator(val context: Context) : CoroutineScope by CoroutineScope(Disp
         pendingIntent: PendingIntent,
         triggerAtMillis: Long,
         intervalAtMillis: Long
-    ){
+    ) {
         alarmMgr.setInexactRepeating(
             AlarmManager.ELAPSED_REALTIME_WAKEUP,
             triggerAtMillis,

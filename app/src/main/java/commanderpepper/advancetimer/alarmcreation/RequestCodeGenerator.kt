@@ -2,6 +2,7 @@ package commanderpepper.advancetimer.alarmcreation
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.annotation.VisibleForTesting
 
 
 object RequestCodeGenerator {
@@ -20,6 +21,15 @@ object RequestCodeGenerator {
 
         return requestCode
     }
+
+    @VisibleForTesting
+    fun getCurrentRequestCode(context: Context): Int {
+        val sharedPreferences =
+            context.getSharedPreferences(REQUEST_CODE_FILE, Context.MODE_PRIVATE)
+
+        return sharedPreferences.getInt(REQUEST_CODE_KEY, DEFAULT_VALUE)
+    }
+
 
     private fun storeInt(sharedPreferences: SharedPreferences, int: Int) {
         with(sharedPreferences.edit()) {
