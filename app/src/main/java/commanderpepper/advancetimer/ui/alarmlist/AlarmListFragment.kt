@@ -5,13 +5,11 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import com.squareup.workflow.ui.ExperimentalWorkflowUi
-
+import androidx.fragment.app.Fragment
 import commanderpepper.advancetimer.R
 import commanderpepper.advancetimer.receivers.AlarmReceiver
 
@@ -20,29 +18,14 @@ import commanderpepper.advancetimer.receivers.AlarmReceiver
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [AlarmList.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [AlarmList.newInstance] factory method to
- * create an instance of this fragment.
- */
-
-@UseExperimental(ExperimentalWorkflowUi::class)
-class AlarmListWorkflowFragment : Fragment() {
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
+class AlarmListFragment : Fragment() {
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_alarm_list, container, false)
+        val view = inflater.inflate(R.layout.fragment_alarm_list, container, false)
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -94,7 +77,7 @@ class AlarmListWorkflowFragment : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            AlarmListWorkflowFragment().apply {
+            AlarmListFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

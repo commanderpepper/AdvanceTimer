@@ -2,12 +2,10 @@ package commanderpepper.advancetimer.ui.entry
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.squareup.workflow.ui.ExperimentalWorkflowUi
 import commanderpepper.advancetimer.R
-import commanderpepper.advancetimer.ui.alarmlist.AlarmListWorkflowFragment
+import commanderpepper.advancetimer.ui.alarmlist.AlarmListFragment
 import timber.log.Timber
 
-@UseExperimental(ExperimentalWorkflowUi::class)
 class EntryWorkflowActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,10 +13,10 @@ class EntryWorkflowActivity : AppCompatActivity() {
         setContentView(R.layout.activity_entry)
         Timber.d("I'm alive!")
 
-        val alarmList = AlarmListWorkflowFragment.newInstance("A", "B")
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.entry_fragment_placeholder, alarmList)
+        val alarmListFragment = AlarmListFragment()
+        fragmentTransaction.replace(R.id.entry_fragment_placeholder, alarmListFragment)
         fragmentTransaction.commit()
     }
 }
