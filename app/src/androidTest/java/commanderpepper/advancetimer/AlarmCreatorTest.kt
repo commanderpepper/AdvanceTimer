@@ -22,11 +22,13 @@ import org.junit.Assert.assertThat
 class AlarmCreatorTest {
     private lateinit var context: Context
     private lateinit var alarmCreator: AlarmCreator
+    private lateinit var requestCodeGenerator: RequestCodeGenerator
 
     @Before
     fun init() {
         context = InstrumentationRegistry.getInstrumentation().targetContext
         alarmCreator = AlarmCreator(context)
+        requestCodeGenerator = RequestCodeGenerator.get()
     }
 
     @Test
@@ -86,17 +88,17 @@ class AlarmCreatorTest {
         assertThat(alarmIntent, CoreMatchers.not(differentPendingIntent))
     }
 
-//    @Test
+    @Test
     fun createPendingIntentWthAlarmCreator_RetrievePendingIntent_TestNotNull() {
         val sourceIntent = Intent(context, AlarmReceiver::class.java)
         alarmCreator.makeAlarm(sourceIntent, 100000L)
 
-        val currentRequestCode = RequestCodeGenerator.getCurrentRequestCode(context)
+        val currentRequestCode = requestCodeGenerator.getCurrentRequestCode()
 
         val alarmIntent: PendingIntent? =
             PendingIntent.getActivities(
                 context,
-                0,
+                currentRequestCode,
                 arrayOf(sourceIntent),
                 PendingIntent.FLAG_NO_CREATE
             )

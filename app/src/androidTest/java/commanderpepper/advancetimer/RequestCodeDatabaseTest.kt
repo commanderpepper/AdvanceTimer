@@ -22,6 +22,7 @@ class RequestCodeDatabaseTest {
     private lateinit var alarmTimerDao: AlarmTimerDAO
     private lateinit var db: AlarmTimerDatabase
     private lateinit var context: Context
+    private lateinit var requestCodeGenerator: RequestCodeGenerator
 
 
     @Before
@@ -33,6 +34,8 @@ class RequestCodeDatabaseTest {
             .build()
 
         alarmTimerDao = db.alarmTimerDAO()
+
+        requestCodeGenerator = RequestCodeGenerator.get()
     }
 
     @After
@@ -48,7 +51,7 @@ class RequestCodeDatabaseTest {
             "TEST",
             true,
             null,
-            RequestCodeGenerator.getRequestCode(context)
+            requestCodeGenerator.getRequestCode()
         )
         alarmTimerDao.insertAlarmTimer(
             alarmTimer
@@ -65,14 +68,14 @@ class RequestCodeDatabaseTest {
                 "TEST",
                 true,
                 null,
-                RequestCodeGenerator.getRequestCode(context)
+                requestCodeGenerator.getRequestCode()
             )
             val alarmTimerRQTwo = AlarmTimer(
                 "Test Alarm Timer",
                 "TEST",
                 true,
                 null,
-                RequestCodeGenerator.getRequestCode(context)
+                requestCodeGenerator.getRequestCode()
             )
             alarmTimerDao.insertAlarmTimer(alarmTimerRQOne)
             alarmTimerDao.insertAlarmTimer(alarmTimerRQTwo)

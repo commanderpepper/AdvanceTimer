@@ -5,13 +5,13 @@ import android.content.SharedPreferences
 import androidx.annotation.VisibleForTesting
 
 
-object RequestCodeGenerator {
+class RequestCodeGenerator private constructor(val context: Context){
 
     private val REQUEST_CODE_KEY: String = "REQUEST_CODE_KEY"
     private val REQUEST_CODE_FILE: String = "requestCode"
     private val DEFAULT_VALUE = 0
 
-    fun getRequestCode(context: Context): Int {
+    fun getRequestCode(): Int {
         val sharedPreferences =
             context.getSharedPreferences(REQUEST_CODE_FILE, Context.MODE_PRIVATE)
 
@@ -23,13 +23,12 @@ object RequestCodeGenerator {
     }
 
     @VisibleForTesting
-    fun getCurrentRequestCode(context: Context): Int {
+    fun getCurrentRequestCode(): Int {
         val sharedPreferences =
             context.getSharedPreferences(REQUEST_CODE_FILE, Context.MODE_PRIVATE)
 
         return sharedPreferences.getInt(REQUEST_CODE_KEY, DEFAULT_VALUE)
     }
-
 
     private fun storeInt(sharedPreferences: SharedPreferences, int: Int) {
         with(sharedPreferences.edit()) {
@@ -38,4 +37,14 @@ object RequestCodeGenerator {
         }
     }
 
+    companion object{
+        private var INSTANCE: RequestCodeGenerator? = null
+        fun initialize(context: Context) {
+            if (INSTANCE == null) INSTANCE = RequestCodeGenerator(context)
+        }
+
+        fun get(): RequestCodeGenerator {
+            return INSTANCE ?: throw IllegalArgumentException("CrimeRepository must be initialized")
+        }
+    }
 }

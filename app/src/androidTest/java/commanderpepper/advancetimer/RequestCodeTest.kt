@@ -15,16 +15,18 @@ class RequestCodeTest {
     @Test
     fun getCode() {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
+        RequestCodeGenerator.initialize(context)
+        val requestCodeGenerator = RequestCodeGenerator.get()
         val int =
-            RequestCodeGenerator.getRequestCode(context)
+            requestCodeGenerator.getRequestCode()
         assertEquals(1, int)
 
         val secondInt =
-            RequestCodeGenerator.getRequestCode(context)
+            requestCodeGenerator.getRequestCode()
         assertEquals(2, secondInt)
 
         val thirdInt =
-            RequestCodeGenerator.getRequestCode(context)
+            requestCodeGenerator.getRequestCode()
         assertEquals(3, thirdInt)
 
     }

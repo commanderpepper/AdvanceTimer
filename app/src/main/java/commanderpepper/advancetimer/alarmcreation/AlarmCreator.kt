@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
 
@@ -18,12 +19,12 @@ class AlarmCreator(val context: Context) : CoroutineScope by CoroutineScope(Disp
     private val alarmMgr: AlarmManager =
         context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
+    private val requestCodeGenerator = RequestCodeGenerator.get()
+
     fun makeAlarm(intent: Intent, triggerAtMillis: Long) {
-        launch {
-            val pendingIntent =
-                PendingIntent.getActivity(context, RequestCodeGenerator.getRequestCode(context), intent, 0)
-            createAlarm(pendingIntent, triggerAtMillis)
-        }
+        val pendingIntent =
+            PendingIntent.getActivity(context, requestCodeGenerator.getRequestCode(), intent, 0)
+        createAlarm(pendingIntent, triggerAtMillis)
     }
 
     fun makeAlarm(pendingIntent: PendingIntent, triggerAtMillis: Long) {
