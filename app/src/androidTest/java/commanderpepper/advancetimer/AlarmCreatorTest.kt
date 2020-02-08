@@ -38,8 +38,6 @@ class AlarmCreatorTest {
         val alarmIntent: PendingIntent =
             PendingIntent.getActivities(context, 0, arrayOf(sourceIntent), 0)
 
-//        alarmCreator.makeAlarm(alarmIntent, 10000L)
-
         val retrievedIntent =
             PendingIntent.getActivities(
                 context,
@@ -56,7 +54,6 @@ class AlarmCreatorTest {
         } finally {
 
         }
-
     }
 
     @Test
@@ -65,8 +62,6 @@ class AlarmCreatorTest {
 
         val alarmIntent: PendingIntent =
             PendingIntent.getActivities(context, 0, arrayOf(sourceIntent), 0)
-
-//        alarmCreator.makeAlarm(alarmIntent, 10000L)
 
         val retrievedIntent =
             PendingIntent.getActivities(context, 0, arrayOf(sourceIntent), 0)
@@ -80,7 +75,6 @@ class AlarmCreatorTest {
 
         val alarmIntent: PendingIntent =
             PendingIntent.getActivities(context, 0, arrayOf(sourceIntent), 0)
-//        alarmCreator.makeAlarm(alarmIntent, 10000L)
 
         val differentPendingIntent =
             PendingIntent.getActivities(context, 1, arrayOf(sourceIntent), 0)
@@ -114,6 +108,100 @@ class AlarmCreatorTest {
             PendingIntent.getActivities(
                 context,
                 0,
+                arrayOf(sourceIntent),
+                PendingIntent.FLAG_NO_CREATE
+            )
+
+        assertThat(alarmIntent, CoreMatchers.nullValue())
+    }
+
+    @Test
+    fun createTimer_RetrieveTimer_TestNotNull() {
+        val sourceIntent = Intent(context, AlarmReceiver::class.java)
+        alarmCreator.makeTimer(sourceIntent, 100000L)
+
+        val currentRequestCode = requestCodeGenerator.getCurrentRequestCode()
+
+        val alarmIntent: PendingIntent? =
+            PendingIntent.getActivities(
+                context,
+                currentRequestCode,
+                arrayOf(sourceIntent),
+                PendingIntent.FLAG_NO_CREATE
+            )
+
+        assertThat(alarmIntent, CoreMatchers.notNullValue())
+    }
+
+    @Test
+    fun createRepeatingAlarm_RetrieveAlarm_TestNotNull() {
+        val sourceIntent = Intent(context, AlarmReceiver::class.java)
+        alarmCreator.makeRepeatingAlarm(sourceIntent, 100000L, 100000L)
+
+        val currentRequestCode = requestCodeGenerator.getCurrentRequestCode()
+
+        val alarmIntent: PendingIntent? =
+            PendingIntent.getActivities(
+                context,
+                currentRequestCode,
+                arrayOf(sourceIntent),
+                PendingIntent.FLAG_NO_CREATE
+            )
+
+        assertThat(alarmIntent, CoreMatchers.notNullValue())
+    }
+
+    @Test
+    fun createRepeatingTimer_RetrieveTimer_TestNotNull() {
+        val sourceIntent = Intent(context, AlarmReceiver::class.java)
+        alarmCreator.makeRepeatingTimer(sourceIntent, 100000L, 100000L)
+
+        val currentRequestCode = requestCodeGenerator.getCurrentRequestCode()
+
+        val alarmIntent: PendingIntent? =
+            PendingIntent.getActivities(
+                context,
+                currentRequestCode,
+                arrayOf(sourceIntent),
+                PendingIntent.FLAG_NO_CREATE
+            )
+
+        assertThat(alarmIntent, CoreMatchers.notNullValue())
+    }
+
+    @Test
+    fun createTimer_Wait_RetrieveTimer_TestForNull() {
+        val sourceIntent = Intent(context, AlarmReceiver::class.java)
+        alarmCreator.makeTimer(sourceIntent, 100L)
+
+        Thread.sleep(2000L)
+
+        val currentRequestCode = requestCodeGenerator.getCurrentRequestCode()
+
+        val alarmIntent: PendingIntent? =
+            PendingIntent.getActivities(
+                context,
+                currentRequestCode,
+                arrayOf(sourceIntent),
+                PendingIntent.FLAG_NO_CREATE
+            )
+
+        assertThat(alarmIntent, CoreMatchers.nullValue())
+    }
+
+    @Test
+    fun createAlarm_Wait_RetrieveAlarm_TestForNull() {
+        val sourceIntent = Intent(context, AlarmReceiver::class.java)
+        alarmCreator.makeAlarm(sourceIntent, 100L)
+
+        Thread.sleep(2000L)
+
+        val currentRequestCode = requestCodeGenerator.getCurrentRequestCode()
+
+        val alarmIntent: PendingIntent? =
+            PendingIntent.getActivities(
+                context,
+                currentRequestCode,
                 arrayOf(sourceIntent),
                 PendingIntent.FLAG_NO_CREATE
             )
