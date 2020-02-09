@@ -9,12 +9,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TimePicker
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import commanderpepper.advancetimer.R
 import commanderpepper.advancetimer.receivers.AlarmReceiver
+import commanderpepper.advancetimer.room.AlarmTimer
+import timber.log.Timber
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
@@ -83,5 +85,28 @@ class AlarmListFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+}
+
+class AlarmTimerAdapter(val list: List<AlarmTimer>) : RecyclerView.Adapter<AlarmTimerViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlarmTimerViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val view = inflater.inflate(R.layout.parent_alarmtimer_itemview, parent, false)
+        return AlarmTimerViewHolder(view)
+    }
+
+    override fun getItemCount(): Int {
+        return list.size
+    }
+
+    override fun onBindViewHolder(holder: AlarmTimerViewHolder, position: Int) {
+        holder.bind(list[position])
+    }
+
+}
+
+class AlarmTimerViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+    fun bind(alarmTimer: AlarmTimer) {
+        Timber.d("Do something here")
     }
 }

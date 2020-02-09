@@ -3,8 +3,7 @@
     package="commanderpepper.advancetimer">
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name="commanderpepper.App"
@@ -14,6 +13,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.alarmlist.AlarmListActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".ui.entry.EntryWorkflowActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,17 +40,14 @@
         <receiver
             android:name="receivers.AlarmReceiver"
             android:enabled="true"
-            android:exported="true">
-        </receiver>
-
+            android:exported="true"></receiver>
         <receiver android:name=".receivers.RebootReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
-        <activity android:name=".ui.MainActivity">
-        </activity>
+        <activity android:name=".ui.MainActivity"></activity>
     </application>
 
 </manifest>

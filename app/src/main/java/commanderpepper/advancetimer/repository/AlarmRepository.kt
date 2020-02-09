@@ -7,7 +7,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 
-class AlarmRepository private constructor(val context: Context) {
+class AlarmRepository private constructor(private val context: Context) {
     private val database = AlarmTimerDatabase.getInstance(context)
     private val alarmTimerDAO = database.alarmTimerDAO()
 

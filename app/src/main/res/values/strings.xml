@@ -4,4 +4,6 @@
     <string name="make_notification">Make Notification</string>
     <string name="local_service_started">12333</string>
 
+    <string name="add_AlarmTimer">Add a new alarm or timer</string>
+
 </resources>
