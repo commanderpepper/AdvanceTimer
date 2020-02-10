@@ -96,4 +96,15 @@ class AlarmCreator(private val context: Context){
             pendingIntent
         )
     }
+
+    companion object{
+        private var INSTANCE: AlarmCreator? = null
+        fun initialize(context: Context) {
+            if (INSTANCE == null) INSTANCE = AlarmCreator(context)
+        }
+
+        fun get(): AlarmCreator {
+            return INSTANCE ?: throw IllegalArgumentException("CrimeRepository must be initialized")
+        }
+    }
 }

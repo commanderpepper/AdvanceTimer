@@ -11,8 +11,12 @@ class AlarmRepository private constructor(private val context: Context) {
     private val database = AlarmTimerDatabase.getInstance(context)
     private val alarmTimerDAO = database.alarmTimerDAO()
 
-    suspend fun getParentTimers(): Flow<AlarmTimer> {
+    suspend fun getParentTimersFlow(): Flow<AlarmTimer> {
         return alarmTimerDAO.getParentAlarmTimerList().asFlow()
+    }
+
+    suspend fun getParentTimersList(): List<AlarmTimer> {
+        return alarmTimerDAO.getParentAlarmTimerList()
     }
 
     suspend fun getChildrenTimers(parentId: Int): Flow<AlarmTimer> {
