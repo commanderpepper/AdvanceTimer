@@ -20,7 +20,7 @@ class AlarmTimerViewModel(
 
         scope.launch {
             withContext(scope.coroutineContext) {
-                alarmRepository.getParentTimers().collect {
+                alarmRepository.getParentTimersFlow().collect {
                     list.add(it)
                 }
             }

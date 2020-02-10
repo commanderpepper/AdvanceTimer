@@ -11,11 +11,21 @@ import kotlinx.coroutines.launch
 class AlarmListViewModel : ViewModel() {
     private val alarmRepository = AlarmRepository.get()
 
-    suspend fun getParentAlarmTimerList(): List<AlarmTimer> {
-        return alarmRepository.getParentTimersList()
+    val parentAlarmTimers by lazy {
+        return@lazy getParentAlarmTimerList()
     }
 
-    suspend fun getParentAlarmTimerFlow(): Flow<AlarmTimer> {
+    private fun getParentAlarmTimerList(): List<AlarmTimer> {
+        val list = mutableListOf<AlarmTimer>()
+
+        viewModelScope.launch {
+            list += alarmRepository.getParentTimersList()
+        }
+
+        return list
+    }
+
+    private suspend fun getParentAlarmTimerFlow(): Flow<AlarmTimer> {
         return alarmRepository.getParentTimersFlow()
     }
 }

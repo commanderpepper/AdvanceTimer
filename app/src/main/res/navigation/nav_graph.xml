@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/alarmTimerListFragment">
+
+    <fragment
+        android:id="@+id/alarmTimerListFragment"
+        android:name="commanderpepper.advancetimer.ui.alarmtimerlist.AlarmTimerListFragment"
+        android:label="fragment_alarm_timer_list"
+        tools:layout="@layout/fragment_alarm_timer_list" >
+        <action
+            android:id="@+id/action_alarmTimerListFragment_to_alarmTimerEditFragment"
+            app:destination="@id/alarmTimerEditFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/alarmTimerEditFragment"
+        android:name="commanderpepper.advancetimer.ui.alarmtimeredit.AlarmTimerEditFragment"
+        android:label="AlarmTimerEditFragment" />
+</navigation>
