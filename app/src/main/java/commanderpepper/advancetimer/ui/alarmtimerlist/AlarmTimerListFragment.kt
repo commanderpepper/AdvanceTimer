@@ -7,6 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import commanderpepper.advancetimer.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -28,6 +31,9 @@ class AlarmTimerListFragment : Fragment() {
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
 
+//    private val navController = findNavController()
+    private lateinit var fab: FloatingActionButton
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -44,18 +50,18 @@ class AlarmTimerListFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_alarm_timer_list, container, false)
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        fab = view.findViewById(R.id.create_alarmtimer_fab)
+
+        fab.setOnClickListener {
+            view.findNavController()
+                .navigate(R.id.action_alarmTimerListFragment_to_alarmTimerEditFragment)
+        }
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
-            listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
-        }
+    fun onButtonPressed(uri: Uri) {
+        listener?.onFragmentInteraction(uri)
     }
 
     override fun onDetach() {

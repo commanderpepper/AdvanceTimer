@@ -1,12 +1,9 @@
-package commanderpepper.advancetimer.ui.alarmlist
+package commanderpepper.advancetimer.ui.alarmtimerlist
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import androidx.fragment.app.Fragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import commanderpepper.advancetimer.R
-import commanderpepper.advancetimer.ui.alarmtimeredit.AlarmTimerEditFragment
 
 class AlarmListActivity : AppCompatActivity() {
 
@@ -16,12 +13,13 @@ class AlarmListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_alarm_list)
 
-        newAlarmTimerButton = findViewById(R.id.create_alarmtimer_fab)
+//        newAlarmTimerButton = findViewById(R.id.create_alarmtimer_fab)
 
         val currentFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
         if (currentFragment == null) {
-            val alarmListFragment = AlarmListFragment()
+            val alarmListFragment =
+                AlarmTimerListFragment()
             supportFragmentManager.beginTransaction()
                 .add(R.id.nav_host_fragment, alarmListFragment)
                 .commit()

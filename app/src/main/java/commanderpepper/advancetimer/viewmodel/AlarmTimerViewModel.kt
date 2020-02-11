@@ -14,7 +14,7 @@ class AlarmTimerViewModel(
     private val job = SupervisorJob()
     private val scope = CoroutineScope(job + Dispatchers.Main)
 
-    fun getParentAlarmTimers(): List<AlarmTimer> {
+    suspend fun getParentAlarmTimers(): List<AlarmTimer> {
 
         val list = mutableListOf<AlarmTimer>()
 

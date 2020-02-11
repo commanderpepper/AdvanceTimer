@@ -13,29 +13,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.alarmlist.AlarmListActivity">
+        <activity android:name=".ui.alarmtimerlist.AlarmListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.entry.EntryWorkflowActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".ui.AlarmManagerActivity" />
-
-        <service
-            android:name=".services.LocalService"
-            android:enabled="true"
-            android:exported="false" />
-        <service
-            android:name=".services.MyIntentService"
-            android:exported="false" />
 
         <receiver
             android:name="receivers.AlarmReceiver"
@@ -46,8 +30,6 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
-        <activity android:name=".ui.MainActivity"></activity>
     </application>
 
 </manifest>
