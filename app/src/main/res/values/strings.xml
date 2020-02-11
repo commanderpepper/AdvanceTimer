@@ -5,7 +5,10 @@
     <string name="local_service_started">12333</string>
 
     <string name="add_AlarmTimer">Add a new alarm or timer</string>
-    <string name="add_or_edit_alarmtimer">Edit or ddd an alarm or timer.</string>
+    <string name="new_alarmtimer">Create an alarm or timer.</string>
+    <string name="edit_alarmtimer">Edit an alarm or timer.</string>
+    <string name="save_button">SAVE</string>
+    <string name="edit_button">EDIT</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

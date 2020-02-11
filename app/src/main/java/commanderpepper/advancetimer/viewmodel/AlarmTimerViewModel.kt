@@ -1,7 +1,11 @@
 package commanderpepper.advancetimer.viewmodel
 
+import android.content.Context
+import android.content.Intent
 import androidx.lifecycle.LiveData
 import commanderpepper.advancetimer.alarmcreation.AlarmCreator
+import commanderpepper.advancetimer.alarmcreation.RequestCodeGenerator
+import commanderpepper.advancetimer.receivers.AlarmReceiver
 import commanderpepper.advancetimer.repository.AlarmRepository
 import commanderpepper.advancetimer.room.AlarmTimer
 import kotlinx.coroutines.*
@@ -27,6 +31,22 @@ class AlarmTimerViewModel(
         }
 
         return list
+    }
+
+    fun addParentAlarm(context: Context, triggerAtMillis: Long) {
+        val sourceIntent = Intent(context, AlarmReceiver::class.java)
+        alarmCreator.makeAlarm(sourceIntent, triggerAtMillis)
+        val alarmTimer = AlarmTimer(
+            "Test",
+            "Alarm",
+            true,
+            null,
+            0,
+            RequestCodeGenerator.get().getCurrentRequestCode()
+        )
+        scope.launch {
+            alarmRepository.insertAlarmTimer(alarmTimer)
+        }
     }
 
 }
