@@ -8,6 +8,7 @@ import commanderpepper.advancetimer.alarmcreation.RequestCodeGenerator
 import commanderpepper.advancetimer.receivers.AlarmReceiver
 import commanderpepper.advancetimer.repository.AlarmRepository
 import commanderpepper.advancetimer.room.AlarmTimer
+import commanderpepper.advancetimer.room.AlarmTimerType
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
 
@@ -16,9 +17,9 @@ class AlarmTimerViewModel(
     private val alarmCreator: AlarmCreator
 ) {
     private val job = SupervisorJob()
-    private val scope = CoroutineScope(job + Dispatchers.Main)
+    private val scope = CoroutineScope(job + Dispatchers.Default)
 
-    suspend fun getParentAlarmTimers(): List<AlarmTimer> {
+    fun getParentAlarmTimers(): List<AlarmTimer> {
 
         val list = mutableListOf<AlarmTimer>()
 
@@ -33,15 +34,14 @@ class AlarmTimerViewModel(
         return list
     }
 
-    fun addParentAlarm(context: Context, triggerAtMillis: Long) {
+    fun addOneOffParentAlarm(context: Context, triggerAtMillis: Long) {
         val sourceIntent = Intent(context, AlarmReceiver::class.java)
         alarmCreator.makeAlarm(sourceIntent, triggerAtMillis)
         val alarmTimer = AlarmTimer(
             "Test",
-            "Alarm",
+            AlarmTimerType.OneOffAlarm,
             true,
             null,
-            0,
             RequestCodeGenerator.get().getCurrentRequestCode()
         )
         scope.launch {
