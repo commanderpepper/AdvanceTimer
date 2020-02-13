@@ -8,6 +8,7 @@ import commanderpepper.advancetimer.alarmcreation.RequestCodeGenerator
 import commanderpepper.advancetimer.room.AlarmTimer
 import commanderpepper.advancetimer.room.AlarmTimerDAO
 import commanderpepper.advancetimer.room.AlarmTimerDatabase
+import commanderpepper.advancetimer.room.AlarmTimerType
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers
 import org.junit.After
@@ -48,14 +49,12 @@ class RequestCodeDatabaseTest {
     fun insertAlarmTimerWithGeneratedRequestCode_GetAlarmTimerWithRequestCode() = runBlocking {
         val alarmTimer = AlarmTimer(
             "Test Alarm Timer",
-            "TEST",
+            AlarmTimerType.OneOffAlarm,
             true,
-            null,
-            requestCodeGenerator.getRequestCode()
+            requestCodeGenerator.getRequestCode(),
+            null
         )
-        alarmTimerDao.insertAlarmTimer(
-            alarmTimer
-        )
+        alarmTimerDao.insertAlarmTimer(alarmTimer)
         val retrievedTimer = alarmTimerDao.getAlarmTimer(1)
         assertThat(retrievedTimer.requestCode, CoreMatchers.equalTo(alarmTimer.requestCode))
     }
@@ -65,17 +64,17 @@ class RequestCodeDatabaseTest {
         runBlocking {
             val alarmTimerRQOne = AlarmTimer(
                 "Test Alarm Timer",
-                "TEST",
+                AlarmTimerType.OneOffAlarm,
                 true,
-                null,
-                requestCodeGenerator.getRequestCode()
+                requestCodeGenerator.getRequestCode(),
+                1
             )
             val alarmTimerRQTwo = AlarmTimer(
                 "Test Alarm Timer",
-                "TEST",
+                AlarmTimerType.OneOffAlarm,
                 true,
-                null,
-                requestCodeGenerator.getRequestCode()
+                requestCodeGenerator.getRequestCode(),
+                2
             )
             alarmTimerDao.insertAlarmTimer(alarmTimerRQOne)
             alarmTimerDao.insertAlarmTimer(alarmTimerRQTwo)

@@ -6,6 +6,7 @@ import androidx.test.runner.AndroidJUnit4
 import commanderpepper.advancetimer.room.AlarmTimer
 import commanderpepper.advancetimer.room.AlarmTimerDAO
 import commanderpepper.advancetimer.room.AlarmTimerDatabase
+import commanderpepper.advancetimer.room.AlarmTimerType
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers
 import org.junit.After
@@ -43,10 +44,10 @@ class AlarmTimerDatabaseTest {
     fun createAlarmTimer() {
         val testTimer = AlarmTimer(
             "te",
-            "al",
+            AlarmTimerType.OneOffAlarm,
             true,
-            null,
-            1
+            0,
+            null
         )
         assertThat(testTimer.id, CoreMatchers.equalTo(0))
     }
@@ -109,7 +110,7 @@ class AlarmTimerDatabaseTest {
         assertThat(timer.title, CoreMatchers.equalTo(retrievedTimer.title))
     }
 
-    // Get a timer and get an error I guess
+    // Get a timer and get an error
     @Test
     fun insertNoAlarmTimers_GetNoAlarmTimerWithPrimaryID() = runBlocking {
         val retrievedTimer = alarmTimerDao.getAlarmTimer(1)
@@ -133,7 +134,7 @@ class AlarmTimerDatabaseTest {
         assertThat(parentTimerList.size, CoreMatchers.equalTo(2))
     }
 
-    //  : Insert no timers and get an empty list
+    // Insert no timers and get an empty list
     @Test
     fun insertNoAlarmTimers_GetEmptyParentAlarmTimersList() = runBlocking {
         val parentTimerList = alarmTimerDao.getParentAlarmTimerList()
@@ -148,7 +149,7 @@ class AlarmTimerDatabaseTest {
         assertThat(parentTimerList.size, CoreMatchers.equalTo(0))
     }
 
-    //  : Insert a child timer and get a child timer of list of size 1
+    // Insert a child timer and get a child timer of list of size 1
     @Test
     fun insertChildAlarmTimer_GetAlarmTimerListOfOne() = runBlocking {
         alarmTimerDao.insertAlarmTimer(childTimer)
@@ -189,7 +190,7 @@ class AlarmTimerDatabaseTest {
         assertThat(timerList.size, CoreMatchers.equalTo(2))
     }
 
-    //
+    // Insert a timer, check for id.
     @Test
     fun insertAlarmTimer_GetAlarmTimer_CheckForId() = runBlocking {
         alarmTimerDao.insertAlarmTimer(timer)
@@ -215,10 +216,10 @@ class AlarmTimerDatabaseTest {
         val parentTimer = alarmTimerDao.getParentAlarmTimerList().first()
         val childTimer = AlarmTimer(
             "child",
-            "Alarm",
+            AlarmTimerType.OneOffAlarm,
             false,
-            parentTimer.id,
-            2
+            1,
+            parentTimer.id
         )
         alarmTimerDao.insertAlarmTimer(childTimer)
         val childTimers = alarmTimerDao.getChildrenAlarmTimerList(parentId = parentTimer.id)
@@ -228,17 +229,17 @@ class AlarmTimerDatabaseTest {
     companion object {
         private val timer = AlarmTimer(
             "test",
-            "ALARM",
+            AlarmTimerType.OneOffAlarm,
             true,
-            null,
-            1
+            1,
+            null
         )
         private val childTimer = AlarmTimer(
             "test",
-            "ALARM",
+            AlarmTimerType.OneOffAlarm,
             true,
-            1,
-            2
+            2,
+            1
         )
     }
 

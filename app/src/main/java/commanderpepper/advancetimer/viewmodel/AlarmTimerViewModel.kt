@@ -41,8 +41,8 @@ class AlarmTimerViewModel(
             "Test",
             AlarmTimerType.OneOffAlarm,
             true,
-            null,
-            RequestCodeGenerator.get().getCurrentRequestCode()
+            RequestCodeGenerator.get().getCurrentRequestCode(),
+            null
         )
         scope.launch {
             alarmRepository.insertAlarmTimer(alarmTimer)
