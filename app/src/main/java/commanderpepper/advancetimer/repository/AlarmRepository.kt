@@ -6,12 +6,14 @@ import commanderpepper.advancetimer.room.AlarmTimerDatabase
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
+import timber.log.Timber
 
 class AlarmRepository private constructor(private val context: Context) {
     private val database = AlarmTimerDatabase.getInstance(context)
     private val alarmTimerDAO = database.alarmTimerDAO()
 
     suspend fun getParentTimersFlow(): Flow<AlarmTimer> {
+        Timber.d("Getting parent timers")
         return alarmTimerDAO.getParentAlarmTimerList().asFlow()
     }
 

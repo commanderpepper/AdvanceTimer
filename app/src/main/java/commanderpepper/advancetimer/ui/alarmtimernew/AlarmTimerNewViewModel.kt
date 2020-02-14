@@ -6,9 +6,7 @@ import commanderpepper.advancetimer.repository.AlarmRepository
 import commanderpepper.advancetimer.viewmodel.AlarmTimerViewModel
 
 class AlarmTimerNewViewModel : ViewModel(){
-    private val alarmRepository = AlarmRepository.get()
-    private val alarmCreator = AlarmCreator.get()
-    private val alarmTimerViewModel = AlarmTimerViewModel(alarmRepository,alarmCreator)
+    private val alarmTimerViewModel = AlarmTimerViewModel.get()
 
     fun saveAlarm(){
         alarmTimerViewModel

@@ -5,6 +5,7 @@ import commanderpepper.advancetimer.BuildConfig
 import commanderpepper.advancetimer.alarmcreation.AlarmCreator
 import commanderpepper.advancetimer.alarmcreation.RequestCodeGenerator
 import commanderpepper.advancetimer.repository.AlarmRepository
+import commanderpepper.advancetimer.viewmodel.AlarmTimerViewModel
 import timber.log.Timber
 
 class App : Application() {
@@ -17,6 +18,7 @@ class App : Application() {
         AlarmRepository.initialize(this)
         RequestCodeGenerator.initialize(this)
         AlarmCreator.initialize(this)
+        AlarmTimerViewModel.initialize(AlarmRepository.get(), AlarmCreator.get())
 //        val alarmRepository = AlarmRepository.get()
 //        val alarmCreator = AlarmCreator.get()
     }
