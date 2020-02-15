@@ -43,6 +43,8 @@ class AlarmCreator(private val context: Context){
         createRepeatingTimer(pendingIntent, triggerAtMillis, intervalAtMillis)
     }
 
+    fun getRequestCode() = requestCodeGenerator.getCurrentRequestCode()
+
     private fun creatingPendingIntent(
         intent: Intent,
         flag: Int = PendingIntent.FLAG_CANCEL_CURRENT

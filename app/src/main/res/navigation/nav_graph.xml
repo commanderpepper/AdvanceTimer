@@ -29,5 +29,9 @@
         android:id="@+id/alarmTimerNew"
         android:name="commanderpepper.advancetimer.ui.alarmtimernew.AlarmTimerNewFragment"
         android:label="fragment_alarm_timer_new"
-        tools:layout="@layout/fragment_alarm_timer_new" />
+        tools:layout="@layout/fragment_alarm_timer_new" >
+        <action
+            android:id="@+id/action_alarmTimerNew_to_alarmTimerListFragment"
+            app:destination="@+id/alarmTimerListFragment" />
+    </fragment>
 </navigation>

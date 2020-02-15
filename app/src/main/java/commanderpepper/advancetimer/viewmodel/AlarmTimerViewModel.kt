@@ -55,6 +55,21 @@ class AlarmTimerViewModel private constructor(
         }
     }
 
+    fun addOneOffParentTimer(context: Context, triggerAtMillis: Long) {
+        val sourceIntent = Intent(context, AlarmReceiver::class.java)
+        alarmCreator.makeTimer(sourceIntent, triggerAtMillis)
+        scope.launch {
+            val testAlarmTimer = AlarmTimer(
+                "test",
+                AlarmTimerType.OneOffAlarm,
+                true,
+                alarmCreator.getRequestCode(),
+                null
+            )
+            alarmRepository.insertAlarmTimer(testAlarmTimer)
+        }
+    }
+
     companion object {
         private var INSTANCE: AlarmTimerViewModel? = null
         fun initialize(

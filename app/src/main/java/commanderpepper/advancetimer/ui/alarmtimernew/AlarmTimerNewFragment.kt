@@ -30,8 +30,11 @@ class AlarmTimerNewFragment : Fragment() {
         saveButton = view.findViewById(R.id.add_alarmtimer)
 
         saveButton.setOnClickListener {
+
+            alarmTimerViewModel.saveAlarm(context!!, 30000L)
+
             it.findNavController()
-                .navigate(R.id.action_alarmTimerListFragment_to_alarmTimerEditFragment)
+                .navigate(R.id.action_alarmTimerNew_to_alarmTimerListFragment)
         }
     }
 
