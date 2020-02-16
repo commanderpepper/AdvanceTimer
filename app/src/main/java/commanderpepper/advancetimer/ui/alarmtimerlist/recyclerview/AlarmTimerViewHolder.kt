@@ -14,6 +14,5 @@ class AlarmTimerViewHolder(private val view: View) : RecyclerView.ViewHolder(vie
     fun bind(alarmTimer: AlarmTimer) {
         text = view.findViewById(R.id.parent_alarmtimer_itemview_name)
         text.text = alarmTimer.toString()
-        Timber.d("Do something here")
     }
 }

@@ -12,4 +12,8 @@ class AlarmTimerNewViewModel : ViewModel() {
     fun saveAlarm(context: Context, triggerAtMillis: Long) {
         alarmTimerViewModel.addOneOffParentTimer(context, triggerAtMillis)
     }
+
+    fun saveTimer(context: Context, triggerAtMillis: Long) {
+        alarmTimerViewModel.addOneOffParentTimer(context, triggerAtMillis)
+    }
 }

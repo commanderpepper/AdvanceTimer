@@ -4,15 +4,17 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.os.SystemClock
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import timber.log.Timber
 
 
 /**
  * This class creates alarms and maybe saves some of the data to Room
  */
 
-class AlarmCreator(private val context: Context){
+class AlarmCreator(private val context: Context) {
 
     private val alarmMgr: AlarmManager =
         context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
@@ -28,6 +30,12 @@ class AlarmCreator(private val context: Context){
     fun makeTimer(intent: Intent, triggerAtMillis: Long) {
         val pendingIntent =
             creatingPendingIntent(intent, PendingIntent.FLAG_ONE_SHOT)
+        createTimer(pendingIntent, triggerAtMillis)
+    }
+
+    fun makeTimer(context: Context, intent: Intent, triggerAtMillis: Long) {
+        val pendingIntent =
+            creatingPendingIntent(context, intent, PendingIntent.FLAG_ONE_SHOT)
         createTimer(pendingIntent, triggerAtMillis)
     }
 
@@ -49,7 +57,20 @@ class AlarmCreator(private val context: Context){
         intent: Intent,
         flag: Int = PendingIntent.FLAG_CANCEL_CURRENT
     ): PendingIntent {
-        return PendingIntent.getActivity(
+        return PendingIntent.getBroadcast(
+            context,
+            requestCodeGenerator.getRequestCode(),
+            intent,
+            flag
+        )
+    }
+
+    private fun creatingPendingIntent(
+        context: Context,
+        intent: Intent,
+        flag: Int = PendingIntent.FLAG_CANCEL_CURRENT
+    ): PendingIntent {
+        return PendingIntent.getBroadcast(
             context,
             requestCodeGenerator.getRequestCode(),
             intent,
@@ -66,9 +87,11 @@ class AlarmCreator(private val context: Context){
     }
 
     private fun createTimer(pendingIntent: PendingIntent, triggerAtMillis: Long) {
+        val time = System.currentTimeMillis() + triggerAtMillis
+        Timber.d(time.toString())
         alarmMgr.setExactAndAllowWhileIdle(
             AlarmManager.ELAPSED_REALTIME_WAKEUP,
-            triggerAtMillis,
+            time,
             pendingIntent
         )
     }
@@ -99,7 +122,7 @@ class AlarmCreator(private val context: Context){
         )
     }
 
-    companion object{
+    companion object {
         private var INSTANCE: AlarmCreator? = null
         fun initialize(context: Context) {
             if (INSTANCE == null) INSTANCE = AlarmCreator(context)
