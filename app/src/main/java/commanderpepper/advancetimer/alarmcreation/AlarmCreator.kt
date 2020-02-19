@@ -29,7 +29,7 @@ class AlarmCreator(private val context: Context) {
 
     fun makeTimer(intent: Intent, triggerAtMillis: Long) {
         val pendingIntent =
-            creatingPendingIntent(intent, PendingIntent.FLAG_ONE_SHOT)
+            creatingPendingIntent(intent)
         createTimer(pendingIntent, triggerAtMillis)
     }
 
@@ -37,6 +37,20 @@ class AlarmCreator(private val context: Context) {
         val pendingIntent =
             creatingPendingIntent(context, intent, PendingIntent.FLAG_ONE_SHOT)
         createTimer(pendingIntent, triggerAtMillis)
+    }
+
+    fun makeTimerUsingContext(context: Context, intent: Intent, triggerAtMillis: Long) {
+        val pendingIntent =
+            PendingIntent.getBroadcast(
+                context,
+                requestCodeGenerator.getRequestCode(),
+                intent,
+                PendingIntent.FLAG_CANCEL_CURRENT
+            )
+        val alarmManager: AlarmManager =
+            context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent)
     }
 
     fun makeRepeatingAlarm(intent: Intent, triggerAtMillis: Long, intervalAtMillis: Long) {
@@ -70,7 +84,7 @@ class AlarmCreator(private val context: Context) {
         intent: Intent,
         flag: Int = PendingIntent.FLAG_CANCEL_CURRENT
     ): PendingIntent {
-        return PendingIntent.getBroadcast(
+        return PendingIntent.getActivity(
             context,
             requestCodeGenerator.getRequestCode(),
             intent,
@@ -89,8 +103,10 @@ class AlarmCreator(private val context: Context) {
     private fun createTimer(pendingIntent: PendingIntent, triggerAtMillis: Long) {
         val time = System.currentTimeMillis() + triggerAtMillis
         Timber.d(time.toString())
-        alarmMgr.setExactAndAllowWhileIdle(
-            AlarmManager.ELAPSED_REALTIME_WAKEUP,
+
+//        alarmMgr.setExactAndAllowWhileIdle
+        alarmMgr.setExact(
+            AlarmManager.RTC_WAKEUP,
             time,
             pendingIntent
         )

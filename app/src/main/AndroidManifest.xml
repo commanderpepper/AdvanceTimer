@@ -13,6 +13,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".ui.entry.AlarmActivityTest"
+            android:label="@string/title_activity_alarm_test"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <receiver android:name=".receivers.MyReceiver" />
+
         <activity android:name=".ui.alarmtimerlist.AlarmListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,7 +31,7 @@
         <receiver
             android:name="receivers.AlarmReceiver"
             android:enabled="true"
-            android:exported="true"></receiver>
+            android:exported="true" />
         <receiver android:name=".receivers.RebootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

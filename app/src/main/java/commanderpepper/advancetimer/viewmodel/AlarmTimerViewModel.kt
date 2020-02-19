@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import commanderpepper.advancetimer.alarmcreation.AlarmCreator
 import commanderpepper.advancetimer.alarmcreation.RequestCodeGenerator
 import commanderpepper.advancetimer.receivers.AlarmReceiver
+import commanderpepper.advancetimer.receivers.MyReceiver
 import commanderpepper.advancetimer.repository.AlarmRepository
 import commanderpepper.advancetimer.room.AlarmTimer
 import commanderpepper.advancetimer.room.AlarmTimerType
@@ -56,7 +57,7 @@ class AlarmTimerViewModel private constructor(
     }
 
     fun addOneOffParentTimer(context: Context, triggerAtMillis: Long) {
-        val sourceIntent = Intent(context, AlarmReceiver::class.java)
+        val sourceIntent = Intent(context, MyReceiver::class.java)
         alarmCreator.makeTimer(context, sourceIntent, triggerAtMillis)
         scope.launch {
             val testAlarmTimer = AlarmTimer(
@@ -68,6 +69,22 @@ class AlarmTimerViewModel private constructor(
             )
             alarmRepository.insertAlarmTimer(testAlarmTimer)
         }
+    }
+
+    fun makeTimerUsingContext(context: Context, triggerAtMillis: Long) {
+        val sourceIntent = Intent(context, MyReceiver::class.java)
+        alarmCreator.makeTimerUsingContext(context, sourceIntent, triggerAtMillis)
+        scope.launch {
+            val testAlarmTimer = AlarmTimer(
+                "test",
+                AlarmTimerType.OneOffAlarm,
+                true,
+                alarmCreator.getRequestCode(),
+                null
+            )
+            alarmRepository.insertAlarmTimer(testAlarmTimer)
+        }
+
     }
 
     companion object {

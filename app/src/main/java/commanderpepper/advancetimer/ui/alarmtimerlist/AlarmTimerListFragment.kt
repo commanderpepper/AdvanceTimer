@@ -34,12 +34,6 @@ class AlarmTimerListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-
-        lifecycleScope.launch {
-            val list = viewModel.getParentAlarmTimerList()
-            Timber.d(list.toString())
-        }
-
         return inflater.inflate(R.layout.fragment_alarm_timer_list, container, false)
     }
 
@@ -48,7 +42,6 @@ class AlarmTimerListFragment : Fragment() {
 
         lifecycleScope.launch {
             val list = viewModel.getParentAlarmTimerList()
-            Timber.d(list.toString())
             val adapter = AlarmTimerAdapter(list)
             val recyclerView: RecyclerView = view.findViewById(R.id.alarmtimer_recyclerview)
             val manager = LinearLayoutManager(context)
