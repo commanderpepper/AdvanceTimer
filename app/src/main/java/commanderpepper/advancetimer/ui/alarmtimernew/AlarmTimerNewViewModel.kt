@@ -19,7 +19,7 @@ class AlarmTimerNewViewModel : ViewModel() {
         alarmTimerViewModel.addOneOffParentTimer(context, triggerAtMillis)
     }
 
-    fun makeTimerUsingContext(context: Context, triggerAtMillis: Long){
+    fun makeTimerUsingContext(context: Context, triggerAtMillis: Long) {
         alarmTimerViewModel.makeTimerUsingContext(context, triggerAtMillis)
     }
 }

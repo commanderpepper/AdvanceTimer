@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.coroutineScope
@@ -19,6 +20,7 @@ import commanderpepper.advancetimer.alarmcreation.RequestCodeGenerator
 import commanderpepper.advancetimer.receivers.MyReceiver
 import commanderpepper.advancetimer.viewmodel.AlarmTimerViewModel
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.*
 
 
@@ -26,6 +28,10 @@ class AlarmTimerNewFragment : Fragment() {
 
     private lateinit var saveButton: Button
     private val alarmTimerViewModel: AlarmTimerNewViewModel by activityViewModels()
+
+    private lateinit var hourEditText: EditText
+    private lateinit var minuteEditText: EditText
+    private lateinit var secondEditText: EditText
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,7 +45,15 @@ class AlarmTimerNewFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         saveButton = view.findViewById(R.id.add_alarmtimer)
 
+        hourEditText = view.findViewById(R.id.newHour)
+        minuteEditText = view.findViewById(R.id.newMinute)
+        secondEditText = view.findViewById(R.id.newSecond)
+
         saveButton.setOnClickListener {
+
+            Timber.d(hourEditText.text.toString())
+            Timber.d(minuteEditText.text.toString())
+            Timber.d(secondEditText.text.toString())
 
             val alarmContext = context!!.applicationContext
 
@@ -52,7 +66,7 @@ class AlarmTimerNewFragment : Fragment() {
 //            val requestCodeGenerator = RequestCodeGenerator.get()
 //
 //            val alarmManager: AlarmManager =
-//                context!!.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+//                alarmContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 //
 //            val intent = Intent(context!!, MyReceiver::class.java)
 //

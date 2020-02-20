@@ -3,4 +3,6 @@
     <dimen name="fab_margin_end">16dp</dimen>
     <dimen name="fab_margin_bottom">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="new_edittext_size">60dp</dimen>
+    <dimen name="seperator_text_size">40sp</dimen>
 </resources>
