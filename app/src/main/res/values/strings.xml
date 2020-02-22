@@ -5,13 +5,19 @@
     <string name="local_service_started">12333</string>
 
     <string name="add_AlarmTimer">Add a new alarm or timer</string>
-    <string name="new_alarmtimer">Create an alarm or timer.</string>
+    <string name="new_alarmtimer">Create a new timer.</string>
     <string name="edit_alarmtimer">Edit an alarm or timer.</string>
     <string name="save_button">SAVE</string>
     <string name="edit_button">EDIT</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_alarm_test">AlarmActivityTest</string>
+    <string name="default_hms">00</string>
+
+    <string name="hour_hint">HOUR</string>
+    <string name="minute_hint">MINUTE</string>
+    <string name="second_hint">SECOND</string>
+    <string name="alarmtimer_title_hint">Timer Title</string>
+
 
 </resources>

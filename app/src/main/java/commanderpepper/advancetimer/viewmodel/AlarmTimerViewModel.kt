@@ -84,6 +84,21 @@ class AlarmTimerViewModel private constructor(
             )
             alarmRepository.insertAlarmTimer(testAlarmTimer)
         }
+    }
+
+    fun createTimer(title: String, context: Context, triggerAtMillis: Long) {
+        val sourceIntent = Intent(context, MyReceiver::class.java)
+        alarmCreator.makeTimerUsingContext(context, sourceIntent, triggerAtMillis)
+        scope.launch {
+            val testAlarmTimer = AlarmTimer(
+                title,
+                AlarmTimerType.OneOffAlarm,
+                true,
+                alarmCreator.getRequestCode(),
+                null
+            )
+            alarmRepository.insertAlarmTimer(testAlarmTimer)
+        }
 
     }
 

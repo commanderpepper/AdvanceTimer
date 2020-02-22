@@ -1,9 +1,5 @@
 package commanderpepper.advancetimer.ui.alarmtimernew
 
-import android.app.AlarmManager
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,14 +8,9 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.coroutineScope
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import commanderpepper.advancetimer.R
-import commanderpepper.advancetimer.alarmcreation.RequestCodeGenerator
-import commanderpepper.advancetimer.receivers.MyReceiver
-import commanderpepper.advancetimer.viewmodel.AlarmTimerViewModel
-import kotlinx.coroutines.launch
+import kotlinx.android.synthetic.main.fragment_alarm_timer_new.*
 import timber.log.Timber
 import java.util.*
 
@@ -32,6 +23,8 @@ class AlarmTimerNewFragment : Fragment() {
     private lateinit var hourEditText: EditText
     private lateinit var minuteEditText: EditText
     private lateinit var secondEditText: EditText
+
+    private lateinit var alarmTimerTitle: EditText
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,19 +42,44 @@ class AlarmTimerNewFragment : Fragment() {
         minuteEditText = view.findViewById(R.id.newMinute)
         secondEditText = view.findViewById(R.id.newSecond)
 
+        alarmTimerTitle = view.findViewById(R.id.timerTitle)
+
         saveButton.setOnClickListener {
 
-            Timber.d(hourEditText.text.toString())
-            Timber.d(minuteEditText.text.toString())
-            Timber.d(secondEditText.text.toString())
+            val hourAsString = hourEditText.text.toString()
+            val minuteAsString = minuteEditText.text.toString()
+            val secondAsString = secondEditText.text.toString()
+
+            Timber.d(hourAsString)
+            Timber.d(minuteAsString)
+            Timber.d(secondAsString)
+
+            val hourAsLong = hourToMilliseconds(hourAsString)
+            val minuteAsLong = minuteToMilliseconds(minuteAsString)
+            val secondAsLong = secondToMilliseconds(secondAsString)
+
+            Timber.d(hourAsLong.toString())
+            Timber.d(minuteAsLong.toString())
+            Timber.d(secondAsLong.toString())
+
+            val title =
+                if (alarmTimerTitle.text.toString() == resources.getString(R.string.alarmtimer_title_hint)) {
+                    "${hourAsLong}h:${minuteAsLong}m:${secondAsLong}s"
+                } else {
+                    alarmTimerTitle.text.toString()
+                }
 
             val alarmContext = context!!.applicationContext
 
             val nowMilliSeconds: Long = Calendar.getInstance().timeInMillis
 
-            val thirtySecondsFromNow = nowMilliSeconds + 30000L
+            val triggerAtMillis = nowMilliSeconds + hourAsLong + minuteAsLong + secondAsLong
 
-            alarmTimerViewModel.makeTimerUsingContext(alarmContext, thirtySecondsFromNow)
+            alarmTimerViewModel.makeTimerUsingContext(
+                title,
+                alarmContext,
+                triggerAtMillis
+            )
 
 //            val requestCodeGenerator = RequestCodeGenerator.get()
 //
@@ -75,7 +93,7 @@ class AlarmTimerNewFragment : Fragment() {
 //                    context!!,
 //                    requestCodeGenerator.getRequestCode(),
 //                    intent,
-//                    PendingIntent.FLAG_CANCEL_CURRENT
+//                    PendingIntent.FLAG_CANCEL_CURRENT,
 //                )
 //
 //            alarmManager.setExact(AlarmManager.RTC_WAKEUP, thirtySecondsFromNow, pendingIntent)
@@ -84,6 +102,16 @@ class AlarmTimerNewFragment : Fragment() {
                 .navigate(R.id.action_alarmTimerNew_to_alarmTimerListFragment)
         }
     }
+}
 
+fun hourToMilliseconds(hour: String): Long {
+    return hour.toLong() * 3_600_000L
+}
 
+fun minuteToMilliseconds(minute: String): Long {
+    return minute.toLong() * 60_000L
+}
+
+fun secondToMilliseconds(second: String): Long {
+    return second.toLong() * 1_000L
 }

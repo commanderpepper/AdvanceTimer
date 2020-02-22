@@ -6,6 +6,39 @@
     android:layout_height="match_parent"
     tools:context=".ui.alarmtimernew.AlarmTimerNewFragment">
 
+    <TextView
+        android:id="@+id/hourHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/hour_hint"
+        app:layout_constraintEnd_toStartOf="@+id/minuteHint"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/minuteHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/minute_hint"
+        app:layout_constraintEnd_toStartOf="@+id/secondHint"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/hourHint"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/secondHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/second_hint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/minuteHint"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <EditText
         android:id="@+id/newHour"
         android:layout_width="@dimen/new_edittext_size"
@@ -14,20 +47,20 @@
         android:ems="10"
         android:inputType="number"
         android:maxLength="2"
+        android:text="@string/default_hms"
         app:layout_constraintEnd_toStartOf="@+id/hour_minute_seperator"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/hourHint" />
 
     <TextView
         android:id="@+id/hour_minute_seperator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:text=":"
         android:textSize="@dimen/seperator_text_size"
         app:layout_constraintEnd_toStartOf="@id/newMinute"
         app:layout_constraintStart_toEndOf="@id/newHour"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/hourHint" />
 
     <EditText
         android:id="@+id/newMinute"
@@ -37,20 +70,20 @@
         android:ems="10"
         android:inputType="number"
         android:maxLength="2"
+        android:text="@string/default_hms"
         app:layout_constraintEnd_toStartOf="@+id/newSecond"
         app:layout_constraintStart_toEndOf="@+id/newHour"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/minuteHint" />
 
     <TextView
         android:id="@+id/minute_second_seperator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:text=":"
         android:textSize="@dimen/seperator_text_size"
         app:layout_constraintEnd_toStartOf="@id/newSecond"
         app:layout_constraintStart_toEndOf="@id/newMinute"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/hourHint" />
 
     <EditText
         android:id="@+id/newSecond"
@@ -60,10 +93,22 @@
         android:ems="10"
         android:inputType="number"
         android:maxLength="2"
+        android:text="@string/default_hms"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/minute_second_seperator"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/secondHint" />
 
+
+    <EditText
+        android:id="@+id/timerTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="@string/alarmtimer_title_hint"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newHour" />
 
     <TextView
         android:id="@+id/add_alarmtimer_text"
@@ -72,7 +117,7 @@
         android:layout_margin="16dp"
         android:text="@string/new_alarmtimer"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/newHour" />
+        app:layout_constraintTop_toBottomOf="@+id/timerTitle" />
 
     <Button
         android:id="@+id/add_alarmtimer"
