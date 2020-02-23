@@ -1,7 +1,9 @@
 package commanderpepper.advancetimer.viewmodel
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.LiveData
 import commanderpepper.advancetimer.alarmcreation.AlarmCreator
 import commanderpepper.advancetimer.alarmcreation.RequestCodeGenerator
@@ -48,6 +50,7 @@ class AlarmTimerViewModel private constructor(
             "Test",
             AlarmTimerType.OneOffAlarm,
             true,
+            0,
             RequestCodeGenerator.get().getCurrentRequestCode(),
             null
         )
@@ -64,6 +67,7 @@ class AlarmTimerViewModel private constructor(
                 "test",
                 AlarmTimerType.OneOffAlarm,
                 true,
+                0,
                 alarmCreator.getRequestCode(),
                 null
             )
@@ -79,6 +83,7 @@ class AlarmTimerViewModel private constructor(
                 "test",
                 AlarmTimerType.OneOffAlarm,
                 true,
+                0,
                 alarmCreator.getRequestCode(),
                 null
             )
@@ -92,8 +97,9 @@ class AlarmTimerViewModel private constructor(
         scope.launch {
             val testAlarmTimer = AlarmTimer(
                 title,
-                AlarmTimerType.OneOffAlarm,
+                AlarmTimerType.OneOffTimer,
                 true,
+                triggerAtMillis,
                 alarmCreator.getRequestCode(),
                 null
             )
@@ -116,4 +122,10 @@ class AlarmTimerViewModel private constructor(
         }
     }
 
+}
+
+fun Activity.dismissKeyboard() {
+    val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    if (inputMethodManager.isAcceptingText)
+        inputMethodManager.hideSoftInputFromWindow(this.currentFocus!!.windowToken, /*flags:*/ 0)
 }

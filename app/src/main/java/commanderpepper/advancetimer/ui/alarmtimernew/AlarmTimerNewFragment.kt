@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import commanderpepper.advancetimer.R
+import commanderpepper.advancetimer.viewmodel.dismissKeyboard
 import kotlinx.android.synthetic.main.fragment_alarm_timer_new.*
 import timber.log.Timber
 import java.util.*
@@ -64,7 +65,7 @@ class AlarmTimerNewFragment : Fragment() {
 
             val title =
                 if (alarmTimerTitle.text.toString() == resources.getString(R.string.alarmtimer_title_hint)) {
-                    "${hourAsLong}h:${minuteAsLong}m:${secondAsLong}s"
+                    "${hourAsString}h:${minuteAsString}m:${secondAsString}s"
                 } else {
                     alarmTimerTitle.text.toString()
                 }
@@ -97,6 +98,8 @@ class AlarmTimerNewFragment : Fragment() {
 //                )
 //
 //            alarmManager.setExact(AlarmManager.RTC_WAKEUP, thirtySecondsFromNow, pendingIntent)
+
+            activity!!.dismissKeyboard()
 
             it.findNavController()
                 .navigate(R.id.action_alarmTimerNew_to_alarmTimerListFragment)

@@ -32,3 +32,12 @@ class AlarmTimerTypeConverter {
         }
     }
 }
+
+fun AlarmTimerType.getTypeAsString(): String {
+    return when (this) {
+        AlarmTimerType.OneOffAlarm -> "One Off Alarm"
+        AlarmTimerType.OneOffTimer -> "One Off Timer"
+        AlarmTimerType.RepeatingAlarm -> "Repeating Alarm"
+        AlarmTimerType.RepeatingTimer -> "Repeating Timer"
+    }
+}

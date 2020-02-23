@@ -12,6 +12,8 @@ data class AlarmTimer(
     val type: AlarmTimerType,
     @ColumnInfo(name = "enabled")
     val enabled: Boolean,
+    @ColumnInfo(name = "timeInMillis")
+    val timeInMillis: Long,
     @ColumnInfo(name = "requestCode")
     var requestCode: Int,
     @ColumnInfo(name = "parentID")

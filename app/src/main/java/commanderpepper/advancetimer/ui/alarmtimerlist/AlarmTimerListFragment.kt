@@ -1,23 +1,21 @@
 package commanderpepper.advancetimer.ui.alarmtimerlist
 
-import android.content.Context
-import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import commanderpepper.advancetimer.R
 import commanderpepper.advancetimer.ui.alarmtimerlist.recyclerview.AlarmTimerAdapter
 import kotlinx.coroutines.launch
-import timber.log.Timber
+
 
 class AlarmTimerListFragment : Fragment() {
 
@@ -45,8 +43,14 @@ class AlarmTimerListFragment : Fragment() {
             val adapter = AlarmTimerAdapter(list)
             val recyclerView: RecyclerView = view.findViewById(R.id.alarmtimer_recyclerview)
             val manager = LinearLayoutManager(context)
+
+            val dividerItemDecoration = DividerItemDecoration(
+                recyclerView.context,
+                manager.orientation
+            )
             recyclerView.adapter = adapter
             recyclerView.layoutManager = manager
+            recyclerView.addItemDecoration(dividerItemDecoration)
         }
 
         fab = view.findViewById(R.id.create_alarmtimer_fab)
