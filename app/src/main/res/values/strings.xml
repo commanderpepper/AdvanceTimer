@@ -18,6 +18,7 @@
     <string name="minute_hint">MINUTE</string>
     <string name="second_hint">SECOND</string>
     <string name="alarmtimer_title_hint">Timer Title</string>
+    <string name="dismiss_timer_title">Timer Title</string>
 
 
 </resources>

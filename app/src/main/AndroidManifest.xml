@@ -13,10 +13,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.dismisstimer.DismissTimer"></activity>
         <activity
             android:name=".ui.entry.AlarmActivityTest"
             android:label="@string/title_activity_alarm_test"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <receiver android:name=".receivers.MyReceiver" />
 
