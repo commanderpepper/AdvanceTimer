@@ -8,6 +8,9 @@ interface AlarmTimerDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAlarmTimer(alarmTimer: AlarmTimer)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAlarmTimerGetID(alarmTimer: AlarmTimer): Long
+
     @Delete
     suspend fun deleteAlarmTimer(alarmTimer: AlarmTimer)
 

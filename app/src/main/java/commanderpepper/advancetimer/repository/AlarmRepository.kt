@@ -37,6 +37,10 @@ class AlarmRepository private constructor(private val context: Context) {
         alarmTimerDAO.insertAlarmTimer(alarmTimer)
     }
 
+    suspend fun insertAlarmTimerGetId(alarmTimer: AlarmTimer): Long{
+        return alarmTimerDAO.insertAlarmTimerGetID(alarmTimer)
+    }
+
     companion object {
         private var INSTANCE: AlarmRepository? = null
         fun initialize(context: Context) {

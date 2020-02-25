@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.view.inputmethod.InputMethodManager
-import androidx.lifecycle.LiveData
 import commanderpepper.advancetimer.alarmcreation.AlarmCreator
 import commanderpepper.advancetimer.alarmcreation.RequestCodeGenerator
 import commanderpepper.advancetimer.receivers.AlarmReceiver
@@ -13,11 +12,10 @@ import commanderpepper.advancetimer.repository.AlarmRepository
 import commanderpepper.advancetimer.room.AlarmTimer
 import commanderpepper.advancetimer.room.AlarmTimerType
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.flow.toList
 import timber.log.Timber
+
+const val TIMER_ID = "TIMER_ID"
 
 class AlarmTimerViewModel private constructor(
     private val alarmRepository: AlarmRepository,
@@ -60,17 +58,19 @@ class AlarmTimerViewModel private constructor(
     }
 
     fun addOneOffParentTimer(context: Context, triggerAtMillis: Long) {
+        val testAlarmTimer = AlarmTimer(
+            "test",
+            AlarmTimerType.OneOffAlarm,
+            true,
+            0,
+            alarmCreator.getRequestCode(),
+            null
+        )
+        val id = testAlarmTimer.id
         val sourceIntent = Intent(context, MyReceiver::class.java)
+        sourceIntent.putExtra(TIMER_ID, id)
         alarmCreator.makeTimer(context, sourceIntent, triggerAtMillis)
         scope.launch {
-            val testAlarmTimer = AlarmTimer(
-                "test",
-                AlarmTimerType.OneOffAlarm,
-                true,
-                0,
-                alarmCreator.getRequestCode(),
-                null
-            )
             alarmRepository.insertAlarmTimer(testAlarmTimer)
         }
     }
@@ -92,8 +92,25 @@ class AlarmTimerViewModel private constructor(
     }
 
     fun createTimer(title: String, context: Context, triggerAtMillis: Long) {
+        val testAlarmTimer = AlarmTimer(
+            title,
+            AlarmTimerType.OneOffTimer,
+            true,
+            triggerAtMillis,
+            alarmCreator.getRequestCode(),
+            null
+        )
+        val id = testAlarmTimer.id
         val sourceIntent = Intent(context, MyReceiver::class.java)
+        sourceIntent.putExtra(TIMER_ID, id)
+
         alarmCreator.makeTimerUsingContext(context, sourceIntent, triggerAtMillis)
+        scope.launch {
+            alarmRepository.insertAlarmTimer(testAlarmTimer)
+        }
+    }
+
+    fun createTimerWaitForId(title: String, context: Context, triggerAtMillis: Long) {
         scope.launch {
             val testAlarmTimer = AlarmTimer(
                 title,
@@ -103,9 +120,15 @@ class AlarmTimerViewModel private constructor(
                 alarmCreator.getRequestCode(),
                 null
             )
-            alarmRepository.insertAlarmTimer(testAlarmTimer)
-        }
+            val insertedId = withContext(scope.coroutineContext) {
+                alarmRepository.insertAlarmTimerGetId(testAlarmTimer)
+            }
+            val id = insertedId
+            val sourceIntent = Intent(context, MyReceiver::class.java)
+            sourceIntent.putExtra(TIMER_ID, id)
 
+            alarmCreator.makeTimerUsingContext(context, sourceIntent, triggerAtMillis)
+        }
     }
 
     companion object {
