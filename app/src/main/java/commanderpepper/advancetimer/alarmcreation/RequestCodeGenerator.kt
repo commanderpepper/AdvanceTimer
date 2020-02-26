@@ -3,9 +3,11 @@ package commanderpepper.advancetimer.alarmcreation
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.annotation.VisibleForTesting
+import javax.inject.Inject
+import javax.inject.Singleton
 
-
-class RequestCodeGenerator private constructor(val context: Context){
+@Singleton
+class RequestCodeGenerator @Inject constructor(val context: Context) {
 
     private val REQUEST_CODE_KEY: String = "REQUEST_CODE_KEY"
     private val REQUEST_CODE_FILE: String = "requestCode"
@@ -36,7 +38,7 @@ class RequestCodeGenerator private constructor(val context: Context){
         }
     }
 
-    companion object{
+    companion object {
         private var INSTANCE: RequestCodeGenerator? = null
         fun initialize(context: Context) {
             if (INSTANCE == null) INSTANCE = RequestCodeGenerator(context)
