@@ -14,10 +14,11 @@ import commanderpepper.advancetimer.room.AlarmTimerType
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.toList
 import timber.log.Timber
+import javax.inject.Inject
 
 const val TIMER_ID = "TIMER_ID"
 
-class AlarmTimerViewModel private constructor(
+class AlarmTimerViewModel @Inject constructor(
     private val alarmRepository: AlarmRepository,
     private val alarmCreator: AlarmCreator
 ) {
@@ -41,21 +42,6 @@ class AlarmTimerViewModel private constructor(
         }
     }
 
-    fun addOneOffParentAlarm(context: Context, triggerAtMillis: Long) {
-        val sourceIntent = Intent(context, AlarmReceiver::class.java)
-        alarmCreator.makeAlarm(sourceIntent, triggerAtMillis)
-        val alarmTimer = AlarmTimer(
-            "Test",
-            AlarmTimerType.OneOffAlarm,
-            true,
-            0,
-            RequestCodeGenerator.get().getCurrentRequestCode(),
-            null
-        )
-        scope.launch {
-            alarmRepository.insertAlarmTimer(alarmTimer)
-        }
-    }
 
     fun addOneOffParentTimer(context: Context, triggerAtMillis: Long) {
         val testAlarmTimer = AlarmTimer(
@@ -130,21 +116,6 @@ class AlarmTimerViewModel private constructor(
             alarmCreator.makeTimerUsingContext(context, sourceIntent, triggerAtMillis)
         }
     }
-
-    companion object {
-        private var INSTANCE: AlarmTimerViewModel? = null
-        fun initialize(
-            alarmRepository: AlarmRepository,
-            alarmCreator: AlarmCreator
-        ) {
-            if (INSTANCE == null) INSTANCE = AlarmTimerViewModel(alarmRepository, alarmCreator)
-        }
-
-        fun get(): AlarmTimerViewModel {
-            return INSTANCE ?: throw IllegalArgumentException("CrimeRepository must be initialized")
-        }
-    }
-
 }
 
 fun Activity.dismissKeyboard() {

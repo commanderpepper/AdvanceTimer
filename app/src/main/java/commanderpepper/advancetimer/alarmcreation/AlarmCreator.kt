@@ -5,21 +5,27 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.SystemClock
+import commanderpepper.App
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import timber.log.Timber
+import javax.inject.Inject
 
 
 /**
  * This class creates alarms and maybe saves some of the data to Room
  */
 
-class AlarmCreator(private val context: Context) {
+class AlarmCreator @Inject constructor(
+    val context: Context
+) {
 
     private val alarmMgr: AlarmManager =
         context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-    private val requestCodeGenerator = RequestCodeGenerator.get()
+//    private val requestCodeGenerator = RequestCodeGenerator(context)
+
+    val requestCodeGenerator = (context as App).appComponent.requestCodeGenerator()
 
     fun makeAlarm(intent: Intent, triggerAtMillis: Long) {
         val pendingIntent =
@@ -136,16 +142,5 @@ class AlarmCreator(private val context: Context) {
             intervalAtMillis,
             pendingIntent
         )
-    }
-
-    companion object {
-        private var INSTANCE: AlarmCreator? = null
-        fun initialize(context: Context) {
-            if (INSTANCE == null) INSTANCE = AlarmCreator(context)
-        }
-
-        fun get(): AlarmCreator {
-            return INSTANCE ?: throw IllegalArgumentException("CrimeRepository must be initialized")
-        }
     }
 }

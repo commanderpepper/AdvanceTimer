@@ -37,15 +37,4 @@ class RequestCodeGenerator @Inject constructor(val context: Context) {
             apply()
         }
     }
-
-    companion object {
-        private var INSTANCE: RequestCodeGenerator? = null
-        fun initialize(context: Context) {
-            if (INSTANCE == null) INSTANCE = RequestCodeGenerator(context)
-        }
-
-        fun get(): RequestCodeGenerator {
-            return INSTANCE ?: throw IllegalArgumentException("CrimeRepository must be initialized")
-        }
-    }
 }

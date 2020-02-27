@@ -7,8 +7,9 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import timber.log.Timber
+import javax.inject.Inject
 
-class AlarmRepository private constructor(private val context: Context) {
+class AlarmRepository @Inject constructor(val context: Context) {
     private val database = AlarmTimerDatabase.getInstance(context)
     private val alarmTimerDAO = database.alarmTimerDAO()
 
@@ -37,18 +38,7 @@ class AlarmRepository private constructor(private val context: Context) {
         alarmTimerDAO.insertAlarmTimer(alarmTimer)
     }
 
-    suspend fun insertAlarmTimerGetId(alarmTimer: AlarmTimer): Long{
+    suspend fun insertAlarmTimerGetId(alarmTimer: AlarmTimer): Long {
         return alarmTimerDAO.insertAlarmTimerGetID(alarmTimer)
-    }
-
-    companion object {
-        private var INSTANCE: AlarmRepository? = null
-        fun initialize(context: Context) {
-            if (INSTANCE == null) INSTANCE = AlarmRepository(context)
-        }
-
-        fun get(): AlarmRepository {
-            return INSTANCE ?: throw IllegalArgumentException("CrimeRepository must be initialized")
-        }
     }
 }
