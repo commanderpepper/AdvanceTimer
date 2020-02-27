@@ -47,6 +47,7 @@ class AlarmTimerDatabaseTest {
             AlarmTimerType.OneOffAlarm,
             true,
             0,
+            0,
             null
         )
         assertThat(testTimer.id, CoreMatchers.equalTo(0))
@@ -218,7 +219,7 @@ class AlarmTimerDatabaseTest {
             "child",
             AlarmTimerType.OneOffAlarm,
             false,
-            1,
+            1,0,
             parentTimer.id
         )
         alarmTimerDao.insertAlarmTimer(childTimer)
@@ -231,14 +232,14 @@ class AlarmTimerDatabaseTest {
             "test",
             AlarmTimerType.OneOffAlarm,
             true,
-            1,
+            1,0,
             null
         )
         private val childTimer = AlarmTimer(
             "test",
             AlarmTimerType.OneOffAlarm,
             true,
-            2,
+            2,1,
             1
         )
     }

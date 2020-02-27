@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
+import commanderpepper.App
 import commanderpepper.advancetimer.alarmcreation.RequestCodeGenerator
 import commanderpepper.advancetimer.room.AlarmTimer
 import commanderpepper.advancetimer.room.AlarmTimerDAO
@@ -36,7 +37,7 @@ class RequestCodeDatabaseTest {
 
         alarmTimerDao = db.alarmTimerDAO()
 
-        requestCodeGenerator = RequestCodeGenerator.get()
+        requestCodeGenerator = (context as App).appComponent.requestCodeGenerator()
     }
 
     @After
@@ -50,7 +51,7 @@ class RequestCodeDatabaseTest {
         val alarmTimer = AlarmTimer(
             "Test Alarm Timer",
             AlarmTimerType.OneOffAlarm,
-            true,
+            true, 1L,
             requestCodeGenerator.getRequestCode(),
             null
         )
@@ -65,14 +66,14 @@ class RequestCodeDatabaseTest {
             val alarmTimerRQOne = AlarmTimer(
                 "Test Alarm Timer",
                 AlarmTimerType.OneOffAlarm,
-                true,
+                true, 1L,
                 requestCodeGenerator.getRequestCode(),
                 1
             )
             val alarmTimerRQTwo = AlarmTimer(
                 "Test Alarm Timer",
                 AlarmTimerType.OneOffAlarm,
-                true,
+                true, 1L,
                 requestCodeGenerator.getRequestCode(),
                 2
             )

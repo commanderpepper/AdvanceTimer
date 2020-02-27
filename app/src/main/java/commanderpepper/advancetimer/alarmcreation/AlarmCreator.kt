@@ -25,7 +25,7 @@ class AlarmCreator @Inject constructor(
 
 //    private val requestCodeGenerator = RequestCodeGenerator(context)
 
-    val requestCodeGenerator = (context as App).appComponent.requestCodeGenerator()
+    private val requestCodeGenerator = (context as App).appComponent.requestCodeGenerator()
 
     fun makeAlarm(intent: Intent, triggerAtMillis: Long) {
         val pendingIntent =

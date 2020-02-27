@@ -2,6 +2,7 @@ package commanderpepper.advancetimer
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
+import commanderpepper.App
 import commanderpepper.advancetimer.alarmcreation.RequestCodeGenerator
 
 import org.junit.Test
@@ -15,8 +16,12 @@ class RequestCodeTest {
     @Test
     fun getCode() {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
-        RequestCodeGenerator.initialize(context)
-        val requestCodeGenerator = RequestCodeGenerator.get()
+        val applicationContext = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext
+
+        val requestCodeGenerator = (applicationContext as App).appComponent.requestCodeGenerator()
+
+//        val requestCodeGenerator = RequestCodeGenerator(context)
+
         val int =
             requestCodeGenerator.getRequestCode()
         assertEquals(1, int)

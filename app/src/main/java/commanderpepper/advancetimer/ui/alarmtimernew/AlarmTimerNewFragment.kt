@@ -70,7 +70,7 @@ class AlarmTimerNewFragment : Fragment() {
                     alarmTimerTitle.text.toString()
                 }
 
-            val alarmContext = context!!.applicationContext
+            val alarmContext = requireContext().applicationContext
 
             val nowMilliSeconds: Long = Calendar.getInstance().timeInMillis
 
@@ -99,7 +99,7 @@ class AlarmTimerNewFragment : Fragment() {
 //
 //            alarmManager.setExact(AlarmManager.RTC_WAKEUP, thirtySecondsFromNow, pendingIntent)
 
-            activity!!.dismissKeyboard()
+            requireActivity().dismissKeyboard()
 
             it.findNavController()
                 .navigate(R.id.action_alarmTimerNew_to_alarmTimerListFragment)

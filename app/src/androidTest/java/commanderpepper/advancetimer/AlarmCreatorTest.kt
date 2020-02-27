@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
+import commanderpepper.App
 import commanderpepper.advancetimer.alarmcreation.AlarmCreator
 import commanderpepper.advancetimer.alarmcreation.RequestCodeGenerator
 import commanderpepper.advancetimer.receivers.AlarmReceiver
@@ -28,7 +29,7 @@ class AlarmCreatorTest {
     fun init() {
         context = InstrumentationRegistry.getInstrumentation().targetContext
         alarmCreator = AlarmCreator(context)
-        requestCodeGenerator = RequestCodeGenerator.get()
+        requestCodeGenerator = (context as App).appComponent.requestCodeGenerator()
     }
 
     @Test

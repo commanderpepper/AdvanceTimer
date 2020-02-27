@@ -1,14 +1,18 @@
 package commanderpepper.advancetimer.ui.alarmtimernew
 
+import android.app.Application
 import android.content.Context
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
+import commanderpepper.App
 import commanderpepper.advancetimer.alarmcreation.AlarmCreator
 import commanderpepper.advancetimer.repository.AlarmRepository
 import commanderpepper.advancetimer.viewmodel.AlarmTimerViewModel
 import timber.log.Timber
 
-class AlarmTimerNewViewModel : ViewModel() {
-    private val alarmTimerViewModel = AlarmTimerViewModel.get()
+class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(application) {
+
+    val alarmTimerViewModel: AlarmTimerViewModel = (application as App).appComponent.alarmTimerViewModelGenerator()
 
     fun saveAlarm(context: Context, triggerAtMillis: Long) {
         alarmTimerViewModel.addOneOffParentTimer(context, triggerAtMillis)
