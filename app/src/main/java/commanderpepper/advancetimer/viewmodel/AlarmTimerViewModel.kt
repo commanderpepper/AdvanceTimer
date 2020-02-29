@@ -25,6 +25,12 @@ class AlarmTimerViewModel @Inject constructor(
     private val job = SupervisorJob()
     private val scope = CoroutineScope(job + Dispatchers.Default)
 
+    suspend fun getAlarmTimer(primaryId: Int): AlarmTimer {
+        return withContext(scope.coroutineContext) {
+            alarmRepository.getAlarmTimer(primaryId)
+        }
+    }
+
     /**
      * Gets the list of parent alarm timers using this view model
      * coroutine context to ensure work is performed off the main thread

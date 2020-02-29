@@ -12,7 +12,7 @@ import timber.log.Timber
 
 class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(application) {
 
-    val alarmTimerViewModel: AlarmTimerViewModel = (application as App).appComponent.alarmTimerViewModelGenerator()
+    private val alarmTimerViewModel: AlarmTimerViewModel = (application as App).appComponent.alarmTimerViewModelGenerator()
 
     fun saveAlarm(context: Context, triggerAtMillis: Long) {
         alarmTimerViewModel.addOneOffParentTimer(context, triggerAtMillis)

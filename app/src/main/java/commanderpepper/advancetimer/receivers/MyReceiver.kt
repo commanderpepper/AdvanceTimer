@@ -7,6 +7,8 @@ import commanderpepper.advancetimer.ui.dismisstimer.DismissTimer
 import commanderpepper.advancetimer.viewmodel.TIMER_ID
 import timber.log.Timber
 
+val DISMISS_TIMER_ID = "DISMISS_TIMER_ID"
+
 class MyReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
@@ -17,6 +19,8 @@ class MyReceiver : BroadcastReceiver() {
         Timber.d("$longExtra")
         val activityIntent = Intent(context, DismissTimer::class.java)
         activityIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+
+        activityIntent.putExtra(DISMISS_TIMER_ID, longExtra)
         context.startActivity(activityIntent)
     }
 }
