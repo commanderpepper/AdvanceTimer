@@ -48,7 +48,6 @@ class AlarmTimerViewModel @Inject constructor(
         }
     }
 
-
     fun addOneOffParentTimer(context: Context, triggerAtMillis: Long) {
         val testAlarmTimer = AlarmTimer(
             "test",
