@@ -53,6 +53,7 @@ class DismissTimer : AppCompatActivity() {
 
         lifecycleScope.launch {
             val childTimers = viewModel.retrieveChildTimers(dismissId.toInt())
+
             val adapter = AlarmTimerAdapter(childTimers)
             val manager = LinearLayoutManager(this@DismissTimer)
 

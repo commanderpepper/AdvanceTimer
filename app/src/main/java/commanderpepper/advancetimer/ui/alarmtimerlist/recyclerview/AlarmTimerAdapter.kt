@@ -2,6 +2,7 @@ package commanderpepper.advancetimer.ui.alarmtimerlist.recyclerview
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import commanderpepper.advancetimer.R
 import commanderpepper.advancetimer.room.AlarmTimer
@@ -19,7 +20,10 @@ class AlarmTimerAdapter(val list: List<AlarmTimer>) : RecyclerView.Adapter<Alarm
     }
 
     override fun onBindViewHolder(holder: AlarmTimerViewHolder, position: Int) {
-        holder.bind(list[position])
+        holder.bind(list[position]) { view ->
+            val navController = view.findNavController()
+            navController.navigate(R.id.action_alarmTimerListFragment_to_alarmTimerDetail)
+        }
     }
 
 }

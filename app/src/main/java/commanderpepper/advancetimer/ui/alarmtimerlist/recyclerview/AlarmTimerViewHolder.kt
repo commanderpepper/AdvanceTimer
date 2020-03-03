@@ -15,7 +15,13 @@ class AlarmTimerViewHolder(private val view: View) : RecyclerView.ViewHolder(vie
     private lateinit var timeLeft: TextView
     private lateinit var type: TextView
 
-    fun bind(alarmTimer: AlarmTimer) {
+    fun bind(
+        alarmTimer: AlarmTimer,
+        onClick: (View) -> Unit
+    ) {
+
+        view.setOnClickListener(onClick)
+
         title = view.findViewById(R.id.parent_alarmtimer_itemview_name)
         enabled = view.findViewById(R.id.isEnabled)
         timeLeft = view.findViewById(R.id.timeleft)
@@ -30,4 +36,5 @@ class AlarmTimerViewHolder(private val view: View) : RecyclerView.ViewHolder(vie
         timeLeft.text = calendar.time.toString()
         type.text = alarmTimer.type.getTypeAsString()
     }
+
 }

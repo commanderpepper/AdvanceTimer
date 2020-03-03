@@ -9,18 +9,21 @@
         android:id="@+id/alarmTimerListFragment"
         android:name="commanderpepper.advancetimer.ui.alarmtimerlist.AlarmTimerListFragment"
         android:label="fragment_alarm_timer_list"
-        tools:layout="@layout/fragment_alarm_timer_list" >
+        tools:layout="@layout/fragment_alarm_timer_list">
         <action
             android:id="@+id/action_alarmTimerListFragment_to_alarmTimerEditFragment"
             app:destination="@id/alarmTimerEditFragment" />
         <action
             android:id="@+id/action_alarmTimerListFragment_to_alarmTimerNew"
             app:destination="@id/alarmTimerNew" />
+        <action
+            android:id="@+id/action_alarmTimerListFragment_to_alarmTimerDetail"
+            app:destination="@id/alarmTimerDetail" />
     </fragment>
     <fragment
         android:id="@+id/alarmTimerEditFragment"
         android:name="commanderpepper.advancetimer.ui.alarmtimeredit.AlarmTimerEditFragment"
-        android:label="AlarmTimerEditFragment" >
+        android:label="AlarmTimerEditFragment">
         <action
             android:id="@+id/action_alarmTimerEditFragment_to_alarmTimerListFragment"
             app:destination="@id/alarmTimerListFragment" />
@@ -29,9 +32,14 @@
         android:id="@+id/alarmTimerNew"
         android:name="commanderpepper.advancetimer.ui.alarmtimernew.AlarmTimerNewFragment"
         android:label="fragment_alarm_timer_new"
-        tools:layout="@layout/fragment_alarm_timer_new" >
+        tools:layout="@layout/fragment_alarm_timer_new">
         <action
             android:id="@+id/action_alarmTimerNew_to_alarmTimerListFragment"
             app:destination="@+id/alarmTimerListFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/alarmTimerDetail"
+        android:name="commanderpepper.advancetimer.ui.alarmtimerdetail.AlarmTimerDetailFragment"
+        android:label="detail_timer_view"
+        tools:layout="@layout/fragment_alarm_timer_detail"></fragment>
 </navigation>
