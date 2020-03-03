@@ -41,5 +41,10 @@
         android:id="@+id/alarmTimerDetail"
         android:name="commanderpepper.advancetimer.ui.alarmtimerdetail.AlarmTimerDetailFragment"
         android:label="detail_timer_view"
-        tools:layout="@layout/fragment_alarm_timer_detail"></fragment>
+        tools:layout="@layout/fragment_alarm_timer_detail">
+        <argument
+            android:name="alarmTimerId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
 </navigation>

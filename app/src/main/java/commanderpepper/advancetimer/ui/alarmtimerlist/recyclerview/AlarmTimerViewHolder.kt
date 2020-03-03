@@ -19,7 +19,6 @@ class AlarmTimerViewHolder(private val view: View) : RecyclerView.ViewHolder(vie
         alarmTimer: AlarmTimer,
         onClick: (View) -> Unit
     ) {
-
         view.setOnClickListener(onClick)
 
         title = view.findViewById(R.id.parent_alarmtimer_itemview_name)
