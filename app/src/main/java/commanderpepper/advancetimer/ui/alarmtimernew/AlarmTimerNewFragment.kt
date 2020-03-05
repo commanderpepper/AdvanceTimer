@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.fragment_alarm_timer_new.*
 import timber.log.Timber
 import java.util.*
 
+const val PARENT_KEY = "parentId"
 
 class AlarmTimerNewFragment : Fragment() {
 
@@ -105,7 +106,13 @@ class AlarmTimerNewFragment : Fragment() {
                 .navigate(R.id.action_alarmTimerNew_to_alarmTimerListFragment)
         }
     }
+
+    private fun getParentId(): Boolean?{
+        return arguments?.getBoolean(PARENT_KEY)
+    }
+
 }
+
 
 fun hourToMilliseconds(hour: String): Long {
     return hour.toLong() * 3_600_000L

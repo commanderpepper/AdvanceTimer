@@ -9,9 +9,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 import commanderpepper.advancetimer.R
 import commanderpepper.advancetimer.ui.alarmtimerlist.recyclerview.AlarmTimerAdapter
@@ -20,6 +22,7 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 val DETAIL_TIMER_KEY = "alarmTimerId"
+val FAB_KEY = "showAddTimerFAB"
 
 class AlarmTimerDetailFragment : Fragment() {
 
@@ -27,6 +30,7 @@ class AlarmTimerDetailFragment : Fragment() {
     private lateinit var detailTimerTitleView: TextView
     private lateinit var parentDetailTimerTitleView: TextView
     private lateinit var childTimersRecyclerView: RecyclerView
+    private lateinit var addTimerFab: FloatingActionButton
 
     private val alarmTimerId: Int = getAlarmTimerId()
 
@@ -55,6 +59,18 @@ class AlarmTimerDetailFragment : Fragment() {
         detailTimerTitleView = view.findViewById(R.id.detailTimerTitle)
         parentDetailTimerTitleView = view.findViewById(R.id.detailParentTimerTitle)
         childTimersRecyclerView = view.findViewById(R.id.detailChildTimerList)
+        addTimerFab = view.findViewById(R.id.detail_create_alarmtimer_fab)
+
+        if(getAddFabStatus()){
+            addTimerFab.setOnClickListener{
+                Timber.d("It workds")
+                view.findNavController()
+                    .navigate(R.id.action_alarmTimerDetail_to_alarmTimerNew)
+            }
+        }
+        else{
+            addTimerFab.hide()
+        }
 
         lifecycleScope.launch {
             val title = withContext(lifecycleScope.coroutineContext) {
@@ -87,6 +103,10 @@ class AlarmTimerDetailFragment : Fragment() {
 
     private fun getAlarmTimerId(): Int {
         return arguments?.getInt(DETAIL_TIMER_KEY) ?: -1
+    }
+
+    private fun getAddFabStatus(): Boolean{
+        return arguments?.getBoolean("showAddTimerFAB", true) ?: true
     }
 
 }
