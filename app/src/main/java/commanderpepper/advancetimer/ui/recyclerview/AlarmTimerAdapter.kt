@@ -1,4 +1,4 @@
-package commanderpepper.advancetimer.ui.alarmtimerlist.recyclerview
+package commanderpepper.advancetimer.ui.recyclerview
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,13 +8,16 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import commanderpepper.advancetimer.R
 import commanderpepper.advancetimer.room.AlarmTimer
+import commanderpepper.advancetimer.ui.NavGraphAction
 
 
-class AlarmTimerAdapter(val list: List<AlarmTimer>) : RecyclerView.Adapter<AlarmTimerViewHolder>() {
+class AlarmTimerAdapter(val list: List<AlarmTimer>, val navGraphAction: NavGraphAction) : RecyclerView.Adapter<AlarmTimerViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlarmTimerViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.parent_alarmtimer_itemview, parent, false)
-        return AlarmTimerViewHolder(view)
+        return AlarmTimerViewHolder(
+            view
+        )
     }
 
     override fun getItemCount(): Int {
@@ -25,9 +28,8 @@ class AlarmTimerAdapter(val list: List<AlarmTimer>) : RecyclerView.Adapter<Alarm
         holder.bind(list[position]) { view ->
             val bundle = bundleOf("alarmTimerId" to list[position].id)
             val navController = view.findNavController()
-            navController.navigate(R.id.action_alarmTimerListFragment_to_alarmTimerDetail, bundle)
-//            navController.navigate(R.id.action_alarmTimerListFragment_to_alarmTimerDetail)
+            navController.navigate(navGraphAction.action, bundle)
         }
     }
-
 }
+

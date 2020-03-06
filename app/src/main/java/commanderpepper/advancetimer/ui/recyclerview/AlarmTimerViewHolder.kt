@@ -1,4 +1,4 @@
-package commanderpepper.advancetimer.ui.alarmtimerlist.recyclerview
+package commanderpepper.advancetimer.ui.recyclerview
 
 import android.view.View
 import android.widget.TextView

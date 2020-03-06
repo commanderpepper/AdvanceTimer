@@ -53,5 +53,8 @@
             android:name="showAddTimerFAB"
             app:argType="boolean"
             android:defaultValue="true" />
+        <action
+            android:id="@+id/action_alarmTimerDetail_self"
+            app:destination="@id/alarmTimerDetail" />
     </fragment>
 </navigation>

@@ -101,7 +101,7 @@ class AlarmTimerViewModel @Inject constructor(
         }
     }
 
-    fun createTimerWaitForId(title: String, context: Context, triggerAtMillis: Long) {
+    fun createTimerWaitForId(title: String, context: Context, triggerAtMillis: Long, parentId: Int?) {
         scope.launch {
             val testAlarmTimer = AlarmTimer(
                 title,
@@ -109,7 +109,7 @@ class AlarmTimerViewModel @Inject constructor(
                 true,
                 triggerAtMillis,
                 alarmCreator.getRequestCode(),
-                null
+                parentId
             )
             val insertedId = withContext(scope.coroutineContext) {
                 alarmRepository.insertAlarmTimerGetId(testAlarmTimer)

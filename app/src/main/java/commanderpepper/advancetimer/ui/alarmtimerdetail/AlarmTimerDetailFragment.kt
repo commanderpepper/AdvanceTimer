@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
@@ -16,7 +17,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 import commanderpepper.advancetimer.R
-import commanderpepper.advancetimer.ui.alarmtimerlist.recyclerview.AlarmTimerAdapter
+import commanderpepper.advancetimer.ui.NavGraphAction
+import commanderpepper.advancetimer.ui.recyclerview.AlarmTimerAdapter
+import commanderpepper.advancetimer.ui.alarmtimernew.PARENT_KEY
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -33,14 +36,6 @@ class AlarmTimerDetailFragment : Fragment() {
     private lateinit var addTimerFab: FloatingActionButton
 
     private val alarmTimerId: Int = getAlarmTimerId()
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,14 +56,16 @@ class AlarmTimerDetailFragment : Fragment() {
         childTimersRecyclerView = view.findViewById(R.id.detailChildTimerList)
         addTimerFab = view.findViewById(R.id.detail_create_alarmtimer_fab)
 
-        if(getAddFabStatus()){
-            addTimerFab.setOnClickListener{
+        if (getAddFabStatus()) {
+            addTimerFab.setOnClickListener {
                 Timber.d("It workds")
+
+                val bundle = bundleOf(PARENT_KEY to getAlarmTimerId())
+
                 view.findNavController()
-                    .navigate(R.id.action_alarmTimerDetail_to_alarmTimerNew)
+                    .navigate(R.id.action_alarmTimerDetail_to_alarmTimerNew, bundle)
             }
-        }
-        else{
+        } else {
             addTimerFab.hide()
         }
 
@@ -88,7 +85,10 @@ class AlarmTimerDetailFragment : Fragment() {
         lifecycleScope.launch {
             val childTimers = viewModel.retrieveChildTimers(getAlarmTimerId())
 
-            val adapter = AlarmTimerAdapter(childTimers)
+            val adapter =
+                AlarmTimerAdapter(
+                    childTimers, NavGraphAction(R.id.action_alarmTimerDetail_self)
+                )
             val manager = LinearLayoutManager(this@AlarmTimerDetailFragment.context)
 
             val dividerItemDecoration =
@@ -105,8 +105,8 @@ class AlarmTimerDetailFragment : Fragment() {
         return arguments?.getInt(DETAIL_TIMER_KEY) ?: -1
     }
 
-    private fun getAddFabStatus(): Boolean{
-        return arguments?.getBoolean("showAddTimerFAB", true) ?: true
+    private fun getAddFabStatus(): Boolean {
+        return arguments?.getBoolean(FAB_KEY, true) ?: true
     }
 
 }

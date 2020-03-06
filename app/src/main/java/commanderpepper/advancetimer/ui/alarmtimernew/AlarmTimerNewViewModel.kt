@@ -23,9 +23,9 @@ class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(applic
         alarmTimerViewModel.addOneOffParentTimer(context, triggerAtMillis)
     }
 
-    fun makeTimerUsingContext(title: String, context: Context, triggerAtMillis: Long) {
+    fun makeTimerUsingContext(title: String, context: Context, triggerAtMillis: Long, parentId: Int?) {
 //        alarmTimerViewModel.makeTimerUsingContext(context, triggerAtMillis)
 //        alarmTimerViewModel.createTimer(title, context, triggerAtMillis)
-        alarmTimerViewModel.createTimerWaitForId(title, context, triggerAtMillis)
+        alarmTimerViewModel.createTimerWaitForId(title, context, triggerAtMillis, parentId)
     }
 }

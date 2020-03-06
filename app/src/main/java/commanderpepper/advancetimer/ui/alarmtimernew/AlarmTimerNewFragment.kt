@@ -80,25 +80,9 @@ class AlarmTimerNewFragment : Fragment() {
             alarmTimerViewModel.makeTimerUsingContext(
                 title,
                 alarmContext,
-                triggerAtMillis
+                triggerAtMillis,
+                getParentId()
             )
-
-//            val requestCodeGenerator = RequestCodeGenerator.get()
-//
-//            val alarmManager: AlarmManager =
-//                alarmContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-//
-//            val intent = Intent(context!!, MyReceiver::class.java)
-//
-//            val pendingIntent: PendingIntent =
-//                PendingIntent.getBroadcast(
-//                    context!!,
-//                    requestCodeGenerator.getRequestCode(),
-//                    intent,
-//                    PendingIntent.FLAG_CANCEL_CURRENT,
-//                )
-//
-//            alarmManager.setExact(AlarmManager.RTC_WAKEUP, thirtySecondsFromNow, pendingIntent)
 
             requireActivity().dismissKeyboard()
 
@@ -107,8 +91,8 @@ class AlarmTimerNewFragment : Fragment() {
         }
     }
 
-    private fun getParentId(): Boolean?{
-        return arguments?.getBoolean(PARENT_KEY)
+    private fun getParentId(): Int? {
+        return arguments?.getInt(PARENT_KEY)
     }
 
 }
