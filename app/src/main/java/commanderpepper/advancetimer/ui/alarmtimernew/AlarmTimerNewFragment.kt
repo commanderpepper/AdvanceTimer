@@ -8,10 +8,15 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import commanderpepper.advancetimer.R
 import commanderpepper.advancetimer.viewmodel.dismissKeyboard
-import kotlinx.android.synthetic.main.fragment_alarm_timer_new.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.util.*
 
@@ -77,17 +82,19 @@ class AlarmTimerNewFragment : Fragment() {
 
             val triggerAtMillis = nowMilliSeconds + hourAsLong + minuteAsLong + secondAsLong
 
-            alarmTimerViewModel.makeTimerUsingContext(
-                title,
-                alarmContext,
-                triggerAtMillis,
-                getParentId()
-            )
+            lifecycleScope.launch {
+                val resultFlow = withContext(Dispatchers.Default) {
+                    alarmTimerViewModel.createTimer(
+                        title, alarmContext, triggerAtMillis, getParentId()
+                    )
+                }
 
-            requireActivity().dismissKeyboard()
-
-            it.findNavController()
-                .navigate(R.id.action_alarmTimerNew_to_alarmTimerListFragment)
+                resultFlow.flowOn(Dispatchers.Main).collect { _ ->
+                    requireActivity().dismissKeyboard()
+                    it.findNavController()
+                        .navigate(R.id.action_alarmTimerNew_to_alarmTimerListFragment)
+                }
+            }
         }
     }
 

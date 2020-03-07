@@ -5,13 +5,13 @@ import android.content.Context
 import android.content.Intent
 import android.view.inputmethod.InputMethodManager
 import commanderpepper.advancetimer.alarmcreation.AlarmCreator
-import commanderpepper.advancetimer.alarmcreation.RequestCodeGenerator
-import commanderpepper.advancetimer.receivers.AlarmReceiver
 import commanderpepper.advancetimer.receivers.MyReceiver
 import commanderpepper.advancetimer.repository.AlarmRepository
 import commanderpepper.advancetimer.room.AlarmTimer
 import commanderpepper.advancetimer.room.AlarmTimerType
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.toList
 import timber.log.Timber
 import javax.inject.Inject
@@ -101,7 +101,12 @@ class AlarmTimerViewModel @Inject constructor(
         }
     }
 
-    fun createTimerWaitForId(title: String, context: Context, triggerAtMillis: Long, parentId: Int?) {
+    fun createTimerWaitForId(
+        title: String,
+        context: Context,
+        triggerAtMillis: Long,
+        parentId: Int?
+    ) {
         scope.launch {
             val testAlarmTimer = AlarmTimer(
                 title,
@@ -121,6 +126,37 @@ class AlarmTimerViewModel @Inject constructor(
             alarmCreator.makeTimerUsingContext(context, sourceIntent, triggerAtMillis)
         }
     }
+
+    suspend fun createTimer(
+        title: String,
+        context: Context,
+        triggerAtMillis: Long,
+        parentId: Int?
+    ): Flow<Int> {
+
+        val testAlarmTimer = AlarmTimer(
+            title,
+            AlarmTimerType.OneOffTimer,
+            true,
+            triggerAtMillis,
+            alarmCreator.getRequestCode(),
+            parentId
+        )
+
+        val insertedId = withContext(scope.coroutineContext) {
+            alarmRepository.insertAlarmTimerGetId(testAlarmTimer)
+        }
+
+        val sourceIntent = Intent(context, MyReceiver::class.java)
+        sourceIntent.putExtra(TIMER_ID, insertedId)
+
+        alarmCreator.makeTimerUsingContext(context, sourceIntent, triggerAtMillis)
+
+        return flow {
+            emit(insertedId.toInt())
+        }
+    }
+
 }
 
 fun Activity.dismissKeyboard() {

@@ -1,5 +1,6 @@
 package commanderpepper.advancetimer.ui.alarmtimerlist
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import commanderpepper.advancetimer.R
+import commanderpepper.advancetimer.room.AlarmTimer
 import commanderpepper.advancetimer.ui.NavGraphAction
 import commanderpepper.advancetimer.ui.recyclerview.AlarmTimerAdapter
 import kotlinx.coroutines.launch
@@ -24,10 +26,6 @@ class AlarmTimerListFragment : Fragment() {
     //    private val navController = findNavController()
     private lateinit var fab: FloatingActionButton
     private val viewModel: AlarmListViewModel by activityViewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,10 +40,11 @@ class AlarmTimerListFragment : Fragment() {
 
         lifecycleScope.launch {
             val list = viewModel.getParentAlarmTimerList()
-            Timber.d(list.toString())
+//            Timber.d(list.toString())
             val adapter =
                 AlarmTimerAdapter(
-                    list, NavGraphAction(R.id.action_alarmTimerListFragment_to_alarmTimerDetail)
+                    list,
+                    NavGraphAction(R.id.action_alarmTimerListFragment_to_alarmTimerDetail)
                 )
             val recyclerView: RecyclerView = view.findViewById(R.id.alarmtimer_recyclerview)
             val manager = LinearLayoutManager(context)

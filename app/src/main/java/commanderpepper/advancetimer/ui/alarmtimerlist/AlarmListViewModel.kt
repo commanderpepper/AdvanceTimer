@@ -7,13 +7,16 @@ import androidx.lifecycle.viewModelScope
 import commanderpepper.App
 import commanderpepper.advancetimer.room.AlarmTimer
 import commanderpepper.advancetimer.viewmodel.AlarmTimerViewModel
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
-class AlarmListViewModel(application: Application): AndroidViewModel(application) {
+class AlarmListViewModel(application: Application) : AndroidViewModel(application) {
 
-   val alarmTimerViewModel: AlarmTimerViewModel = (application as App).appComponent.alarmTimerViewModelGenerator()
+    val alarmTimerViewModel: AlarmTimerViewModel =
+        (application as App).appComponent.alarmTimerViewModelGenerator()
 
     suspend fun getParentAlarmTimerList(): List<AlarmTimer> {
         Timber.d("Getting parent timers")
@@ -21,5 +24,4 @@ class AlarmListViewModel(application: Application): AndroidViewModel(application
             alarmTimerViewModel.getParentAlarmTimers()
         }
     }
-
 }
