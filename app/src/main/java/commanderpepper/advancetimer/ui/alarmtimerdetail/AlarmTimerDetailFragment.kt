@@ -87,7 +87,14 @@ class AlarmTimerDetailFragment : Fragment() {
 
             val adapter =
                 AlarmTimerAdapter(
-                    childTimers, NavGraphAction(R.id.action_alarmTimerDetail_self)
+                    childTimers,
+                    if (getAddFabStatus()) {
+                        NavGraphAction(R.id.action_alarmTimerDetail_self)
+                    } else {
+                        NavGraphAction(
+                            0
+                        )
+                    }
                 )
             val manager = LinearLayoutManager(this@AlarmTimerDetailFragment.context)
 

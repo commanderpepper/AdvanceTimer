@@ -29,6 +29,11 @@
             app:destination="@+id/alarmTimerListFragment"
             app:popUpTo="@id/alarmTimerListFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_alarmTimerNew_to_alarmTimerDetail"
+            app:destination="@id/alarmTimerDetail"
+            app:popUpTo="@id/alarmTimerDetail"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/alarmTimerDetail"

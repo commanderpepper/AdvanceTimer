@@ -11,7 +11,8 @@ import commanderpepper.advancetimer.room.AlarmTimer
 import commanderpepper.advancetimer.ui.NavGraphAction
 
 
-class AlarmTimerAdapter(val list: List<AlarmTimer>, val navGraphAction: NavGraphAction) : RecyclerView.Adapter<AlarmTimerViewHolder>() {
+class AlarmTimerAdapter(val list: List<AlarmTimer>, val navGraphAction: NavGraphAction) :
+    RecyclerView.Adapter<AlarmTimerViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlarmTimerViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.parent_alarmtimer_itemview, parent, false)
@@ -26,9 +27,13 @@ class AlarmTimerAdapter(val list: List<AlarmTimer>, val navGraphAction: NavGraph
 
     override fun onBindViewHolder(holder: AlarmTimerViewHolder, position: Int) {
         holder.bind(list[position]) { view ->
-            val bundle = bundleOf("alarmTimerId" to list[position].id)
-            val navController = view.findNavController()
-            navController.navigate(navGraphAction.action, bundle)
+            if (navGraphAction.action != 0) {
+                val bundle = bundleOf("alarmTimerId" to list[position].id)
+                val navController = view.findNavController()
+                navController.navigate(navGraphAction.action, bundle)
+            } else {
+
+            }
         }
     }
 }

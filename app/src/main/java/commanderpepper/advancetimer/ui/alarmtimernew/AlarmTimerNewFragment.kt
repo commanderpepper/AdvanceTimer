@@ -6,12 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import commanderpepper.advancetimer.R
 import commanderpepper.advancetimer.ui.NavGraphAction
+import commanderpepper.advancetimer.ui.alarmtimerdetail.DETAIL_TIMER_KEY
 import commanderpepper.advancetimer.viewmodel.dismissKeyboard
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -96,7 +98,10 @@ class AlarmTimerNewFragment : Fragment() {
                         it.findNavController()
                             .navigate(R.id.action_alarmTimerNew_to_alarmTimerListFragment)
                     } else {
-                        this@AlarmTimerNewFragment.parentFragmentManager.popBackStack()
+                        val bundle = bundleOf(DETAIL_TIMER_KEY to getParentId()!!)
+                        it.findNavController()
+                            .navigate(R.id.action_alarmTimerNew_to_alarmTimerDetail, bundle)
+//                        this@AlarmTimerNewFragment.parentFragmentManager.popBackStack()
                     }
                 }
             }
