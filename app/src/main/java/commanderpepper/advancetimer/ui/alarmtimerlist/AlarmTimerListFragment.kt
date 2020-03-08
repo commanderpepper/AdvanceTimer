@@ -32,6 +32,7 @@ class AlarmTimerListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        Timber.d(this.parentFragmentManager.backStackEntryCount.toString())
         return inflater.inflate(R.layout.fragment_alarm_timer_list, container, false)
     }
 

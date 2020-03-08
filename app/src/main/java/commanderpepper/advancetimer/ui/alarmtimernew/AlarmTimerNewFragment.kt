@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import commanderpepper.advancetimer.R
+import commanderpepper.advancetimer.ui.NavGraphAction
 import commanderpepper.advancetimer.viewmodel.dismissKeyboard
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -91,8 +92,12 @@ class AlarmTimerNewFragment : Fragment() {
 
                 resultFlow.flowOn(Dispatchers.Main).collect { _ ->
                     requireActivity().dismissKeyboard()
-                    it.findNavController()
-                        .navigate(R.id.action_alarmTimerNew_to_alarmTimerListFragment)
+                    if (getParentId() == null) {
+                        it.findNavController()
+                            .navigate(R.id.action_alarmTimerNew_to_alarmTimerListFragment)
+                    } else {
+                        this@AlarmTimerNewFragment.parentFragmentManager.popBackStack()
+                    }
                 }
             }
         }
@@ -101,7 +106,6 @@ class AlarmTimerNewFragment : Fragment() {
     private fun getParentId(): Int? {
         return arguments?.getInt(PARENT_KEY)
     }
-
 }
 
 

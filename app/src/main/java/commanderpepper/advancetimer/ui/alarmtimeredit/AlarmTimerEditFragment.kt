@@ -25,8 +25,8 @@ class AlarmTimerEditFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         editButton = view.findViewById(R.id.edit_alarmtimer)
-        editButton.setOnClickListener {
-            it.findNavController().navigate(R.id.action_alarmTimerEditFragment_to_alarmTimerListFragment)
-        }
+//        editButton.setOnClickListener {
+//            it.findNavController().navigate(R.id.action_alarmTimerEditFragment_to_alarmTimerListFragment)
+//        }
     }
 }
