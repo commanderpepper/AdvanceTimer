@@ -1,5 +1,6 @@
 package commanderpepper.advancetimer.room
 
+import android.text.BoringLayout
 import androidx.room.*
 
 @Dao
@@ -13,6 +14,9 @@ interface AlarmTimerDAO {
 
     @Delete
     suspend fun deleteAlarmTimer(alarmTimer: AlarmTimer)
+
+    @Query("UPDATE AlarmTimer SET enabled = :alarmTimerEnabled WHERE id == :alarmTimerId")
+    suspend fun modifyEnabledState(alarmTimerId: Int, alarmTimerEnabled: Boolean)
 
     @Query("SELECT * FROM AlarmTimer")
     suspend fun getAlarmTimerList(): List<AlarmTimer>

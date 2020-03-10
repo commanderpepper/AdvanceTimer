@@ -212,19 +212,39 @@ class AlarmTimerDatabaseTest {
 
     // Insert a parent timer, a child timer using the parent timer's id, get a child timer list of one
     @Test
-    fun insertParentAlarmTimer_InsertChildAlarmTimer_GetChildAlarmTimerList_ListSizeIsOne() = runBlocking {
+    fun insertParentAlarmTimer_InsertChildAlarmTimer_GetChildAlarmTimerList_ListSizeIsOne() =
+        runBlocking {
+            alarmTimerDao.insertAlarmTimer(timer)
+            val parentTimer = alarmTimerDao.getParentAlarmTimerList().first()
+            val childTimer = AlarmTimer(
+                "child",
+                AlarmTimerType.OneOffAlarm,
+                false,
+                1, 0,
+                parentTimer.id
+            )
+            alarmTimerDao.insertAlarmTimer(childTimer)
+            val childTimers = alarmTimerDao.getChildrenAlarmTimerList(parentId = parentTimer.id)
+            assertThat(childTimers.size, CoreMatchers.equalTo(1))
+        }
+
+    @Test
+    fun insertAlarmTimerWithEnabledState_DisableTimer_CheckIfDisabled() = runBlocking {
         alarmTimerDao.insertAlarmTimer(timer)
-        val parentTimer = alarmTimerDao.getParentAlarmTimerList().first()
-        val childTimer = AlarmTimer(
-            "child",
-            AlarmTimerType.OneOffAlarm,
-            false,
-            1,0,
-            parentTimer.id
-        )
-        alarmTimerDao.insertAlarmTimer(childTimer)
-        val childTimers = alarmTimerDao.getChildrenAlarmTimerList(parentId = parentTimer.id)
-        assertThat(childTimers.size, CoreMatchers.equalTo(1))
+        val retrievedTimer = alarmTimerDao.getAlarmTimerList().first()
+        alarmTimerDao.modifyEnabledState(retrievedTimer.id, false)
+        val disabledTimer = alarmTimerDao.getAlarmTimerList().first()
+        assertThat(disabledTimer.enabled, CoreMatchers.equalTo(false))
+    }
+
+    @Test
+    fun insertAlarmTimerWithDisaledState_EnableTimer_CheckIfEnabled() = runBlocking {
+        val testTimer = AlarmTimer("test", AlarmTimerType.OneOffTimer, false, 1, 0, null)
+        alarmTimerDao.insertAlarmTimer(testTimer)
+        val retrievedTimer = alarmTimerDao.getAlarmTimerList().first()
+        alarmTimerDao.modifyEnabledState(retrievedTimer.id, true)
+        val disabledTimer = alarmTimerDao.getAlarmTimerList().first()
+        assertThat(disabledTimer.enabled, CoreMatchers.equalTo(true))
     }
 
     companion object {
@@ -232,14 +252,14 @@ class AlarmTimerDatabaseTest {
             "test",
             AlarmTimerType.OneOffAlarm,
             true,
-            1,0,
+            1, 0,
             null
         )
         private val childTimer = AlarmTimer(
             "test",
             AlarmTimerType.OneOffAlarm,
             true,
-            2,1,
+            2, 1,
             1
         )
     }
