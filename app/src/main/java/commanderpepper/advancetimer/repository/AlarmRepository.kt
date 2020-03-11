@@ -41,4 +41,13 @@ class AlarmRepository @Inject constructor(val context: Context) {
     suspend fun insertAlarmTimerGetId(alarmTimer: AlarmTimer): Long {
         return alarmTimerDAO.insertAlarmTimerGetID(alarmTimer)
     }
+
+    suspend fun disableAlarmTimer(alarmTimerId: Int) {
+        val alarmTimer = getAlarmTimer(alarmTimerId)
+        alarmTimerDAO.modifyEnabledState(alarmTimerId, false)
+    }
+
+    suspend fun enableAlarmTimer(alarmTimerId: Int){
+        alarmTimerDAO.modifyEnabledState(alarmTimerId, true)
+    }
 }
