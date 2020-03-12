@@ -157,8 +157,10 @@ class AlarmTimerViewModel @Inject constructor(
         }
     }
 
-    suspend fun disableAlarmTimer(alarmTimerId: Int) {
-        alarmRepository.disableAlarmTimer(alarmTimerId)
+    suspend fun modifyAlarmTimer(alarmTimerId: Int) {
+        scope.launch {
+            alarmRepository.modifyAlarmTimerEnabledState(alarmTimerId)
+        }
     }
 }
 

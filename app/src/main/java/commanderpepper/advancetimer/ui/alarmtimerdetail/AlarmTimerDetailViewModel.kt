@@ -26,4 +26,8 @@ class AlarmTimerDetailViewModel(application: Application) : AndroidViewModel(app
     suspend fun retrieveChildTimers(timerId: Int): List<AlarmTimer> {
         return alarmTimerViewModel.getChildAlarmTimers(timerId)
     }
+
+    suspend fun modifyEnabledState(alarmTimerId: Int) {
+        alarmTimerViewModel.modifyAlarmTimer(alarmTimerId)
+    }
 }

@@ -2,6 +2,7 @@ package commanderpepper.advancetimer.ui.alarmtimerlist
 
 import android.content.Context
 import android.os.Bundle
+import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,7 +26,19 @@ class AlarmTimerListFragment : Fragment() {
 
     //    private val navController = findNavController()
     private lateinit var fab: FloatingActionButton
+    private lateinit var recyclerView: RecyclerView
+
     private val viewModel: AlarmListViewModel by activityViewModels()
+
+    override fun onInflate(context: Context, attrs: AttributeSet, savedInstanceState: Bundle?) {
+        super.onInflate(context, attrs, savedInstanceState)
+        Timber.d("Arrived at onInflate")
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        Timber.d("Arrived at onAttach")
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,12 +46,28 @@ class AlarmTimerListFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         Timber.d(this.parentFragmentManager.backStackEntryCount.toString())
+        Timber.d("Arrived at onCreateView")
         return inflater.inflate(R.layout.fragment_alarm_timer_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Timber.d("Arrived at onViewCreated")
+
+        recyclerView = view.findViewById(R.id.alarmtimer_recyclerview)
+
+        fab = view.findViewById(R.id.create_alarmtimer_fab)
+
+        fab.setOnClickListener {
+            view.findNavController()
+                .navigate(R.id.action_alarmTimerListFragment_to_alarmTimerNew)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Timber.d("Arrived at onResume")
         lifecycleScope.launch {
             val list = viewModel.getParentAlarmTimerList()
 //            Timber.d(list.toString())
@@ -47,7 +76,6 @@ class AlarmTimerListFragment : Fragment() {
                     list,
                     NavGraphAction(R.id.action_alarmTimerListFragment_to_alarmTimerDetail)
                 )
-            val recyclerView: RecyclerView = view.findViewById(R.id.alarmtimer_recyclerview)
             val manager = LinearLayoutManager(context)
 
             val dividerItemDecoration = DividerItemDecoration(
@@ -57,13 +85,6 @@ class AlarmTimerListFragment : Fragment() {
             recyclerView.adapter = adapter
             recyclerView.layoutManager = manager
             recyclerView.addItemDecoration(dividerItemDecoration)
-        }
-
-        fab = view.findViewById(R.id.create_alarmtimer_fab)
-
-        fab.setOnClickListener {
-            view.findNavController()
-                .navigate(R.id.action_alarmTimerListFragment_to_alarmTimerNew)
         }
     }
 

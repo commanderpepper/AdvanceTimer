@@ -58,8 +58,6 @@ class AlarmTimerDetailFragment : Fragment() {
 
         if (getAddFabStatus()) {
             addTimerFab.setOnClickListener {
-                Timber.d("It workds")
-
                 val bundle = bundleOf(PARENT_KEY to getAlarmTimerId())
 
                 view.findNavController()
@@ -67,6 +65,11 @@ class AlarmTimerDetailFragment : Fragment() {
             }
         } else {
             addTimerFab.hide()
+            lifecycleScope.launch {
+                withContext(lifecycleScope.coroutineContext) {
+                    viewModel.modifyEnabledState(getAlarmTimerId())
+                }
+            }
         }
 
         lifecycleScope.launch {

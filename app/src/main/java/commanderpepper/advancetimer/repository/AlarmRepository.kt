@@ -3,6 +3,7 @@ package commanderpepper.advancetimer.repository
 import android.content.Context
 import commanderpepper.advancetimer.room.AlarmTimer
 import commanderpepper.advancetimer.room.AlarmTimerDatabase
+import commanderpepper.advancetimer.room.AlarmTimerType
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
@@ -42,12 +43,18 @@ class AlarmRepository @Inject constructor(val context: Context) {
         return alarmTimerDAO.insertAlarmTimerGetID(alarmTimer)
     }
 
-    suspend fun disableAlarmTimer(alarmTimerId: Int) {
+    suspend fun modifyAlarmTimerEnabledState(alarmTimerId: Int) {
         val alarmTimer = getAlarmTimer(alarmTimerId)
+        if (alarmTimer.type == AlarmTimerType.OneOffTimer || alarmTimer.type == AlarmTimerType.OneOffTimer) {
+            disableAlarmTimer(alarmTimerId)
+        }
+    }
+
+    private suspend fun disableAlarmTimer(alarmTimerId: Int) {
         alarmTimerDAO.modifyEnabledState(alarmTimerId, false)
     }
 
-    suspend fun enableAlarmTimer(alarmTimerId: Int){
+    private suspend fun enableAlarmTimer(alarmTimerId: Int) {
         alarmTimerDAO.modifyEnabledState(alarmTimerId, true)
     }
 }
