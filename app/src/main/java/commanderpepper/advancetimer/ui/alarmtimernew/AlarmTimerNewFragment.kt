@@ -6,12 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import commanderpepper.advancetimer.R
+import commanderpepper.advancetimer.room.AlarmTimerType
 import commanderpepper.advancetimer.ui.NavGraphAction
 import commanderpepper.advancetimer.ui.alarmtimerdetail.DETAIL_TIMER_KEY
 import commanderpepper.advancetimer.viewmodel.dismissKeyboard
@@ -36,6 +39,8 @@ class AlarmTimerNewFragment : Fragment() {
 
     private lateinit var alarmTimerTitle: EditText
 
+    private lateinit var alarmTypeRadioGroup: RadioGroup
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -54,23 +59,24 @@ class AlarmTimerNewFragment : Fragment() {
 
         alarmTimerTitle = view.findViewById(R.id.timerTitle)
 
+        alarmTypeRadioGroup = view.findViewById(R.id.timerTypeRadioGroup)
+
+        alarmTypeRadioGroup.setOnCheckedChangeListener { _, i ->
+            val alarmTimerType: AlarmTimerType =
+                if (i == R.id.oneOffRadioButton) AlarmTimerType.OneOffTimer else AlarmTimerType.RepeatingTimer
+
+            alarmTimerViewModel.updateAlarmTimerType(alarmTimerType)
+        }
+
         saveButton.setOnClickListener {
 
             val hourAsString = hourEditText.text.toString()
             val minuteAsString = minuteEditText.text.toString()
             val secondAsString = secondEditText.text.toString()
 
-            Timber.d(hourAsString)
-            Timber.d(minuteAsString)
-            Timber.d(secondAsString)
-
             val hourAsLong = hourToMilliseconds(hourAsString)
             val minuteAsLong = minuteToMilliseconds(minuteAsString)
             val secondAsLong = secondToMilliseconds(secondAsString)
-
-            Timber.d(hourAsLong.toString())
-            Timber.d(minuteAsLong.toString())
-            Timber.d(secondAsLong.toString())
 
             val title =
                 if (alarmTimerTitle.text.toString() == resources.getString(R.string.alarmtimer_title_hint)) {
@@ -101,7 +107,6 @@ class AlarmTimerNewFragment : Fragment() {
                         val bundle = bundleOf(DETAIL_TIMER_KEY to getParentId()!!)
                         it.findNavController()
                             .navigate(R.id.action_alarmTimerNew_to_alarmTimerDetail, bundle)
-//                        this@AlarmTimerNewFragment.parentFragmentManager.popBackStack()
                     }
                 }
             }
@@ -110,6 +115,11 @@ class AlarmTimerNewFragment : Fragment() {
 
     private fun getParentId(): Int? {
         return arguments?.getInt(PARENT_KEY)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Timber.d(alarmTimerViewModel.alarmTimerType.toString())
     }
 }
 

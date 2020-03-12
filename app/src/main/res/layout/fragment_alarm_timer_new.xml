@@ -119,6 +119,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timerTitle" />
 
+    <RadioGroup
+        android:id="@+id/timerTypeRadioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/add_alarmtimer_text">
+
+        <RadioButton
+            android:id="@+id/oneOffRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="One-Off Timer"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/timerTypeRadioGroup" />
+
+        <RadioButton
+            android:id="@+id/repeatingRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Repeating Timer"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/oneOffRadioButton" />
+
+    </RadioGroup>
+
     <Button
         android:id="@+id/add_alarmtimer"
         android:layout_width="wrap_content"
@@ -126,7 +153,7 @@
         android:layout_margin="16dp"
         android:text="@string/save_button"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/add_alarmtimer_text" />
+        app:layout_constraintTop_toBottomOf="@+id/timerTypeRadioGroup" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,12 +8,20 @@ import androidx.lifecycle.viewModelScope
 import commanderpepper.App
 import commanderpepper.advancetimer.alarmcreation.AlarmCreator
 import commanderpepper.advancetimer.repository.AlarmRepository
+import commanderpepper.advancetimer.room.AlarmTimerType
 import commanderpepper.advancetimer.viewmodel.AlarmTimerViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(application) {
+
+    var alarmTimerType: AlarmTimerType = AlarmTimerType.OneOffTimer
+        private set
+
+    fun updateAlarmTimerType(alarmTimerType: AlarmTimerType) {
+        this.alarmTimerType = alarmTimerType
+    }
 
     private val alarmTimerViewModel: AlarmTimerViewModel =
         (application as App).appComponent.alarmTimerViewModelGenerator()
