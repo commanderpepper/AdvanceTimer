@@ -39,8 +39,19 @@ class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(applic
         title: String,
         context: Context,
         triggerAtMillis: Long,
-        parentId: Int?
-    ): Flow<Int> {
-        return alarmTimerViewModel.createTimer(title, context, triggerAtMillis, parentId)
+        parentId: Int?,
+        alarmTimerType: AlarmTimerType = this.alarmTimerType,
+        intervalAtMillis: Long = 0L
+    ): Flow<Int>{
+        return alarmTimerViewModel.createTimer(title, context, triggerAtMillis, parentId, alarmTimerType, intervalAtMillis)
     }
+
+//    suspend fun createTimer(
+//        title: String,
+//        context: Context,
+//        triggerAtMillis: Long,
+//        parentId: Int?
+//    ): Flow<Int> {
+//        return alarmTimerViewModel.createTimer(title, context, triggerAtMillis, parentId)
+//    }
 }

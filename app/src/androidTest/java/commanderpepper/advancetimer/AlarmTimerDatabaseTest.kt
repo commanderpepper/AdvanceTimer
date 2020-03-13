@@ -48,6 +48,7 @@ class AlarmTimerDatabaseTest {
             true,
             0,
             0,
+            0,
             null
         )
         assertThat(testTimer.id, CoreMatchers.equalTo(0))
@@ -220,7 +221,7 @@ class AlarmTimerDatabaseTest {
                 "child",
                 AlarmTimerType.OneOffAlarm,
                 false,
-                1, 0,
+                1, 0, 0,
                 parentTimer.id
             )
             alarmTimerDao.insertAlarmTimer(childTimer)
@@ -239,7 +240,7 @@ class AlarmTimerDatabaseTest {
 
     @Test
     fun insertAlarmTimerWithDisaledState_EnableTimer_CheckIfEnabled() = runBlocking {
-        val testTimer = AlarmTimer("test", AlarmTimerType.OneOffTimer, false, 1, 0, null)
+        val testTimer = AlarmTimer("test", AlarmTimerType.OneOffTimer, false, 1, 0, 0, null)
         alarmTimerDao.insertAlarmTimer(testTimer)
         val retrievedTimer = alarmTimerDao.getAlarmTimerList().first()
         alarmTimerDao.modifyEnabledState(retrievedTimer.id, true)
@@ -252,14 +253,14 @@ class AlarmTimerDatabaseTest {
             "test",
             AlarmTimerType.OneOffAlarm,
             true,
-            1, 0,
+            1, 0, 0,
             null
         )
         private val childTimer = AlarmTimer(
             "test",
             AlarmTimerType.OneOffAlarm,
             true,
-            2, 1,
+            2, 1, 3,
             1
         )
     }

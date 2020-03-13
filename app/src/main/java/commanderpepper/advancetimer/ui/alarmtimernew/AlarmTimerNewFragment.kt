@@ -80,7 +80,7 @@ class AlarmTimerNewFragment : Fragment() {
 
             val title =
                 if (alarmTimerTitle.text.toString() == resources.getString(R.string.alarmtimer_title_hint)) {
-                    "${hourAsString}h:${minuteAsString}m:${secondAsString}s"
+                    createGenericTitle(hourAsString, minuteAsString, secondAsString)
                 } else {
                     alarmTimerTitle.text.toString()
                 }
@@ -120,6 +120,10 @@ class AlarmTimerNewFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         Timber.d(alarmTimerViewModel.alarmTimerType.toString())
+    }
+
+    private fun createGenericTitle(hour: String, minute: String, second: String): String {
+        return "${hour}h:${minute}m:${second}s"
     }
 }
 

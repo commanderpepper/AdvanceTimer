@@ -59,6 +59,30 @@ class AlarmCreator @Inject constructor(
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent)
     }
 
+    fun makeRepeatingTimer(
+        context: Context,
+        intent: Intent,
+        triggerAtMillis: Long,
+        intervalAtMillis: Long
+    ) {
+        val pendingIntent = PendingIntent.getBroadcast(
+            context,
+            requestCodeGenerator.getRequestCode(),
+            intent,
+            PendingIntent.FLAG_CANCEL_CURRENT
+        )
+
+        val alarmManager: AlarmManager =
+            context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        alarmManager.setRepeating(
+            AlarmManager.RTC_WAKEUP,
+            triggerAtMillis,
+            intervalAtMillis,
+            pendingIntent
+        )
+    }
+
     fun makeRepeatingAlarm(intent: Intent, triggerAtMillis: Long, intervalAtMillis: Long) {
         val pendingIntent =
             creatingPendingIntent(intent)
