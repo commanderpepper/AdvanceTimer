@@ -98,6 +98,14 @@
         app:layout_constraintStart_toEndOf="@+id/minute_second_seperator"
         app:layout_constraintTop_toBottomOf="@+id/secondHint" />
 
+    <TextView
+        android:id="@+id/add_alarmtimer_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/new_alarmtimer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timerTitle" />
 
     <EditText
         android:id="@+id/timerTitle"
@@ -110,14 +118,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/newHour" />
 
-    <TextView
-        android:id="@+id/add_alarmtimer_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="@string/new_alarmtimer"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/timerTitle" />
 
     <RadioGroup
         android:id="@+id/timerTypeRadioGroup"
@@ -146,6 +146,15 @@
 
     </RadioGroup>
 
+    <include
+        android:id="@+id/oneOffTimerNumber"
+        layout="@layout/time_selection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/timerTypeRadioGroup" />
+
     <Button
         android:id="@+id/add_alarmtimer"
         android:layout_width="wrap_content"
@@ -153,7 +162,7 @@
         android:layout_margin="16dp"
         android:text="@string/save_button"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/timerTypeRadioGroup" />
+        app:layout_constraintTop_toBottomOf="@+id/oneOffTimerNumber" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

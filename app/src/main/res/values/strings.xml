@@ -20,5 +20,9 @@
     <string name="alarmtimer_title_hint">Timer Title</string>
     <string name="dismiss_timer_title">Timer Title</string>
 
+    <string name="hourHint">Hours</string>
+    <string name="minuteHint">Minutes</string>
+    <string name="secondHint">Seconds</string>
+
 
 </resources>

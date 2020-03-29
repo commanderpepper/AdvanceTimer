@@ -26,14 +26,14 @@ class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(applic
     private val alarmTimerViewModel: AlarmTimerViewModel =
         (application as App).appComponent.alarmTimerViewModelGenerator()
 
-    fun makeTimerUsingContext(
-        title: String,
-        context: Context,
-        triggerAtMillis: Long,
-        parentId: Int?
-    ) {
-        alarmTimerViewModel.createTimerWaitForId(title, context, triggerAtMillis, parentId)
-    }
+//    fun makeTimerUsingContext(
+//        title: String,
+//        context: Context,
+//        triggerAtMillis: Long,
+//        parentId: Int?
+//    ) {
+//        alarmTimerViewModel.createTimerWaitForId(title, context, triggerAtMillis, parentId)
+//    }
 
     suspend fun createTimer(
         title: String,
