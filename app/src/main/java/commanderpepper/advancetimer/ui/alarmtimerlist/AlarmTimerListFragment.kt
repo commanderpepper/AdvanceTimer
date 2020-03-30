@@ -24,7 +24,6 @@ import timber.log.Timber
 
 class AlarmTimerListFragment : Fragment() {
 
-    //    private val navController = findNavController()
     private lateinit var fab: FloatingActionButton
     private lateinit var recyclerView: RecyclerView
 

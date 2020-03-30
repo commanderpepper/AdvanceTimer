@@ -16,6 +16,10 @@ import timber.log.Timber
 
 class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(application) {
 
+    var hour : Long = 0L
+    var minute : Long = 0L
+    var second : Long = 0L
+
     var alarmTimerType: AlarmTimerType = AlarmTimerType.OneOffTimer
         private set
 

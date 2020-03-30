@@ -1,13 +1,11 @@
 package commanderpepper.advancetimer.ui.alarmtimernew
 
 import android.os.Bundle
+import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.RadioButton
-import android.widget.RadioGroup
+import android.widget.*
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -25,6 +23,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.util.*
+import kotlin.math.min
 
 const val PARENT_KEY = "parentId"
 
@@ -41,6 +40,10 @@ class AlarmTimerNewFragment : Fragment() {
 
     private lateinit var alarmTypeRadioGroup: RadioGroup
 
+    private lateinit var hourNumberPicker: NumberPicker
+    private lateinit var minuteNumberPicker: NumberPicker
+    private lateinit var secondNumberPicker: NumberPicker
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -51,6 +54,34 @@ class AlarmTimerNewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val oneOffTimerLayout = layoutInflater.inflate(R.layout.time_selection, null, false).also {
+            hourNumberPicker = it.findViewById(R.id.hourNumber)
+            minuteNumberPicker = it.findViewById(R.id.minuteNumber)
+            secondNumberPicker = it.findViewById(R.id.secondNumber)
+        }
+
+        hourNumberPicker.run {
+            setMaxValueForTime()
+            setMinValueForTime()
+        }
+
+        minuteNumberPicker.run {
+            setMaxValueForTime()
+            setMinValueForTime()
+        }
+
+        secondNumberPicker.run {
+            setMaxValueForTime()
+            setMinValueForTime()
+        }
+
+        hourNumberPicker.setOnValueChangedListener { numberPicker, p1, p2 ->
+            Timber.d("New value $p2")
+            hourNumberPicker.value = p2
+        }
+
+
         saveButton = view.findViewById(R.id.add_alarmtimer)
 
         hourEditText = view.findViewById(R.id.newHour)
@@ -112,6 +143,15 @@ class AlarmTimerNewFragment : Fragment() {
             }
         }
     }
+
+    private fun NumberPicker.setMaxValueForTime(maxValue: Int = 99) {
+        this.maxValue = maxValue
+    }
+
+    private fun NumberPicker.setMinValueForTime(minValue: Int = 0) {
+        this.minValue = minValue
+    }
+
 
     private fun getParentId(): Int? {
         return arguments?.getInt(PARENT_KEY)
