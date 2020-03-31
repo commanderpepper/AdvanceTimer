@@ -15,6 +15,7 @@ import commanderpepper.advancetimer.R
 import commanderpepper.advancetimer.room.AlarmTimerType
 import commanderpepper.advancetimer.ui.alarmtimerdetail.DETAIL_TIMER_KEY
 import commanderpepper.advancetimer.viewmodel.dismissKeyboard
+import it.sephiroth.android.library.numberpicker.doOnProgressChanged
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
@@ -38,9 +39,9 @@ class AlarmTimerNewFragment : Fragment() {
 
     private lateinit var alarmTypeRadioGroup: RadioGroup
 
-    private lateinit var triggerHourNumberPicker: NumberPicker
-    private lateinit var triggerMinuteNumberPicker: NumberPicker
-    private lateinit var triggerSecondNumberPicker: NumberPicker
+    private lateinit var triggerHourNumberPicker: it.sephiroth.android.library.numberpicker.NumberPicker
+    private lateinit var triggerMinuteNumberPicker: it.sephiroth.android.library.numberpicker.NumberPicker
+    private lateinit var triggerSecondNumberPicker: it.sephiroth.android.library.numberpicker.NumberPicker
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,29 +60,23 @@ class AlarmTimerNewFragment : Fragment() {
         }
 
         triggerHourNumberPicker.run {
-            setMinValueForTime()
-            setMaxValueForTime()
-            setPickerValue(alarmTimerViewModel.triggerHour)
-            setOnValueChangedListener { _, _, newVal ->
-                alarmTimerViewModel.triggerHour = newVal
+            this.progress = alarmTimerViewModel.triggerHour
+            this.doOnProgressChanged { numberPicker, progress, formUser ->
+                alarmTimerViewModel.triggerHour = progress
             }
         }
 
         triggerMinuteNumberPicker.run {
-            setMaxValueForTime()
-            setMinValueForTime()
-            setPickerValue(alarmTimerViewModel.triggerMinute)
-            setOnValueChangedListener { _, _, newVal ->
-                alarmTimerViewModel.triggerMinute = newVal
+            this.progress = alarmTimerViewModel.triggerMinute
+            this.doOnProgressChanged { numberPicker, progress, formUser ->
+                alarmTimerViewModel.triggerMinute = progress
             }
         }
 
         triggerSecondNumberPicker.run {
-            setMaxValueForTime()
-            setMinValueForTime()
-            setPickerValue(alarmTimerViewModel.triggerSecond)
-            setOnValueChangedListener { _, _, newVal ->
-                alarmTimerViewModel.triggerSecond = newVal
+            this.progress = alarmTimerViewModel.triggerSecond
+            this.doOnProgressChanged { numberPicker, progress, formUser ->
+                alarmTimerViewModel.triggerSecond = progress
             }
         }
 
@@ -154,7 +149,6 @@ class AlarmTimerNewFragment : Fragment() {
     private fun NumberPicker.setPickerValue(value: Int) {
         this.value = value
     }
-
 
     private fun getParentId(): Int? {
         return arguments?.getInt(PARENT_KEY)

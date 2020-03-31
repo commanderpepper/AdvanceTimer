@@ -8,7 +8,8 @@
         android:id="@+id/hourHint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="2dp"
+        android:layout_marginVertical="2dp"
+        android:layout_marginEnd="2dp"
         android:text="@string/hour_hint"
         app:layout_constraintEnd_toStartOf="@+id/minuteHint"
         app:layout_constraintHorizontal_bias="0.5"
@@ -30,42 +31,44 @@
         android:id="@+id/secondHint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="2dp"
+        android:layout_marginVertical="2dp"
+        android:layout_marginStart="2dp"
         android:text="@string/second_hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/minuteHint"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <NumberPicker
+    <it.sephiroth.android.library.numberpicker.NumberPicker
         android:id="@+id/hourNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginVertical="2dp"
         android:layout_marginEnd="2dp"
-        android:scaleX=".85"
-        android:scaleY=".85"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/hourHint" />
+        app:layout_constraintTop_toBottomOf="@id/hourHint"
+        app:picker_max="99"
+        app:picker_min="0" />
 
-    <NumberPicker
+    <it.sephiroth.android.library.numberpicker.NumberPicker
         android:id="@+id/minuteNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        android:layout_marginEnd="2dp"
-        android:scaleX=".85"
-        android:scaleY=".85"
+        android:layout_margin="2dp"
         app:layout_constraintStart_toEndOf="@id/hourNumber"
-        app:layout_constraintTop_toBottomOf="@id/hourHint" />
+        app:layout_constraintTop_toBottomOf="@id/hourHint"
+        app:picker_max="99"
+        app:picker_min="0" />
 
-    <NumberPicker
+    <it.sephiroth.android.library.numberpicker.NumberPicker
         android:id="@+id/secondNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginVertical="2dp"
         android:layout_marginStart="2dp"
-        android:scaleX=".85"
-        android:scaleY=".85"
         app:layout_constraintStart_toEndOf="@id/minuteNumber"
-        app:layout_constraintTop_toBottomOf="@id/hourHint" />
+        app:layout_constraintTop_toBottomOf="@id/hourHint"
+        app:picker_max="99"
+        app:picker_min="0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

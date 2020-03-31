@@ -86,4 +86,7 @@ dependencies {
     implementation "com.google.dagger:dagger:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
 
+    // Sephiroth's Customer Number Picker
+    implementation 'com.github.sephiroth74:NumberSlidingPicker:1.0.3'
+
 }
