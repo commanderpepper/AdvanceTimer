@@ -1,11 +1,11 @@
 package commanderpepper.advancetimer.ui.alarmtimernew
 
 import android.os.Bundle
-import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -13,7 +13,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import commanderpepper.advancetimer.R
 import commanderpepper.advancetimer.room.AlarmTimerType
-import commanderpepper.advancetimer.ui.NavGraphAction
 import commanderpepper.advancetimer.ui.alarmtimerdetail.DETAIL_TIMER_KEY
 import commanderpepper.advancetimer.viewmodel.dismissKeyboard
 import kotlinx.coroutines.Dispatchers
@@ -23,7 +22,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.util.*
-import kotlin.math.min
 
 const val PARENT_KEY = "parentId"
 
@@ -40,53 +38,54 @@ class AlarmTimerNewFragment : Fragment() {
 
     private lateinit var alarmTypeRadioGroup: RadioGroup
 
-    private lateinit var hourNumberPicker: NumberPicker
-    private lateinit var minuteNumberPicker: NumberPicker
-    private lateinit var secondNumberPicker: NumberPicker
+    private lateinit var triggerHourNumberPicker: NumberPicker
+    private lateinit var triggerMinuteNumberPicker: NumberPicker
+    private lateinit var triggerSecondNumberPicker: NumberPicker
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_alarm_timer_new, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val oneOffTimerLayout = layoutInflater.inflate(R.layout.time_selection, null, false).also {
-            hourNumberPicker = it.findViewById(R.id.hourNumber)
-            minuteNumberPicker = it.findViewById(R.id.minuteNumber)
-            secondNumberPicker = it.findViewById(R.id.secondNumber)
+        view.findViewById<ConstraintLayout>(R.id.oneOffTimerNumber).also {
+            triggerHourNumberPicker = it.findViewById(R.id.hourNumber)
+            triggerMinuteNumberPicker = it.findViewById(R.id.minuteNumber)
+            triggerSecondNumberPicker = it.findViewById(R.id.secondNumber)
         }
 
-        hourNumberPicker.run {
+        triggerHourNumberPicker.run {
+            setMinValueForTime()
+            setMaxValueForTime()
+            setPickerValue(alarmTimerViewModel.triggerHour)
+            setOnValueChangedListener { _, _, newVal ->
+                alarmTimerViewModel.triggerHour = newVal
+            }
+        }
+
+        triggerMinuteNumberPicker.run {
             setMaxValueForTime()
             setMinValueForTime()
+            setPickerValue(alarmTimerViewModel.triggerMinute)
+            setOnValueChangedListener { _, _, newVal ->
+                alarmTimerViewModel.triggerMinute = newVal
+            }
         }
 
-        minuteNumberPicker.run {
+        triggerSecondNumberPicker.run {
             setMaxValueForTime()
             setMinValueForTime()
+            setPickerValue(alarmTimerViewModel.triggerSecond)
+            setOnValueChangedListener { _, _, newVal ->
+                alarmTimerViewModel.triggerSecond = newVal
+            }
         }
-
-        secondNumberPicker.run {
-            setMaxValueForTime()
-            setMinValueForTime()
-        }
-
-        hourNumberPicker.setOnValueChangedListener { numberPicker, p1, p2 ->
-            Timber.d("New value $p2")
-            hourNumberPicker.value = p2
-        }
-
 
         saveButton = view.findViewById(R.id.add_alarmtimer)
-
-        hourEditText = view.findViewById(R.id.newHour)
-        minuteEditText = view.findViewById(R.id.newMinute)
-        secondEditText = view.findViewById(R.id.newSecond)
 
         alarmTimerTitle = view.findViewById(R.id.timerTitle)
 
@@ -99,49 +98,49 @@ class AlarmTimerNewFragment : Fragment() {
             alarmTimerViewModel.updateAlarmTimerType(alarmTimerType)
         }
 
-        saveButton.setOnClickListener {
-
-            val hourAsString = hourEditText.text.toString()
-            val minuteAsString = minuteEditText.text.toString()
-            val secondAsString = secondEditText.text.toString()
-
-            val hourAsLong = hourToMilliseconds(hourAsString)
-            val minuteAsLong = minuteToMilliseconds(minuteAsString)
-            val secondAsLong = secondToMilliseconds(secondAsString)
-
-            val title =
-                if (alarmTimerTitle.text.toString() == resources.getString(R.string.alarmtimer_title_hint)) {
-                    createGenericTitle(hourAsString, minuteAsString, secondAsString)
-                } else {
-                    alarmTimerTitle.text.toString()
-                }
-
-            val alarmContext = requireContext().applicationContext
-
-            val nowMilliSeconds: Long = Calendar.getInstance().timeInMillis
-
-            val triggerAtMillis = nowMilliSeconds + hourAsLong + minuteAsLong + secondAsLong
-
-            lifecycleScope.launch {
-                val resultFlow = withContext(Dispatchers.Default) {
-                    alarmTimerViewModel.createTimer(
-                        title, alarmContext, triggerAtMillis, getParentId()
-                    )
-                }
-
-                resultFlow.flowOn(Dispatchers.Main).collect { _ ->
-                    requireActivity().dismissKeyboard()
-                    if (getParentId() == null) {
-                        it.findNavController()
-                            .navigate(R.id.action_alarmTimerNew_to_alarmTimerListFragment)
-                    } else {
-                        val bundle = bundleOf(DETAIL_TIMER_KEY to getParentId()!!)
-                        it.findNavController()
-                            .navigate(R.id.action_alarmTimerNew_to_alarmTimerDetail, bundle)
-                    }
-                }
-            }
-        }
+//        saveButton.setOnClickListener {
+//
+//            val hourAsString = hourEditText.text.toString()
+//            val minuteAsString = minuteEditText.text.toString()
+//            val secondAsString = secondEditText.text.toString()
+//
+//            val hourAsLong = hourToMilliseconds(hourAsString)
+//            val minuteAsLong = minuteToMilliseconds(minuteAsString)
+//            val secondAsLong = secondToMilliseconds(secondAsString)
+//
+//            val title =
+//                if (alarmTimerTitle.text.toString() == resources.getString(R.string.alarmtimer_title_hint)) {
+//                    createGenericTitle(hourAsString, minuteAsString, secondAsString)
+//                } else {
+//                    alarmTimerTitle.text.toString()
+//                }
+//
+//            val alarmContext = requireContext().applicationContext
+//
+//            val nowMilliSeconds: Long = Calendar.getInstance().timeInMillis
+//
+//            val triggerAtMillis = nowMilliSeconds + hourAsLong + minuteAsLong + secondAsLong
+//
+//            lifecycleScope.launch {
+//                val resultFlow = withContext(Dispatchers.Default) {
+//                    alarmTimerViewModel.createTimer(
+//                        title, alarmContext, triggerAtMillis, getParentId()
+//                    )
+//                }
+//
+//                resultFlow.flowOn(Dispatchers.Main).collect { _ ->
+//                    requireActivity().dismissKeyboard()
+//                    if (getParentId() == null) {
+//                        it.findNavController()
+//                            .navigate(R.id.action_alarmTimerNew_to_alarmTimerListFragment)
+//                    } else {
+//                        val bundle = bundleOf(DETAIL_TIMER_KEY to getParentId()!!)
+//                        it.findNavController()
+//                            .navigate(R.id.action_alarmTimerNew_to_alarmTimerDetail, bundle)
+//                    }
+//                }
+//            }
+//        }
     }
 
     private fun NumberPicker.setMaxValueForTime(maxValue: Int = 99) {
@@ -150,6 +149,10 @@ class AlarmTimerNewFragment : Fragment() {
 
     private fun NumberPicker.setMinValueForTime(minValue: Int = 0) {
         this.minValue = minValue
+    }
+
+    private fun NumberPicker.setPickerValue(value: Int) {
+        this.value = value
     }
 
 

@@ -16,9 +16,9 @@ import timber.log.Timber
 
 class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(application) {
 
-    var hour : Long = 0L
-    var minute : Long = 0L
-    var second : Long = 0L
+    var triggerHour = 0
+    var triggerMinute = 0
+    var triggerSecond = 0
 
     var alarmTimerType: AlarmTimerType = AlarmTimerType.OneOffTimer
         private set
@@ -46,8 +46,15 @@ class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(applic
         parentId: Int?,
         alarmTimerType: AlarmTimerType = this.alarmTimerType,
         intervalAtMillis: Long = 0L
-    ): Flow<Int>{
-        return alarmTimerViewModel.createTimer(title, context, triggerAtMillis, parentId, alarmTimerType, intervalAtMillis)
+    ): Flow<Int> {
+        return alarmTimerViewModel.createTimer(
+            title,
+            context,
+            triggerAtMillis,
+            parentId,
+            alarmTimerType,
+            intervalAtMillis
+        )
     }
 
 //    suspend fun createTimer(
