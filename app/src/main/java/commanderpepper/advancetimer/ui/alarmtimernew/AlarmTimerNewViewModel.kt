@@ -34,15 +34,6 @@ class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(applic
     private val alarmTimerViewModel: AlarmTimerViewModel =
         (application as App).appComponent.alarmTimerViewModelGenerator()
 
-//    fun makeTimerUsingContext(
-//        title: String,
-//        context: Context,
-//        triggerAtMillis: Long,
-//        parentId: Int?
-//    ) {
-//        alarmTimerViewModel.createTimerWaitForId(title, context, triggerAtMillis, parentId)
-//    }
-
     suspend fun createTimer(
         context: Context,
         parentId: Int?
@@ -58,7 +49,7 @@ class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(applic
     }
 
     fun createGenericTitle(): String {
-        return "Timer goes off in ${triggerHour}h:${triggerMinute}m:${triggerSecond}s"
+        return "Timer goes off in ${triggerHour.amount}h:${triggerMinute.amount}m:${triggerSecond.amount}s"
     }
 
     fun getTriggerTime(triggerTime: UnitsOfTime.MilliSecond): UnitsOfTime.MilliSecond {
@@ -74,13 +65,5 @@ class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(applic
         return hour.toMillisecond() + minute.toMillisecond() + second.toMillisecond()
     }
 
-//    suspend fun createTimer(
-//        title: String,
-//        context: Context,
-//        triggerAtMillis: Long,
-//        parentId: Int?
-//    ): Flow<Int> {
-//        return alarmTimerViewModel.createTimer(title, context, triggerAtMillis, parentId)
-//    }
 }
 

@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
@@ -35,6 +36,9 @@ class AlarmTimerDetailFragment : Fragment() {
     private lateinit var childTimersRecyclerView: RecyclerView
     private lateinit var addTimerFab: FloatingActionButton
 
+    private lateinit var turnOnButton: Button
+    private lateinit var turnOffButton: Button
+
     private val alarmTimerId: Int = getAlarmTimerId()
 
     override fun onCreateView(
@@ -55,6 +59,9 @@ class AlarmTimerDetailFragment : Fragment() {
         parentDetailTimerTitleView = view.findViewById(R.id.detailParentTimerTitle)
         childTimersRecyclerView = view.findViewById(R.id.detailChildTimerList)
         addTimerFab = view.findViewById(R.id.detail_create_alarmtimer_fab)
+        turnOnButton = view.findViewById(R.id.turnOnTimer)
+        turnOffButton = view.findViewById(R.id.turnOffTimer)
+
 
         if (getAddFabStatus()) {
             addTimerFab.setOnClickListener {

@@ -17,13 +17,22 @@
     app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/detailDismissButton"
+        android:id="@+id/turnOnTimer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Turn On"
         android:layout_margin="8dp"
-        android:text="Dismiss"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detailTimerTitle" />
+        app:layout_constraintTop_toBottomOf="@id/detailTimerTitle"/>
+
+    <Button
+        android:id="@+id/turnOffTimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Turn Off"
+        android:layout_margin="8dp"
+        app:layout_constraintStart_toEndOf="@id/turnOnTimer"
+        app:layout_constraintTop_toBottomOf="@id/detailTimerTitle" />
 
     <View
         android:id="@+id/mainTimerParentTimerSeperatorDetail"
@@ -32,7 +41,7 @@
         android:layout_margin="8dp"
         android:background="@android:color/darker_gray"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/detailDismissButton" />
+        app:layout_constraintTop_toBottomOf="@id/turnOffTimer" />
 
     <TextView
         android:id="@+id/detailParentTimerTitle"

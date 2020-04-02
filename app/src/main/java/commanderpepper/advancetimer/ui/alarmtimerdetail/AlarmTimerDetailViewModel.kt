@@ -30,4 +30,12 @@ class AlarmTimerDetailViewModel(application: Application) : AndroidViewModel(app
     suspend fun modifyEnabledState(alarmTimerId: Int) {
         alarmTimerViewModel.modifyAlarmTimer(alarmTimerId)
     }
+
+    suspend fun restartTimer(alarmTimerId: Int){
+
+    }
+
+    suspend fun stopTimer(alarmTimerId: Int){
+
+    }
 }

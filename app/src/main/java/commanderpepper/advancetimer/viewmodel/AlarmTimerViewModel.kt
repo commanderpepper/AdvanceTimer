@@ -75,7 +75,19 @@ class AlarmTimerViewModel @Inject constructor(
         val sourceIntent = Intent(context, MyReceiver::class.java)
         sourceIntent.putExtra(TIMER_ID, insertedId)
 
-        alarmCreator.makeTimerUsingContext(context, sourceIntent, triggerAtMillis.amount)
+        when (alarmTimerType) {
+            AlarmTimerType.OneOffTimer -> alarmCreator.makeTimerUsingContext(
+                context,
+                sourceIntent,
+                triggerAtMillis.amount
+            )
+            AlarmTimerType.RepeatingTimer -> alarmCreator.makeRepeatingAlarmUsingContext(
+                context,
+                sourceIntent,
+                triggerAtMillis.amount,
+                intervalAtMillis.amount
+            )
+        }
 
         return flow {
             emit(insertedId.toInt())

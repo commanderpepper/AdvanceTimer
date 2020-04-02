@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import commanderpepper.advancetimer.R
-import commanderpepper.advancetimer.room.AlarmTimer
 import commanderpepper.advancetimer.ui.NavGraphAction
 import commanderpepper.advancetimer.ui.recyclerview.AlarmTimerAdapter
 import kotlinx.coroutines.launch
@@ -55,7 +54,6 @@ class AlarmTimerListFragment : Fragment() {
         Timber.d("Arrived at onViewCreated")
 
         recyclerView = view.findViewById(R.id.alarmtimer_recyclerview)
-
         fab = view.findViewById(R.id.create_alarmtimer_fab)
 
         fab.setOnClickListener {
