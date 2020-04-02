@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.view.inputmethod.InputMethodManager
 import commanderpepper.advancetimer.alarmcreation.AlarmCreator
+import commanderpepper.advancetimer.model.UnitsOfTime
 import commanderpepper.advancetimer.receivers.MyReceiver
 import commanderpepper.advancetimer.repository.AlarmRepository
 import commanderpepper.advancetimer.room.AlarmTimer
@@ -51,18 +52,18 @@ class AlarmTimerViewModel @Inject constructor(
     suspend fun createTimer(
         title: String,
         context: Context,
-        triggerAtMillis: Long,
+        triggerAtMillis: UnitsOfTime.MilliSecond,
         parentId: Int?,
         alarmTimerType: AlarmTimerType,
-        intervalAtMillis: Long
+        intervalAtMillis: UnitsOfTime.MilliSecond
     ): Flow<Int> {
 
         val testAlarmTimer = AlarmTimer(
             title,
             alarmTimerType,
             true,
-            triggerAtMillis,
-            intervalAtMillis,
+            triggerAtMillis.amount,
+            intervalAtMillis.amount,
             alarmCreator.getRequestCode(),
             parentId
         )
@@ -74,7 +75,7 @@ class AlarmTimerViewModel @Inject constructor(
         val sourceIntent = Intent(context, MyReceiver::class.java)
         sourceIntent.putExtra(TIMER_ID, insertedId)
 
-        alarmCreator.makeTimerUsingContext(context, sourceIntent, triggerAtMillis)
+        alarmCreator.makeTimerUsingContext(context, sourceIntent, triggerAtMillis.amount)
 
         return flow {
             emit(insertedId.toInt())

@@ -3,22 +3,24 @@ package commanderpepper.advancetimer.ui.alarmtimernew
 import android.app.Application
 import android.content.Context
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import commanderpepper.App
-import commanderpepper.advancetimer.alarmcreation.AlarmCreator
-import commanderpepper.advancetimer.repository.AlarmRepository
+import commanderpepper.advancetimer.model.UnitsOfTime
+import commanderpepper.advancetimer.model.plus
+import commanderpepper.advancetimer.model.toMillisecond
 import commanderpepper.advancetimer.room.AlarmTimerType
 import commanderpepper.advancetimer.viewmodel.AlarmTimerViewModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.withContext
-import timber.log.Timber
+import java.util.*
 
 class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(application) {
 
-    var triggerHour = 0
-    var triggerMinute = 0
-    var triggerSecond = 0
+    var triggerHour: UnitsOfTime.Hour = UnitsOfTime.Hour(0L)
+    var triggerMinute: UnitsOfTime.Minute = UnitsOfTime.Minute(0L)
+    var triggerSecond: UnitsOfTime.Second = UnitsOfTime.Second(0L)
+
+    var repeatHour: UnitsOfTime.Hour = UnitsOfTime.Hour(0L)
+    var repeatMinute: UnitsOfTime.Minute = UnitsOfTime.Minute(0L)
+    var repeatSecond: UnitsOfTime.Second = UnitsOfTime.Second(0L)
 
     var alarmTimerType: AlarmTimerType = AlarmTimerType.OneOffTimer
         private set
@@ -26,6 +28,8 @@ class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(applic
     fun updateAlarmTimerType(alarmTimerType: AlarmTimerType) {
         this.alarmTimerType = alarmTimerType
     }
+
+    var alarmTimerTitle = "Timer Title"
 
     private val alarmTimerViewModel: AlarmTimerViewModel =
         (application as App).appComponent.alarmTimerViewModelGenerator()
@@ -40,21 +44,34 @@ class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(applic
 //    }
 
     suspend fun createTimer(
-        title: String,
         context: Context,
-        triggerAtMillis: Long,
-        parentId: Int?,
-        alarmTimerType: AlarmTimerType = this.alarmTimerType,
-        intervalAtMillis: Long = 0L
+        parentId: Int?
     ): Flow<Int> {
         return alarmTimerViewModel.createTimer(
-            title,
+            alarmTimerTitle,
             context,
-            triggerAtMillis,
+            getTriggerTime(calculateTimeInMilliseconds(triggerHour, triggerMinute, triggerSecond)),
             parentId,
             alarmTimerType,
-            intervalAtMillis
+            calculateTimeInMilliseconds(repeatHour, repeatMinute, repeatSecond)
         )
+    }
+
+    fun createGenericTitle(): String {
+        return "Timer goes off in ${triggerHour}h:${triggerMinute}m:${triggerSecond}s"
+    }
+
+    fun getTriggerTime(triggerTime: UnitsOfTime.MilliSecond): UnitsOfTime.MilliSecond {
+        val calendar = Calendar.getInstance()
+        return UnitsOfTime.MilliSecond(calendar.timeInMillis) + triggerTime
+    }
+
+    fun calculateTimeInMilliseconds(
+        hour: UnitsOfTime.Hour,
+        minute: UnitsOfTime.Minute,
+        second: UnitsOfTime.Second
+    ): UnitsOfTime.MilliSecond {
+        return hour.toMillisecond() + minute.toMillisecond() + second.toMillisecond()
     }
 
 //    suspend fun createTimer(
@@ -66,3 +83,4 @@ class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(applic
 //        return alarmTimerViewModel.createTimer(title, context, triggerAtMillis, parentId)
 //    }
 }
+

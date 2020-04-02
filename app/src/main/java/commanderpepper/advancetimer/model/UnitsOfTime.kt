@@ -5,14 +5,18 @@ sealed class UnitsOfTime() {
     data class Hour(val amount: Long) : UnitsOfTime()
     data class Minute(val amount: Long) : UnitsOfTime()
     data class Second(val amount: Long) : UnitsOfTime()
-    data class MilliSeconds(val amount: Long) : UnitsOfTime()
+    data class MilliSecond(val amount: Long) : UnitsOfTime()
 }
 
-fun UnitsOfTime.toMilliseconds(): UnitsOfTime.MilliSeconds {
+fun UnitsOfTime.toMillisecond(): UnitsOfTime.MilliSecond {
     return when (this) {
-        is UnitsOfTime.Hour -> UnitsOfTime.MilliSeconds(this.amount * 3_600_000L)
-        is UnitsOfTime.Minute -> UnitsOfTime.MilliSeconds(this.amount * 60_000L)
-        is UnitsOfTime.Second -> UnitsOfTime.MilliSeconds(this.amount * 1_000L)
-        is UnitsOfTime.MilliSeconds -> UnitsOfTime.MilliSeconds(this.amount)
+        is UnitsOfTime.Hour -> UnitsOfTime.MilliSecond(this.amount * 3_600_000L)
+        is UnitsOfTime.Minute -> UnitsOfTime.MilliSecond(this.amount * 60_000L)
+        is UnitsOfTime.Second -> UnitsOfTime.MilliSecond(this.amount * 1_000L)
+        is UnitsOfTime.MilliSecond -> UnitsOfTime.MilliSecond(this.amount)
     }
+}
+
+operator fun UnitsOfTime.MilliSecond.plus(other: UnitsOfTime.MilliSecond): UnitsOfTime.MilliSecond {
+    return UnitsOfTime.MilliSecond(this.amount + other.amount)
 }
