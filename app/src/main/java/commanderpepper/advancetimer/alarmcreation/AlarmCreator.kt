@@ -23,8 +23,6 @@ class AlarmCreator @Inject constructor(
     private val alarmMgr: AlarmManager =
         context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-//    private val requestCodeGenerator = RequestCodeGenerator(context)
-
     private val requestCodeGenerator = (context as App).appComponent.requestCodeGenerator()
 
     fun makeAlarm(intent: Intent, triggerAtMillis: Long) {
@@ -36,12 +34,6 @@ class AlarmCreator @Inject constructor(
     fun makeTimer(intent: Intent, triggerAtMillis: Long) {
         val pendingIntent =
             creatingPendingIntent(intent)
-        createTimer(pendingIntent, triggerAtMillis)
-    }
-
-    fun makeTimer(context: Context, intent: Intent, triggerAtMillis: Long) {
-        val pendingIntent =
-            creatingPendingIntent(context, intent, PendingIntent.FLAG_ONE_SHOT)
         createTimer(pendingIntent, triggerAtMillis)
     }
 
@@ -81,30 +73,6 @@ class AlarmCreator @Inject constructor(
         )
     }
 
-    fun makeRepeatingTimer(
-        context: Context,
-        intent: Intent,
-        triggerAtMillis: Long,
-        intervalAtMillis: Long
-    ) {
-        val pendingIntent = PendingIntent.getBroadcast(
-            context,
-            requestCodeGenerator.getRequestCode(),
-            intent,
-            PendingIntent.FLAG_CANCEL_CURRENT
-        )
-
-        val alarmManager: AlarmManager =
-            context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
-        alarmManager.setRepeating(
-            AlarmManager.RTC_WAKEUP,
-            triggerAtMillis,
-            intervalAtMillis,
-            pendingIntent
-        )
-    }
-
     fun makeRepeatingAlarm(intent: Intent, triggerAtMillis: Long, intervalAtMillis: Long) {
         val pendingIntent =
             creatingPendingIntent(intent)
@@ -131,19 +99,6 @@ class AlarmCreator @Inject constructor(
         )
     }
 
-    private fun creatingPendingIntent(
-        context: Context,
-        intent: Intent,
-        flag: Int = PendingIntent.FLAG_CANCEL_CURRENT
-    ): PendingIntent {
-        return PendingIntent.getActivity(
-            context,
-            requestCodeGenerator.getRequestCode(),
-            intent,
-            flag
-        )
-    }
-
     private fun createAlarm(pendingIntent: PendingIntent, triggerAtMillis: Long) {
         alarmMgr.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
@@ -156,7 +111,6 @@ class AlarmCreator @Inject constructor(
         val time = System.currentTimeMillis() + triggerAtMillis
         Timber.d(time.toString())
 
-//        alarmMgr.setExactAndAllowWhileIdle
         alarmMgr.setExact(
             AlarmManager.RTC_WAKEUP,
             time,
@@ -188,5 +142,9 @@ class AlarmCreator @Inject constructor(
             intervalAtMillis,
             pendingIntent
         )
+    }
+
+    fun cancelOneOffTimer(pendingIntent: PendingIntent) {
+        alarmMgr.cancel(pendingIntent)
     }
 }

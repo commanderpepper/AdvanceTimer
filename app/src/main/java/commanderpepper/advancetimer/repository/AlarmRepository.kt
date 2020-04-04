@@ -45,16 +45,16 @@ class AlarmRepository @Inject constructor(val context: Context) {
 
     suspend fun modifyAlarmTimerEnabledState(alarmTimerId: Int) {
         val alarmTimer = getAlarmTimer(alarmTimerId)
-        if (alarmTimer.type == AlarmTimerType.OneOffTimer || alarmTimer.type == AlarmTimerType.OneOffTimer) {
+        if (alarmTimer.type == AlarmTimerType.OneOffTimer) {
             disableAlarmTimer(alarmTimerId)
         }
     }
 
-    private suspend fun disableAlarmTimer(alarmTimerId: Int) {
+    suspend fun disableAlarmTimer(alarmTimerId: Int) {
         alarmTimerDAO.modifyEnabledState(alarmTimerId, false)
     }
 
-    private suspend fun enableAlarmTimer(alarmTimerId: Int) {
+    suspend fun enableAlarmTimer(alarmTimerId: Int) {
         alarmTimerDAO.modifyEnabledState(alarmTimerId, true)
     }
 }

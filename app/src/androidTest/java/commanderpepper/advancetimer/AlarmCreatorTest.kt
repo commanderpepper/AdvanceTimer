@@ -210,4 +210,29 @@ class AlarmCreatorTest {
         assertThat(alarmIntent, CoreMatchers.nullValue())
     }
 
+    @Test
+    fun createAlarm_RetrieveAlarm_CancelAlarm_CheckIfCancelled() {
+        val sourceIntent = Intent(context, AlarmReceiver::class.java)
+        alarmCreator.makeAlarm(sourceIntent, 10000L)
+
+        val currentRequestCode = requestCodeGenerator.getCurrentRequestCode()
+
+        PendingIntent.getActivities(
+            context,
+            currentRequestCode,
+            arrayOf(sourceIntent),
+            PendingIntent.FLAG_CANCEL_CURRENT
+        )
+
+        val alarmIntent: PendingIntent? =
+            PendingIntent.getActivities(
+                context,
+                currentRequestCode,
+                arrayOf(sourceIntent),
+                PendingIntent.FLAG_NO_CREATE
+            )
+
+        assertThat(alarmIntent, CoreMatchers.nullValue())
+    }
+
 }

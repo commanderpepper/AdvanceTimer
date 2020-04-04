@@ -17,6 +17,7 @@ class MyReceiver : BroadcastReceiver() {
 //        val intExtra = intent.getIntExtra(TIMER_ID, -1)
         val longExtra = intent.getLongExtra(TIMER_ID, -1L)
         Timber.d("$longExtra")
+
         val activityIntent = Intent(context, DismissTimer::class.java)
         activityIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
 

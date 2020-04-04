@@ -99,6 +99,15 @@ class AlarmTimerViewModel @Inject constructor(
             alarmRepository.modifyAlarmTimerEnabledState(alarmTimerId)
         }
     }
+
+    suspend fun enableAlarmTimer(alarmTimerId: Int) {
+        alarmRepository.enableAlarmTimer(alarmTimerId)
+    }
+
+    suspend fun disableAlarmTime(alarmTimerId: Int) {
+        alarmRepository.disableAlarmTimer(alarmTimerId)
+    }
+
 }
 
 fun Activity.dismissKeyboard() {
