@@ -76,12 +76,12 @@ class AlarmTimerViewModel @Inject constructor(
         sourceIntent.putExtra(TIMER_ID, insertedId)
 
         when (alarmTimerType) {
-            AlarmTimerType.OneOffTimer -> alarmCreator.makeTimerUsingContext(
+            AlarmTimerType.OneOffTimer -> alarmCreator.makeOneOffAlarm(
                 context,
                 sourceIntent,
                 triggerAtMillis.amount
             )
-            AlarmTimerType.RepeatingTimer -> alarmCreator.makeRepeatingAlarmUsingContext(
+            AlarmTimerType.RepeatingTimer -> alarmCreator.makeRepeatingAlarm(
                 context,
                 sourceIntent,
                 triggerAtMillis.amount,

@@ -20,24 +20,16 @@ class AlarmCreator @Inject constructor(
     val context: Context
 ) {
 
-    private val alarmMgr: AlarmManager =
-        context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
     private val requestCodeGenerator = (context as App).appComponent.requestCodeGenerator()
 
-    fun makeAlarm(intent: Intent, triggerAtMillis: Long) {
-        val pendingIntent =
-            creatingPendingIntent(intent, PendingIntent.FLAG_ONE_SHOT)
-        createAlarm(pendingIntent, triggerAtMillis)
-    }
-
-    fun makeTimer(intent: Intent, triggerAtMillis: Long) {
-        val pendingIntent =
-            creatingPendingIntent(intent)
-        createTimer(pendingIntent, triggerAtMillis)
-    }
-
-    fun makeTimerUsingContext(context: Context, intent: Intent, triggerAtMillis: Long) {
+    /**
+     * Makes a one off alarm with the alarm manager.
+     */
+    fun makeOneOffAlarm(
+        context: Context,
+        intent: Intent,
+        triggerAtMillis: Long
+    ) {
         val pendingIntent =
             PendingIntent.getBroadcast(
                 context,
@@ -45,13 +37,17 @@ class AlarmCreator @Inject constructor(
                 intent,
                 PendingIntent.FLAG_CANCEL_CURRENT
             )
+
         val alarmManager: AlarmManager =
             context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent)
     }
 
-    fun makeRepeatingAlarmUsingContext(
+    /**
+     * Makes a repeating alarm with the alarm manager.
+     */
+    fun makeRepeatingAlarm(
         context: Context,
         sourceIntent: Intent,
         triggerAtMillis: Long,
@@ -65,6 +61,7 @@ class AlarmCreator @Inject constructor(
         )
         val alarmManager: AlarmManager =
             context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
         alarmManager.setRepeating(
             AlarmManager.RTC_WAKEUP,
             triggerAtMillis,
@@ -73,78 +70,15 @@ class AlarmCreator @Inject constructor(
         )
     }
 
-    fun makeRepeatingAlarm(intent: Intent, triggerAtMillis: Long, intervalAtMillis: Long) {
-        val pendingIntent =
-            creatingPendingIntent(intent)
-        createRepeatingAlarm(pendingIntent, triggerAtMillis, intervalAtMillis)
-    }
-
-    fun makeRepeatingTimer(intent: Intent, triggerAtMillis: Long, intervalAtMillis: Long) {
-        val pendingIntent =
-            creatingPendingIntent(intent)
-        createRepeatingTimer(pendingIntent, triggerAtMillis, intervalAtMillis)
-    }
-
     fun getRequestCode() = requestCodeGenerator.getCurrentRequestCode()
 
-    private fun creatingPendingIntent(
-        intent: Intent,
-        flag: Int = PendingIntent.FLAG_CANCEL_CURRENT
-    ): PendingIntent {
-        return PendingIntent.getBroadcast(
-            context,
-            requestCodeGenerator.getRequestCode(),
-            intent,
-            flag
-        )
-    }
+    /**
+     * Cancel a timer using the pending intent passed.
+     */
+    fun cancelTimer(context: Context, pendingIntent: PendingIntent) {
+        val alarmManager: AlarmManager =
+            context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-    private fun createAlarm(pendingIntent: PendingIntent, triggerAtMillis: Long) {
-        alarmMgr.setExactAndAllowWhileIdle(
-            AlarmManager.RTC_WAKEUP,
-            triggerAtMillis,
-            pendingIntent
-        )
-    }
-
-    private fun createTimer(pendingIntent: PendingIntent, triggerAtMillis: Long) {
-        val time = System.currentTimeMillis() + triggerAtMillis
-        Timber.d(time.toString())
-
-        alarmMgr.setExact(
-            AlarmManager.RTC_WAKEUP,
-            time,
-            pendingIntent
-        )
-    }
-
-    private fun createRepeatingAlarm(
-        pendingIntent: PendingIntent,
-        triggerAtMillis: Long,
-        intervalAtMillis: Long
-    ) {
-        alarmMgr.setInexactRepeating(
-            AlarmManager.RTC_WAKEUP,
-            triggerAtMillis,
-            intervalAtMillis,
-            pendingIntent
-        )
-    }
-
-    private fun createRepeatingTimer(
-        pendingIntent: PendingIntent,
-        triggerAtMillis: Long,
-        intervalAtMillis: Long
-    ) {
-        alarmMgr.setInexactRepeating(
-            AlarmManager.ELAPSED_REALTIME_WAKEUP,
-            triggerAtMillis,
-            intervalAtMillis,
-            pendingIntent
-        )
-    }
-
-    fun cancelOneOffTimer(pendingIntent: PendingIntent) {
-        alarmMgr.cancel(pendingIntent)
+        alarmManager.cancel(pendingIntent)
     }
 }

@@ -31,6 +31,15 @@ class RequestCodeGenerator @Inject constructor(val context: Context) {
         return sharedPreferences.getInt(REQUEST_CODE_KEY, DEFAULT_VALUE)
     }
 
+    @VisibleForTesting
+    fun clearSharedPreferences() {
+        val sharedPreferences =
+            context.getSharedPreferences(REQUEST_CODE_FILE, Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.clear()
+        editor.commit()
+    }
+
     private fun storeInt(sharedPreferences: SharedPreferences, int: Int) {
         with(sharedPreferences.edit()) {
             putInt(REQUEST_CODE_KEY, int)
