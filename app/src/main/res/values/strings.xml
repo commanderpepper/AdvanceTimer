@@ -24,5 +24,6 @@
     <string name="minuteHint">Minutes</string>
     <string name="secondHint">Seconds</string>
 
+    <string name="timerTitleDetail">Title: %1$s</string>
 
 </resources>

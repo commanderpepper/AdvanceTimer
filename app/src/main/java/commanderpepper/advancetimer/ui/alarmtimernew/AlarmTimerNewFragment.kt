@@ -58,18 +58,25 @@ class AlarmTimerNewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        /**
+         * Get the number pickers for the trigger time
+         */
         view.findViewById<ConstraintLayout>(R.id.oneOffTimerNumber).run {
             triggerHourNumberPicker = findViewById(R.id.hourNumber)
             triggerMinuteNumberPicker = findViewById(R.id.minuteNumber)
             triggerSecondNumberPicker = findViewById(R.id.secondNumber)
         }
 
+        /**
+         * Get the number pickers for the interval time
+         */
         view.findViewById<ConstraintLayout>(R.id.repeatTimerNumber).run {
             repeatHourNumberPicker = findViewById(R.id.hourNumber)
             repeatMinuteNumberPicker = findViewById(R.id.minuteNumber)
             repeatSecondNumberPicker = findViewById(R.id.secondNumber)
         }
 
+        // Set the number picker amount and when the user changes the value update the view model
         triggerHourNumberPicker.run {
             progress = alarmTimerViewModel.triggerHour.amount.toInt()
             doOnProgressChanged { numberPicker, progress, formUser ->
@@ -77,6 +84,7 @@ class AlarmTimerNewFragment : Fragment() {
             }
         }
 
+        // Set the number picker amount and when the user changes the value update the view model
         triggerMinuteNumberPicker.run {
             progress = alarmTimerViewModel.triggerMinute.amount.toInt()
             doOnProgressChanged { numberPicker, progress, formUser ->
@@ -84,6 +92,7 @@ class AlarmTimerNewFragment : Fragment() {
             }
         }
 
+        // Set the number picker amount and when the user changes the value update the view model
         triggerSecondNumberPicker.run {
             progress = alarmTimerViewModel.triggerSecond.amount.toInt()
             doOnProgressChanged { numberPicker, progress, formUser ->
@@ -91,6 +100,7 @@ class AlarmTimerNewFragment : Fragment() {
             }
         }
 
+        // Set the number picker amount and when the user changes the value update the view model
         repeatHourNumberPicker.run {
             progress = alarmTimerViewModel.repeatHour.amount.toInt()
             doOnProgressChanged { numberPicker, progress, formUser ->
@@ -98,6 +108,7 @@ class AlarmTimerNewFragment : Fragment() {
             }
         }
 
+        // Set the number picker amount and when the user changes the value update the view model
         repeatMinuteNumberPicker.run {
             progress = alarmTimerViewModel.repeatMinute.amount.toInt()
             doOnProgressChanged { numberPicker, progress, formUser ->
@@ -105,6 +116,7 @@ class AlarmTimerNewFragment : Fragment() {
             }
         }
 
+        // Set the number picker amount and when the user changes the value update the view model
         repeatSecondNumberPicker.run {
             progress = alarmTimerViewModel.repeatSecond.amount.toInt()
             doOnProgressChanged { numberPicker, progress, formUser ->
@@ -116,14 +128,20 @@ class AlarmTimerNewFragment : Fragment() {
         alarmTimerTitle = view.findViewById(R.id.timerTitle)
         alarmTypeRadioGroup = view.findViewById(R.id.timerTypeRadioGroup)
 
+        /**
+         * Set the alarm timer type in the view model whenever the user switches types.
+         */
         alarmTypeRadioGroup.setOnCheckedChangeListener { _, i ->
             val alarmTimerType: AlarmTimerType =
                 if (i == R.id.oneOffRadioButton) AlarmTimerType.OneOffTimer else AlarmTimerType.RepeatingTimer
             alarmTimerViewModel.updateAlarmTimerType(alarmTimerType)
         }
 
-        saveButton.setOnClickListener { saveButton ->
 
+        saveButton.setOnClickListener { saveButton ->
+            /**
+             * If the user didn't change the title, a generic title is generated.
+             */
             alarmTimerViewModel.alarmTimerTitle =
                 if (alarmTimerTitle.text.toString() == resources.getString(R.string.alarmtimer_title_hint)) {
                     alarmTimerViewModel.createGenericTitle()
@@ -134,6 +152,9 @@ class AlarmTimerNewFragment : Fragment() {
             val alarmContext = requireContext().applicationContext
 
             lifecycleScope.launch {
+                /**
+                 * Get a Flow from the view model. This helps with waiting for the insertion of timer data.
+                 */
                 val resultFlow = withContext(Dispatchers.Default) {
                     alarmTimerViewModel.createTimer(
                         alarmContext, getParentId()
@@ -142,11 +163,15 @@ class AlarmTimerNewFragment : Fragment() {
 
                 resultFlow.flowOn(Dispatchers.Main).collect { _ ->
                     requireActivity().dismissKeyboard()
+
+                    // If there is not parent ID, then a new parent timer was created, the user will be sent back to the timer list fragment.
                     if (getParentId() == null) {
                         view.findNavController()
                             .navigate(R.id.action_alarmTimerNew_to_alarmTimerListFragment)
                     } else {
                         val bundle = bundleOf(DETAIL_TIMER_KEY to getParentId()!!)
+
+                        // Send the user back to the parent timer of the new timer created.
                         view.findNavController().navigate(
                             R.id.action_alarmTimerListFragment_to_alarmTimerDetail,
                             bundle

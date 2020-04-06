@@ -1,14 +1,13 @@
 package commanderpepper.advancetimer.ui.alarmtimerdetail
 
-import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
@@ -16,11 +15,10 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-
 import commanderpepper.advancetimer.R
 import commanderpepper.advancetimer.ui.NavGraphAction
-import commanderpepper.advancetimer.ui.recyclerview.AlarmTimerAdapter
 import commanderpepper.advancetimer.ui.alarmtimernew.PARENT_KEY
+import commanderpepper.advancetimer.ui.recyclerview.AlarmTimerAdapter
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -45,10 +43,6 @@ class AlarmTimerDetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-
-        Timber.d("ID is $alarmTimerId")
-
         return inflater.inflate(R.layout.fragment_alarm_timer_detail, container, false)
     }
 
@@ -62,7 +56,9 @@ class AlarmTimerDetailFragment : Fragment() {
         turnOnButton = view.findViewById(R.id.turnOnTimer)
         turnOffButton = view.findViewById(R.id.turnOffTimer)
 
-
+        /**
+         * If the Floating Action Button enabled then add an onClickListener to the Floating Action Button.
+         */
         if (getAddFabStatus()) {
             addTimerFab.setOnClickListener {
                 val bundle = bundleOf(PARENT_KEY to getAlarmTimerId())
@@ -71,6 +67,9 @@ class AlarmTimerDetailFragment : Fragment() {
                     .navigate(R.id.action_alarmTimerDetail_to_alarmTimerNew, bundle)
             }
         } else {
+            /**
+             * When the Floating Action Button is disabled, assume that we are entering from a broadcast and therefore modify the timer state and hide the Floating Action Button.
+             */
             addTimerFab.hide()
             lifecycleScope.launch {
                 withContext(lifecycleScope.coroutineContext) {
@@ -79,22 +78,34 @@ class AlarmTimerDetailFragment : Fragment() {
             }
         }
 
+        /**
+         * Retrieve the title of the timer and use it to update the title view.
+         */
         lifecycleScope.launch {
             val title = withContext(lifecycleScope.coroutineContext) {
                 viewModel.retrieveTimer(getAlarmTimerId()).title
             }
-            detailTimerTitleView.text = "Title: $title"
+            detailTimerTitleView.text = getString(R.string.timerTitleDetail, title)
         }
 
+        /**
+         * Retrieve the name of the parent timer and update the parent title view.
+         */
         lifecycleScope.launch {
             parentDetailTimerTitleView.text = withContext(lifecycleScope.coroutineContext) {
                 viewModel.retrieveParentTimerTitle(getAlarmTimerId())
             }
         }
 
+        /**
+         * Populate a list of child timers.
+         */
         lifecycleScope.launch {
             val childTimers = viewModel.retrieveChildTimers(getAlarmTimerId())
 
+            /**
+             * Set up the adapter for the recycler view. If the FAB is disabled then so is the ability to go to child timers.
+             */
             val adapter =
                 AlarmTimerAdapter(
                     childTimers,
@@ -106,6 +117,7 @@ class AlarmTimerDetailFragment : Fragment() {
                         )
                     }
                 )
+
             val manager = LinearLayoutManager(this@AlarmTimerDetailFragment.context)
 
             val dividerItemDecoration =
@@ -118,10 +130,16 @@ class AlarmTimerDetailFragment : Fragment() {
         }
     }
 
+    /**
+     * Get alarm timer id passed to this fragment.
+     */
     private fun getAlarmTimerId(): Int {
         return arguments?.getInt(DETAIL_TIMER_KEY) ?: -1
     }
 
+    /**
+     * Get FAB status argument passed to this fragment, I assume it to be true.
+     */
     private fun getAddFabStatus(): Boolean {
         return arguments?.getBoolean(FAB_KEY, true) ?: true
     }

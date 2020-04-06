@@ -15,11 +15,10 @@ import javax.inject.Inject
 
 class AlarmListViewModel(application: Application) : AndroidViewModel(application) {
 
-    val alarmTimerViewModel: AlarmTimerViewModel =
+    private val alarmTimerViewModel: AlarmTimerViewModel =
         (application as App).appComponent.alarmTimerViewModelGenerator()
 
     suspend fun getParentAlarmTimerList(): List<AlarmTimer> {
-        Timber.d("Getting parent timers")
         return withContext(viewModelScope.coroutineContext) {
             alarmTimerViewModel.getParentAlarmTimers()
         }

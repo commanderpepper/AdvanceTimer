@@ -14,6 +14,9 @@ import java.util.*
 
 class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(application) {
 
+    private val alarmTimerViewModel: AlarmTimerViewModel =
+        (application as App).appComponent.alarmTimerViewModelGenerator()
+
     var triggerHour: UnitsOfTime.Hour = UnitsOfTime.Hour(0L)
     var triggerMinute: UnitsOfTime.Minute = UnitsOfTime.Minute(0L)
     var triggerSecond: UnitsOfTime.Second = UnitsOfTime.Second(0L)
@@ -25,15 +28,15 @@ class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(applic
     var alarmTimerType: AlarmTimerType = AlarmTimerType.OneOffTimer
         private set
 
+    var alarmTimerTitle = "Timer Title"
+
     fun updateAlarmTimerType(alarmTimerType: AlarmTimerType) {
         this.alarmTimerType = alarmTimerType
     }
 
-    var alarmTimerTitle = "Timer Title"
-
-    private val alarmTimerViewModel: AlarmTimerViewModel =
-        (application as App).appComponent.alarmTimerViewModelGenerator()
-
+    /**
+     * The UI view model will ask the generic view model to create a timer. The generic view timer will return a Flow.
+     */
     suspend fun createTimer(
         context: Context,
         parentId: Int?
@@ -52,12 +55,15 @@ class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(applic
         return "Timer goes off in ${triggerHour.amount}h:${triggerMinute.amount}m:${triggerSecond.amount}s"
     }
 
-    fun getTriggerTime(triggerTime: UnitsOfTime.MilliSecond): UnitsOfTime.MilliSecond {
+    /**
+     * The trigger time will be the time of alarm creation plus whatever the user inputted.
+     */
+    private fun getTriggerTime(triggerTime: UnitsOfTime.MilliSecond): UnitsOfTime.MilliSecond {
         val calendar = Calendar.getInstance()
         return UnitsOfTime.MilliSecond(calendar.timeInMillis) + triggerTime
     }
 
-    fun calculateTimeInMilliseconds(
+    private fun calculateTimeInMilliseconds(
         hour: UnitsOfTime.Hour,
         minute: UnitsOfTime.Minute,
         second: UnitsOfTime.Second
