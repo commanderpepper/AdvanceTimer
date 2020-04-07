@@ -1,104 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/newTimerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.alarmtimernew.AlarmTimerNewFragment">
 
-    <TextView
-        android:id="@+id/add_alarmtimer_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/newtimergeneralmargin"
-        android:text="@string/new_alarmtimer"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/newTimerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/timerTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/newtimergeneralmargin"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="@string/alarmtimer_title_hint"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_alarmtimer_text" />
-
-
-    <RadioGroup
-        android:id="@+id/timerTypeRadioGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/newtimergeneralmargin"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/timerTitle">
-
-        <RadioButton
-            android:id="@+id/oneOffRadioButton"
+        <TextView
+            android:id="@+id/add_alarmtimer_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="One-Off Timer"
+            android:layout_margin="@dimen/newtimergeneralmargin"
+            android:text="@string/new_alarmtimer"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/timerTypeRadioGroup" />
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <RadioButton
-            android:id="@+id/repeatingRadioButton"
+        <EditText
+            android:id="@+id/timerTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Repeating Timer"
+            android:layout_margin="@dimen/newtimergeneralmargin"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="@string/alarmtimer_title_hint"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/oneOffRadioButton" />
-
-    </RadioGroup>
-
-    <TextView
-        android:id="@+id/timerSetsOffText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/newtimergeneralmargin"
-        android:text="Timer sets off in:"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/timerTypeRadioGroup" />
-
-    <include
-        android:id="@+id/oneOffTimerNumber"
-        layout="@layout/time_selection"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/newtimergeneralmargin"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/timerSetsOffText" />
-
-    <TextView
-        android:id="@+id/repeatTimerText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/newtimergeneralmargin"
-        android:text="If repeating, the alarm repeats every:"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/oneOffTimerNumber" />
-
-    <include
-        android:id="@+id/repeatTimerNumber"
-        layout="@layout/time_selection"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/newtimergeneralmargin"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/repeatTimerText" />
-
-    <Button
-        android:id="@+id/add_alarmtimer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/newtimergeneralmargin"
-        android:text="@string/save_button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/repeatTimerNumber" />
+            app:layout_constraintTop_toBottomOf="@+id/add_alarmtimer_text" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <RadioGroup
+            android:id="@+id/timerTypeRadioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/newtimergeneralmargin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/timerTitle">
+
+            <RadioButton
+                android:id="@+id/oneOffRadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="One-Off Timer"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/timerTypeRadioGroup" />
+
+            <RadioButton
+                android:id="@+id/repeatingRadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Repeating Timer"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/oneOffRadioButton" />
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/timerSetsOffText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/newtimergeneralmargin"
+            android:text="Timer sets off in:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/timerTypeRadioGroup" />
+
+        <include
+            android:id="@+id/oneOffTimerNumber"
+            layout="@layout/time_selection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/newtimergeneralmargin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/timerSetsOffText" />
+
+        <TextView
+            android:id="@+id/repeatTimerText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/newtimergeneralmargin"
+            android:text="If repeating, the alarm repeats every:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/oneOffTimerNumber" />
+
+        <include
+            android:id="@+id/repeatTimerNumber"
+            layout="@layout/time_selection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/newtimergeneralmargin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/repeatTimerText" />
+
+        <Button
+            android:id="@+id/add_alarmtimer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/newtimergeneralmargin"
+            android:text="@string/save_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/repeatTimerNumber" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
