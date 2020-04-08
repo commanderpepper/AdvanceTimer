@@ -38,6 +38,8 @@ class AlarmCreator @Inject constructor(
                 PendingIntent.FLAG_CANCEL_CURRENT
             )
 
+        Timber.d("Creating pending intent, ${pendingIntent.creatorPackage} , ${pendingIntent.creatorUid} , ${pendingIntent.creatorUserHandle} , ${pendingIntent.intentSender}")
+
         val alarmManager: AlarmManager =
             context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
@@ -80,11 +82,16 @@ class AlarmCreator @Inject constructor(
             context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
         val pendingIntent = PendingIntent.getBroadcast(
-            context, timerRequestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT
+            context, timerRequestCode, intent, PendingIntent.FLAG_NO_CREATE
         )
 
-        pendingIntent.cancel()
+        if (pendingIntent != null) {
+            Timber.d("Cancel pending intent, ${pendingIntent.creatorPackage} , ${pendingIntent.creatorUid} , ${pendingIntent.creatorUserHandle} , ${pendingIntent.intentSender}")
+            pendingIntent.cancel()
+            alarmManager.cancel(pendingIntent)
+        } else {
+            Timber.d("Cancelled pending intent is null")
+        }
 
-        alarmManager.cancel(pendingIntent)
     }
 }

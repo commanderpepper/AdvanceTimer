@@ -73,17 +73,17 @@ class AlarmTimerViewModel @Inject constructor(
             alarmRepository.insertAlarmTimerGetId(testAlarmTimer)
         }
 
-        val sourceIntent = Intent(context, MyReceiver::class.java)
+        val sourceIntent = Intent(context.applicationContext, MyReceiver::class.java)
         sourceIntent.putExtra(TIMER_ID, insertedId)
 
         when (alarmTimerType) {
             AlarmTimerType.OneOffTimer -> alarmCreator.makeOneOffAlarm(
-                context,
+                context.applicationContext,
                 sourceIntent,
                 triggerAtMillis.amount
             )
             AlarmTimerType.RepeatingTimer -> alarmCreator.makeRepeatingAlarm(
-                context,
+                context.applicationContext,
                 sourceIntent,
                 triggerAtMillis.amount,
                 intervalAtMillis.amount
@@ -108,11 +108,14 @@ class AlarmTimerViewModel @Inject constructor(
     suspend fun disableAlarmTime(context: Context, alarmTimerId: Int) {
         alarmRepository.disableAlarmTimer(alarmTimerId)
         val alarmTimer = alarmRepository.getAlarmTimer(alarmTimerId)
-        val sourceIntent = createBroadcastIntent(context)
-        alarmCreator.cancelTimer(context, sourceIntent, alarmTimer.requestCode)
+
+        val sourceIntent = Intent(context.applicationContext, MyReceiver::class.java)
+
+        alarmCreator.cancelTimer(context.applicationContext, sourceIntent, alarmTimer.requestCode)
     }
 
-    private suspend fun createBroadcastIntent(context: Context) = Intent(context, MyReceiver::class.java)
+    private suspend fun createBroadcastIntent(context: Context) =
+        Intent(context, MyReceiver::class.java)
 
 }
 
