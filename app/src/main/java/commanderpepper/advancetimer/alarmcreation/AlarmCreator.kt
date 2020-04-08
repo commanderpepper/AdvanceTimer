@@ -73,11 +73,17 @@ class AlarmCreator @Inject constructor(
     fun getRequestCode() = requestCodeGenerator.getCurrentRequestCode()
 
     /**
-     * Cancel a timer using the pending intent passed.
+     * Cancel a timer's pending intent and it's lock in the alarm manager.
      */
-    fun cancelTimer(context: Context, pendingIntent: PendingIntent) {
+    fun cancelTimer(context: Context, intent: Intent, timerRequestCode: Int) {
         val alarmManager: AlarmManager =
             context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        val pendingIntent = PendingIntent.getBroadcast(
+            context, timerRequestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        pendingIntent.cancel()
 
         alarmManager.cancel(pendingIntent)
     }

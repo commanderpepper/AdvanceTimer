@@ -1,6 +1,7 @@
 package commanderpepper.advancetimer.ui.alarmtimerdetail
 
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import commanderpepper.App
 import commanderpepper.advancetimer.room.AlarmTimer
@@ -31,11 +32,11 @@ class AlarmTimerDetailViewModel(application: Application) : AndroidViewModel(app
         alarmTimerViewModel.modifyAlarmTimer(alarmTimerId)
     }
 
-    suspend fun restartTimer(alarmTimerId: Int){
+    suspend fun restartTimer(alarmTimerId: Int) {
         alarmTimerViewModel.enableAlarmTimer(alarmTimerId)
     }
 
-    suspend fun stopTimer(alarmTimerId: Int){
-        alarmTimerViewModel.disableAlarmTime(alarmTimerId)
+    suspend fun stopTimer(context: Context, alarmTimerId: Int) {
+        alarmTimerViewModel.disableAlarmTime(context, alarmTimerId)
     }
 }

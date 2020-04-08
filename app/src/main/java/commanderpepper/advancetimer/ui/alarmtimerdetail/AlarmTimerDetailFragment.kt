@@ -128,6 +128,15 @@ class AlarmTimerDetailFragment : Fragment() {
             childTimersRecyclerView.addItemDecoration(dividerItemDecoration)
 
         }
+
+        /**
+         * Turn off a timer.
+         */
+        turnOffButton.setOnClickListener {
+            lifecycleScope.launch {
+                viewModel.stopTimer(requireContext(), getAlarmTimerId())
+            }
+        }
     }
 
     /**

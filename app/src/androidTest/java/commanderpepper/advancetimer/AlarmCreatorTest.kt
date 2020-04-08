@@ -193,4 +193,39 @@ class AlarmCreatorTest {
         }
     }
 
+    /**
+     * Create a one off timer using the alarm creator, cancel the timer, check for null.
+     */
+    @Test
+    fun createOneOffTimer_CancelTimer_GetTimer_CheckForNull() {
+        val sourceIntent = Intent(context, AlarmReceiver::class.java)
+        alarmCreator.makeOneOffAlarm(context, sourceIntent, 200000L)
+
+        alarmCreator.cancelTimer(
+            context,
+            sourceIntent,
+            requestCodeGenerator.getCurrentRequestCode()
+        )
+
+        val testIntent = PendingIntent.getBroadcast(
+            context,
+            requestCodeGenerator.getCurrentRequestCode(),
+            sourceIntent,
+            PendingIntent.FLAG_NO_CREATE
+        )
+
+        assertThat(testIntent, CoreMatchers.nullValue())
+    }
+
+    /**
+     * Test to see what happens when a timer that doesn't exist is cancelled.
+     * I see no errors when this test runs.
+     */
+    @Test
+    fun createNoTimer_CancelNonExistentTimer_CheckForResult(){
+        val sourceIntent = Intent(context, AlarmReceiver::class.java)
+
+        alarmCreator.cancelTimer(context, sourceIntent, 0)
+    }
+
 }

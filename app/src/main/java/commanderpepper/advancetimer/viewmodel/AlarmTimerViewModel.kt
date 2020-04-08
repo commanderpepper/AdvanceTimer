@@ -1,6 +1,7 @@
 package commanderpepper.advancetimer.viewmodel
 
 import android.app.Activity
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.view.inputmethod.InputMethodManager
@@ -104,9 +105,14 @@ class AlarmTimerViewModel @Inject constructor(
         alarmRepository.enableAlarmTimer(alarmTimerId)
     }
 
-    suspend fun disableAlarmTime(alarmTimerId: Int) {
+    suspend fun disableAlarmTime(context: Context, alarmTimerId: Int) {
         alarmRepository.disableAlarmTimer(alarmTimerId)
+        val alarmTimer = alarmRepository.getAlarmTimer(alarmTimerId)
+        val sourceIntent = createBroadcastIntent(context)
+        alarmCreator.cancelTimer(context, sourceIntent, alarmTimer.requestCode)
     }
+
+    private suspend fun createBroadcastIntent(context: Context) = Intent(context, MyReceiver::class.java)
 
 }
 
