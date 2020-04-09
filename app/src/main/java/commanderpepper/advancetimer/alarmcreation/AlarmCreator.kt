@@ -6,6 +6,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.SystemClock
 import commanderpepper.App
+import commanderpepper.advancetimer.receivers.MyReceiver
+import commanderpepper.advancetimer.viewmodel.TIMER_ID
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import timber.log.Timber
@@ -26,10 +28,14 @@ class AlarmCreator @Inject constructor(
      * Makes a one off alarm with the alarm manager.
      */
     fun makeOneOffAlarm(
-        context: Context,
-        intent: Intent,
+        timerId: Long,
         triggerAtMillis: Long
     ) {
+        val intent = Intent(context, MyReceiver::class.java)
+        intent.putExtra(TIMER_ID, timerId)
+
+        Timber.d("Intent created, ${intent.action}")
+
         val pendingIntent =
             PendingIntent.getBroadcast(
                 context,
@@ -50,15 +56,19 @@ class AlarmCreator @Inject constructor(
      * Makes a repeating alarm with the alarm manager.
      */
     fun makeRepeatingAlarm(
-        context: Context,
-        sourceIntent: Intent,
+        timerId: Long,
         triggerAtMillis: Long,
         intervalAtMillis: Long
     ) {
+        val intent = Intent(context, MyReceiver::class.java)
+        intent.putExtra(TIMER_ID, timerId)
+
+        Timber.d("Intent created, ${intent.action}")
+
         val pendingIntent = PendingIntent.getBroadcast(
             context,
             requestCodeGenerator.getRequestCode(),
-            sourceIntent,
+            intent,
             PendingIntent.FLAG_CANCEL_CURRENT
         )
         val alarmManager: AlarmManager =
@@ -77,7 +87,15 @@ class AlarmCreator @Inject constructor(
     /**
      * Cancel a timer's pending intent and it's lock in the alarm manager.
      */
-    fun cancelTimer(context: Context, intent: Intent, timerRequestCode: Int) {
+    suspend fun cancelTimer(
+        timerId: Long,
+        timerRequestCode: Int
+    ) {
+        val intent = Intent(context, MyReceiver::class.java)
+        intent.putExtra(TIMER_ID, timerId)
+
+        Timber.d("Intent to be cancelled, ${intent.action}")
+
         val alarmManager: AlarmManager =
             context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
@@ -87,7 +105,6 @@ class AlarmCreator @Inject constructor(
 
         if (pendingIntent != null) {
             Timber.d("Cancel pending intent, ${pendingIntent.creatorPackage} , ${pendingIntent.creatorUid} , ${pendingIntent.creatorUserHandle} , ${pendingIntent.intentSender}")
-            pendingIntent.cancel()
             alarmManager.cancel(pendingIntent)
         } else {
             Timber.d("Cancelled pending intent is null")

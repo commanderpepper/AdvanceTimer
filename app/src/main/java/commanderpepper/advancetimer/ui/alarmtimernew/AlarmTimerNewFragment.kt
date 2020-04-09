@@ -156,9 +156,7 @@ class AlarmTimerNewFragment : Fragment() {
                  * Get a Flow from the view model. This helps with waiting for the insertion of timer data.
                  */
                 val resultFlow = withContext(Dispatchers.Default) {
-                    alarmTimerViewModel.createTimer(
-                        alarmContext, getParentId()
-                    )
+                    alarmTimerViewModel.createTimer(getParentId())
                 }
 
                 resultFlow.flowOn(Dispatchers.Main).collect { _ ->

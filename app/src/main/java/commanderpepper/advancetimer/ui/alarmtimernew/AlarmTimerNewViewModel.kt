@@ -38,12 +38,10 @@ class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(applic
      * The UI view model will ask the generic view model to create a timer. The generic view timer will return a Flow.
      */
     suspend fun createTimer(
-        context: Context,
         parentId: Int?
     ): Flow<Int> {
         return alarmTimerViewModel.createTimer(
             alarmTimerTitle,
-            context,
             getTriggerTime(calculateTimeInMilliseconds(triggerHour, triggerMinute, triggerSecond)),
             parentId,
             alarmTimerType,

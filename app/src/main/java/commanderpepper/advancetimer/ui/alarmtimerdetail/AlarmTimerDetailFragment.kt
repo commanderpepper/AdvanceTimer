@@ -134,7 +134,7 @@ class AlarmTimerDetailFragment : Fragment() {
          */
         turnOffButton.setOnClickListener {
             lifecycleScope.launch {
-                viewModel.stopTimer(requireContext().applicationContext, getAlarmTimerId())
+                viewModel.stopTimer(getAlarmTimerId())
             }
         }
     }

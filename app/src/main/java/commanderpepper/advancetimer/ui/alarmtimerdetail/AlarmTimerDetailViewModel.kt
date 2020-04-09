@@ -36,7 +36,7 @@ class AlarmTimerDetailViewModel(application: Application) : AndroidViewModel(app
         alarmTimerViewModel.enableAlarmTimer(alarmTimerId)
     }
 
-    suspend fun stopTimer(context: Context, alarmTimerId: Int) {
-        alarmTimerViewModel.disableAlarmTime(context, alarmTimerId)
+    suspend fun stopTimer(alarmTimerId: Int) {
+        alarmTimerViewModel.disableAlarmTime(alarmTimerId)
     }
 }
