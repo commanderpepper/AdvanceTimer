@@ -58,13 +58,17 @@ class AlarmTimerViewModel @Inject constructor(
         intervalAtMillis: UnitsOfTime.MilliSecond
     ): Flow<Int> {
 
+        val requestCode = alarmCreator.getRequestCode()
+
+        Timber.d("Request code used to create database alarm $requestCode")
+
         val testAlarmTimer = AlarmTimer(
             title,
             alarmTimerType,
             true,
             triggerAtMillis.amount,
             intervalAtMillis.amount,
-            alarmCreator.getRequestCode(),
+            requestCode,
             parentId
         )
 
@@ -74,10 +78,12 @@ class AlarmTimerViewModel @Inject constructor(
 
         when (alarmTimerType) {
             AlarmTimerType.OneOffTimer -> alarmCreator.makeOneOffAlarm(
+                requestCode,
                 insertedId,
                 triggerAtMillis.amount
             )
             AlarmTimerType.RepeatingTimer -> alarmCreator.makeRepeatingAlarm(
+                requestCode,
                 insertedId,
                 triggerAtMillis.amount,
                 intervalAtMillis.amount

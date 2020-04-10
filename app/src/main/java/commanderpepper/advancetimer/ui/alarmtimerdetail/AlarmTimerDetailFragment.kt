@@ -134,6 +134,7 @@ class AlarmTimerDetailFragment : Fragment() {
          */
         turnOffButton.setOnClickListener {
             lifecycleScope.launch {
+                Timber.d("Alarm to disable ${getAlarmTimerId()}")
                 viewModel.stopTimer(getAlarmTimerId())
             }
         }

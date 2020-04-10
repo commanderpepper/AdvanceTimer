@@ -28,6 +28,7 @@ class AlarmCreator @Inject constructor(
      * Makes a one off alarm with the alarm manager.
      */
     fun makeOneOffAlarm(
+        timerRequestCode: Int,
         timerId: Long,
         triggerAtMillis: Long
     ) {
@@ -36,10 +37,12 @@ class AlarmCreator @Inject constructor(
 
         Timber.d("Intent created, ${intent.action}")
 
+        Timber.d("Creating alarm with request code: $timerRequestCode")
+
         val pendingIntent =
             PendingIntent.getBroadcast(
                 context,
-                requestCodeGenerator.getRequestCode(),
+                timerRequestCode,
                 intent,
                 PendingIntent.FLAG_CANCEL_CURRENT
             )
@@ -56,18 +59,24 @@ class AlarmCreator @Inject constructor(
      * Makes a repeating alarm with the alarm manager.
      */
     fun makeRepeatingAlarm(
+        timerRequestCode: Int,
         timerId: Long,
         triggerAtMillis: Long,
         intervalAtMillis: Long
     ) {
+
+        Timber.d("Alarm creation ")
+
         val intent = Intent(context, MyReceiver::class.java)
         intent.putExtra(TIMER_ID, timerId)
 
         Timber.d("Intent created, ${intent.action}")
 
+        Timber.d("Creating alarm with request code: $timerRequestCode")
+
         val pendingIntent = PendingIntent.getBroadcast(
             context,
-            requestCodeGenerator.getRequestCode(),
+            timerRequestCode,
             intent,
             PendingIntent.FLAG_CANCEL_CURRENT
         )
@@ -91,10 +100,13 @@ class AlarmCreator @Inject constructor(
         timerId: Long,
         timerRequestCode: Int
     ) {
+
+        Timber.d("Request code when cancelling $timerRequestCode")
+
         val intent = Intent(context, MyReceiver::class.java)
         intent.putExtra(TIMER_ID, timerId)
 
-        Timber.d("Intent to be cancelled, ${intent.action}")
+        Timber.d("Intent to be cancelled, ${intent.type}")
 
         val alarmManager: AlarmManager =
             context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
