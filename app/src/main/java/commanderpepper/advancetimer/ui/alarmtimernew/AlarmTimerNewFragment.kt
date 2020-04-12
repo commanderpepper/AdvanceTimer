@@ -1,21 +1,20 @@
 package commanderpepper.advancetimer.ui.alarmtimernew
 
 import android.os.Bundle
-import android.util.Log
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.NumberPicker
 import android.widget.RadioGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import commanderpepper.advancetimer.R
 import commanderpepper.advancetimer.model.UnitsOfTime
 import commanderpepper.advancetimer.room.AlarmTimerType
@@ -27,7 +26,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 
 const val PARENT_KEY = "parentId"
 
@@ -53,6 +51,22 @@ class AlarmTimerNewFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_alarm_timer_new, container, false)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        /**
+         * Set input values to default when the user pressed the back button
+         */
+        val backPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                alarmTimerViewModel.setInputsToDefault()
+                findNavController().popBackStack()
+            }
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(this, backPressedCallback)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -149,8 +163,6 @@ class AlarmTimerNewFragment : Fragment() {
                     alarmTimerTitle.text.toString()
                 }
 
-            val alarmContext = requireContext().applicationContext
-
             lifecycleScope.launch {
                 /**
                  * Get a Flow from the view model. This helps with waiting for the insertion of timer data.
@@ -161,6 +173,7 @@ class AlarmTimerNewFragment : Fragment() {
 
                 resultFlow.flowOn(Dispatchers.Main).collect { _ ->
                     requireActivity().dismissKeyboard()
+                    alarmTimerViewModel.setInputsToDefault()
 
                     // If there is not parent ID, then a new parent timer was created, the user will be sent back to the timer list fragment.
                     if (getParentId() == null) {
@@ -171,7 +184,7 @@ class AlarmTimerNewFragment : Fragment() {
 
                         // Send the user back to the parent timer of the new timer created.
                         view.findNavController().navigate(
-                            R.id.action_alarmTimerListFragment_to_alarmTimerDetail,
+                            R.id.action_alarmTimerNew_to_alarmTimerDetail,
                             bundle
                         )
                     }
@@ -183,4 +196,5 @@ class AlarmTimerNewFragment : Fragment() {
     private fun getParentId(): Int? {
         return arguments?.getInt(PARENT_KEY)
     }
+
 }

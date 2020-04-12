@@ -42,15 +42,15 @@
         tools:layout="@layout/fragment_alarm_timer_detail">
         <argument
             android:name="alarmTimerId"
-            app:argType="integer"
-            android:defaultValue="-1" />
+            android:defaultValue="-1"
+            app:argType="integer" />
         <action
             android:id="@+id/action_alarmTimerDetail_to_alarmTimerNew"
             app:destination="@id/alarmTimerNew" />
         <argument
             android:name="showAddTimerFAB"
-            app:argType="boolean"
-            android:defaultValue="true" />
+            android:defaultValue="true"
+            app:argType="boolean" />
         <action
             android:id="@+id/action_alarmTimerDetail_self"
             app:destination="@id/alarmTimerDetail" />

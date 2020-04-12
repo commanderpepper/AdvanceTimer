@@ -10,6 +10,7 @@ import commanderpepper.advancetimer.model.toMillisecond
 import commanderpepper.advancetimer.room.AlarmTimerType
 import commanderpepper.advancetimer.viewmodel.AlarmTimerViewModel
 import kotlinx.coroutines.flow.Flow
+import timber.log.Timber
 import java.util.*
 
 class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(application) {
@@ -69,5 +70,21 @@ class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(applic
         return hour.toMillisecond() + minute.toMillisecond() + second.toMillisecond()
     }
 
+    /**
+     * Called when leaving the fragment via the save button
+     */
+    fun setInputsToDefault(){
+        triggerHour = UnitsOfTime.Hour(0L)
+        triggerMinute = UnitsOfTime.Minute(0L)
+        triggerSecond = UnitsOfTime.Second(0L)
+
+        repeatHour = UnitsOfTime.Hour(0L)
+        repeatMinute = UnitsOfTime.Minute(0L)
+        repeatSecond = UnitsOfTime.Second(0L)
+
+        alarmTimerType = AlarmTimerType.OneOffTimer
+
+        alarmTimerTitle = "Timer Title"
+    }
 }
 
