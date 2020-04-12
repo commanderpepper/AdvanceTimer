@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import commanderpepper.App
 import commanderpepper.advancetimer.model.UnitsOfTime
+import commanderpepper.advancetimer.model.getTriggerTime
 import commanderpepper.advancetimer.model.plus
 import commanderpepper.advancetimer.model.toMillisecond
 import commanderpepper.advancetimer.room.AlarmTimerType
@@ -54,13 +55,13 @@ class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(applic
         return "Timer goes off in ${triggerHour.amount}h:${triggerMinute.amount}m:${triggerSecond.amount}s"
     }
 
-    /**
-     * The trigger time will be the time of alarm creation plus whatever the user inputted.
-     */
-    private fun getTriggerTime(triggerTime: UnitsOfTime.MilliSecond): UnitsOfTime.MilliSecond {
-        val calendar = Calendar.getInstance()
-        return UnitsOfTime.MilliSecond(calendar.timeInMillis) + triggerTime
-    }
+//    /**
+//     * The trigger time will be the time of alarm creation plus whatever the user inputted.
+//     */
+//    private fun getTriggerTime(triggerTime: UnitsOfTime.MilliSecond): UnitsOfTime.MilliSecond {
+//        val calendar = Calendar.getInstance()
+//        return UnitsOfTime.MilliSecond(calendar.timeInMillis) + triggerTime
+//    }
 
     private fun calculateTimeInMilliseconds(
         hour: UnitsOfTime.Hour,

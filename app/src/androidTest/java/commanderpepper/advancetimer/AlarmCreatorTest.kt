@@ -137,7 +137,7 @@ class AlarmCreatorTest {
     @Test
     fun createAlarmUsingContent_GetRequestCode_CheckIfOne() {
         val sourceIntent = Intent(context, AlarmReceiver::class.java)
-        alarmCreator.makeOneOffAlarm(context, sourceIntent, 200000L)
+        alarmCreator.makeOneOffAlarm(requestCodeGenerator.getRequestCode(), 1, 200000L)
 
         val requestCode = requestCodeGenerator.getCurrentRequestCode()
 
@@ -151,7 +151,7 @@ class AlarmCreatorTest {
     @Test
     fun createAlarmUsingAlarmCreator_GetPendingIntent_CheckNotNull() {
         val sourceIntent = Intent(context, AlarmReceiver::class.java)
-        alarmCreator.makeOneOffAlarm(context, sourceIntent, 200000L)
+        alarmCreator.makeOneOffAlarm(requestCodeGenerator.getRequestCode(), 1, 200000L)
 
         val alarmIntent: PendingIntent = PendingIntent.getBroadcast(
             context,
@@ -175,7 +175,7 @@ class AlarmCreatorTest {
     @Test
     fun createRepeatingAlarmUsingAlarmCreator_GetPendingIntent_CheckNotNull() {
         val sourceIntent = Intent(context, AlarmReceiver::class.java)
-        alarmCreator.makeRepeatingAlarm(context, sourceIntent, 200000L, 200000L)
+        alarmCreator.makeRepeatingAlarm(requestCodeGenerator.getRequestCode(), 1, 200000L, 200000L)
 
         val alarmIntent: PendingIntent = PendingIntent.getBroadcast(
             context,
@@ -199,11 +199,10 @@ class AlarmCreatorTest {
     @Test
     fun createOneOffTimer_CancelTimer_GetTimer_CheckForNull() {
         val sourceIntent = Intent(context, AlarmReceiver::class.java)
-        alarmCreator.makeOneOffAlarm(context, sourceIntent, 200000L)
+        alarmCreator.makeOneOffAlarm(requestCodeGenerator.getRequestCode(), 1, 200000L)
 
         alarmCreator.cancelTimer(
-            context,
-            sourceIntent,
+            1,
             requestCodeGenerator.getCurrentRequestCode()
         )
 
@@ -222,10 +221,10 @@ class AlarmCreatorTest {
      * I see no errors when this test runs.
      */
     @Test
-    fun createNoTimer_CancelNonExistentTimer_CheckForResult(){
+    fun createNoTimer_CancelNonExistentTimer_CheckForResult() {
         val sourceIntent = Intent(context, AlarmReceiver::class.java)
 
-        alarmCreator.cancelTimer(context, sourceIntent, 0)
+        alarmCreator.cancelTimer(0, 0)
     }
 
 }

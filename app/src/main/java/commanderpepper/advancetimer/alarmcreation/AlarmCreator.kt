@@ -96,7 +96,7 @@ class AlarmCreator @Inject constructor(
     /**
      * Cancel a timer's pending intent and it's lock in the alarm manager.
      */
-    suspend fun cancelTimer(
+    fun cancelTimer(
         timerId: Long,
         timerRequestCode: Int
     ) {
@@ -121,6 +121,19 @@ class AlarmCreator @Inject constructor(
         } else {
             Timber.d("Cancelled pending intent is null")
         }
+    }
+
+    fun enableAlarm(timerId: Long, timerRequestCode: Int){
+        val intent = Intent(context, MyReceiver::class.java)
+        intent.putExtra(TIMER_ID, timerId)
+
+        val alarmManager: AlarmManager =
+            context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        val pendingIntent = PendingIntent.getBroadcast(
+            context, timerRequestCode, intent, PendingIntent.FLAG_CANCEL_CURRENT
+        )
+
 
     }
 }

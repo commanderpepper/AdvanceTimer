@@ -248,6 +248,24 @@ class AlarmTimerDatabaseTest {
         assertThat(disabledTimer.enabled, CoreMatchers.equalTo(true))
     }
 
+    @Test
+    fun insertTimer_ModifyTriggerTimer_CheckIfTriggerTimeIsDifferent() = runBlocking {
+        alarmTimerDao.insertAlarmTimer(timer)
+        var retrievedTimer = alarmTimerDao.getAlarmTimerList().first()
+        alarmTimerDao.modifyTriggerTime(retrievedTimer.id, 3)
+        retrievedTimer = alarmTimerDao.getAlarmTimerList().first()
+        assertThat(retrievedTimer.timeInMillis, CoreMatchers.not(timer.timeInMillis))
+    }
+
+    @Test
+    fun insertTimer_ModifyTriggerTime_CheckIfTimerForSpecificValue() = runBlocking {
+        alarmTimerDao.insertAlarmTimer(timer)
+        var retrievedTimer = alarmTimerDao.getAlarmTimerList().first()
+        alarmTimerDao.modifyTriggerTime(retrievedTimer.id, 5)
+        retrievedTimer = alarmTimerDao.getAlarmTimerList().first()
+        assertThat(retrievedTimer.timeInMillis, CoreMatchers.equalTo(5.toLong()))
+    }
+
     companion object {
         private val timer = AlarmTimer(
             "test",

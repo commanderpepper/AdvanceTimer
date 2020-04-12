@@ -18,6 +18,9 @@ interface AlarmTimerDAO {
     @Query("UPDATE AlarmTimer SET enabled = :alarmTimerEnabled WHERE id == :alarmTimerId")
     suspend fun modifyEnabledState(alarmTimerId: Int, alarmTimerEnabled: Boolean)
 
+    @Query("UPDATE AlarmTimer SET timeInMillis = :newTriggerTime WHERE id == :alarmTimerId")
+    suspend fun modifyTriggerTime(alarmTimerId: Int, newTriggerTime: Int)
+
     @Query("SELECT * FROM AlarmTimer")
     suspend fun getAlarmTimerList(): List<AlarmTimer>
 
