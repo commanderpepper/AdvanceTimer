@@ -3,6 +3,7 @@ package commanderpepper.advancetimer
 import androidx.room.Room
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
+import commanderpepper.advancetimer.model.toMilliseconds
 import commanderpepper.advancetimer.room.AlarmTimer
 import commanderpepper.advancetimer.room.AlarmTimerDAO
 import commanderpepper.advancetimer.room.AlarmTimerDatabase
@@ -46,8 +47,9 @@ class AlarmTimerDatabaseTest {
             "te",
             AlarmTimerType.OneOffAlarm,
             true,
-            0,
-            0,
+            0.toMilliseconds(),
+            0.toMilliseconds(),
+            0.toMilliseconds(),
             0,
             null
         )
@@ -221,7 +223,7 @@ class AlarmTimerDatabaseTest {
                 "child",
                 AlarmTimerType.OneOffAlarm,
                 false,
-                1, 0, 0,
+                1.toMilliseconds(), 0.toMilliseconds(), 0.toMilliseconds(), 0,
                 parentTimer.id
             )
             alarmTimerDao.insertAlarmTimer(childTimer)
@@ -240,7 +242,16 @@ class AlarmTimerDatabaseTest {
 
     @Test
     fun insertAlarmTimerWithDisaledState_EnableTimer_CheckIfEnabled() = runBlocking {
-        val testTimer = AlarmTimer("test", AlarmTimerType.OneOffTimer, false, 1, 0, 0, null)
+        val testTimer = AlarmTimer(
+            "test",
+            AlarmTimerType.OneOffTimer,
+            false,
+            1.toMilliseconds(),
+            0.toMilliseconds(),
+            0.toMilliseconds(),
+            0,
+            null
+        )
         alarmTimerDao.insertAlarmTimer(testTimer)
         val retrievedTimer = alarmTimerDao.getAlarmTimerList().first()
         alarmTimerDao.modifyEnabledState(retrievedTimer.id, true)
@@ -254,7 +265,7 @@ class AlarmTimerDatabaseTest {
         var retrievedTimer = alarmTimerDao.getAlarmTimerList().first()
         alarmTimerDao.modifyTriggerTime(retrievedTimer.id, 3)
         retrievedTimer = alarmTimerDao.getAlarmTimerList().first()
-        assertThat(retrievedTimer.timeInMillis, CoreMatchers.not(timer.timeInMillis))
+        assertThat(retrievedTimer, CoreMatchers.not(timer))
     }
 
     @Test
@@ -263,7 +274,7 @@ class AlarmTimerDatabaseTest {
         var retrievedTimer = alarmTimerDao.getAlarmTimerList().first()
         alarmTimerDao.modifyTriggerTime(retrievedTimer.id, 5)
         retrievedTimer = alarmTimerDao.getAlarmTimerList().first()
-        assertThat(retrievedTimer.timeInMillis, CoreMatchers.equalTo(5.toLong()))
+        assertThat(retrievedTimer.triggerTime, CoreMatchers.equalTo(5.toLong()))
     }
 
     companion object {
@@ -271,14 +282,20 @@ class AlarmTimerDatabaseTest {
             "test",
             AlarmTimerType.OneOffAlarm,
             true,
-            1, 0, 0,
+            1.toMilliseconds(),
+            0.toMilliseconds(),
+            0.toMilliseconds(),
+            0,
             null
         )
         private val childTimer = AlarmTimer(
             "test",
             AlarmTimerType.OneOffAlarm,
             true,
-            2, 1, 3,
+            2.toMilliseconds(),
+            1.toMilliseconds(),
+            3.toMilliseconds(),
+            3,
             1
         )
     }

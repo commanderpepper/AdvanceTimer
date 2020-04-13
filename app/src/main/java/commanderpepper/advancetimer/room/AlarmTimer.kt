@@ -3,6 +3,7 @@ package commanderpepper.advancetimer.room
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import commanderpepper.advancetimer.model.UnitsOfTime
 
 @Entity(tableName = "AlarmTimer")
 data class AlarmTimer(
@@ -12,10 +13,12 @@ data class AlarmTimer(
     val type: AlarmTimerType,
     @ColumnInfo(name = "enabled")
     val enabled: Boolean,
-    @ColumnInfo(name = "timeInMillis")
-    val timeInMillis: Long,
-    @ColumnInfo(name = "intervalAtMillis")
-    val intervalAtMillis: Long = 0L,
+    @ColumnInfo(name = "deltaTime")
+    val deltaTime: UnitsOfTime.MilliSecond,
+    @ColumnInfo(name = "triggerTime")
+    val triggerTime: UnitsOfTime.MilliSecond,
+    @ColumnInfo(name = "repeatTime")
+    val repeatTime : UnitsOfTime.MilliSecond,
     @ColumnInfo(name = "requestCode")
     var requestCode: Int,
     @ColumnInfo(name = "parentID")

@@ -64,10 +64,11 @@ class AlarmTimerViewModel @Inject constructor(
      */
     suspend fun createTimer(
         title: String,
-        triggerAtMillis: UnitsOfTime.MilliSecond,
+        triggerTime: UnitsOfTime.MilliSecond,
         parentId: Int?,
         alarmTimerType: AlarmTimerType,
-        intervalAtMillis: UnitsOfTime.MilliSecond
+        repeatTime: UnitsOfTime.MilliSecond,
+        deltaTime: UnitsOfTime.MilliSecond
     ): Flow<Int> {
 
         val requestCode = alarmCreator.getRequestCode()
@@ -78,8 +79,9 @@ class AlarmTimerViewModel @Inject constructor(
             title,
             alarmTimerType,
             true,
-            triggerAtMillis.amount,
-            intervalAtMillis.amount,
+            deltaTime,
+            triggerTime,
+            repeatTime,
             requestCode,
             parentId
         )
@@ -92,13 +94,13 @@ class AlarmTimerViewModel @Inject constructor(
             AlarmTimerType.OneOffTimer -> alarmCreator.makeOneOffAlarm(
                 requestCode,
                 insertedId,
-                triggerAtMillis.amount
+                triggerTime.amount
             )
             AlarmTimerType.RepeatingTimer -> alarmCreator.makeRepeatingAlarm(
                 requestCode,
                 insertedId,
-                triggerAtMillis.amount,
-                intervalAtMillis.amount
+                triggerTime.amount,
+                repeatTime.amount
             )
         }
 
@@ -121,12 +123,12 @@ class AlarmTimerViewModel @Inject constructor(
      */
     suspend fun enableAlarmTimer(alarmTimerId: Int) {
         val alarmTimer = alarmRepository.getAlarmTimer(alarmTimerId)
-        val oldTrigger
-        val newTriggerTime : UnitsOfTime.MilliSecond = getTriggerTime()
-        when (alarmTimer.type) {
-            is AlarmTimerType.OneOffTimer -> alarmCreator.makeOneOffAlarm(alarmTimer.requestCode, )
-            is AlarmTimerType.RepeatingTimer ->
-        }
+//        val oldTrigger
+//        val newTriggerTime : UnitsOfTime.MilliSecond = getTriggerTime()
+//        when (alarmTimer.type) {
+//            is AlarmTimerType.OneOffTimer -> alarmCreator.makeOneOffAlarm(alarmTimer.requestCode, )
+//            is AlarmTimerType.RepeatingTimer ->
+//        }
         alarmRepository.enableAlarmTimer(alarmTimerId)
     }
 

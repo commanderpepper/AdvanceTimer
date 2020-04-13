@@ -1,5 +1,6 @@
 package commanderpepper.advancetimer.model
 
+import androidx.room.TypeConverter
 import java.util.*
 
 
@@ -23,10 +24,23 @@ operator fun UnitsOfTime.MilliSecond.plus(other: UnitsOfTime.MilliSecond): Units
     return UnitsOfTime.MilliSecond(this.amount + other.amount)
 }
 
+fun Long.toMilliseconds() = UnitsOfTime.MilliSecond(this)
+
+fun Int.toMilliseconds() = UnitsOfTime.MilliSecond(this.toLong())
+
 /**
  * The trigger time will be the time of alarm creation plus whatever the user inputted.
  */
 fun getTriggerTime(triggerTime: UnitsOfTime.MilliSecond): UnitsOfTime.MilliSecond {
     val calendar = Calendar.getInstance()
     return UnitsOfTime.MilliSecond(calendar.timeInMillis) + triggerTime
+}
+
+class UnitsOfTimeConverter() {
+
+    @TypeConverter
+    fun longToUnitsOfTime(amount: Long) = UnitsOfTime.MilliSecond(amount)
+
+    @TypeConverter
+    fun unitsOfTimeToLong(unitsOfTime: UnitsOfTime.MilliSecond) = unitsOfTime.amount
 }
