@@ -27,7 +27,7 @@ class AlarmTimerViewHolder(private val view: View) : RecyclerView.ViewHolder(vie
         type = view.findViewById(R.id.alarmType)
 
         val calendar = Calendar.getInstance().apply {
-            timeInMillis = alarmTimer.timeInMillis
+            timeInMillis = alarmTimer.triggerTime.amount
         }
 
         title.text = alarmTimer.title

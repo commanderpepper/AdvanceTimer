@@ -138,6 +138,16 @@ class AlarmTimerDetailFragment : Fragment() {
                 viewModel.stopTimer(getAlarmTimerId())
             }
         }
+
+        /**
+         * Turn on a timer.
+         */
+        turnOnButton.setOnClickListener {
+            lifecycleScope.launch {
+                Timber.d("Alarm to enable")
+                viewModel.restartTimer(getAlarmTimerId())
+            }
+        }
     }
 
     /**

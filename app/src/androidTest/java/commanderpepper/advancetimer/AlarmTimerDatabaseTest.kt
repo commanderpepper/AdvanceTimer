@@ -274,7 +274,7 @@ class AlarmTimerDatabaseTest {
         var retrievedTimer = alarmTimerDao.getAlarmTimerList().first()
         alarmTimerDao.modifyTriggerTime(retrievedTimer.id, 5)
         retrievedTimer = alarmTimerDao.getAlarmTimerList().first()
-        assertThat(retrievedTimer.triggerTime, CoreMatchers.equalTo(5.toLong()))
+        assertThat(retrievedTimer.triggerTime.amount, CoreMatchers.equalTo(5.toLong()))
     }
 
     companion object {

@@ -47,7 +47,8 @@ class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(applic
             getTriggerTime(calculateTimeInMilliseconds(triggerHour, triggerMinute, triggerSecond)),
             parentId,
             alarmTimerType,
-            calculateTimeInMilliseconds(repeatHour, repeatMinute, repeatSecond)
+            calculateTimeInMilliseconds(repeatHour, repeatMinute, repeatSecond),
+            calculateTimeInMilliseconds(triggerHour, triggerMinute, triggerSecond)
         )
     }
 

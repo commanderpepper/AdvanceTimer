@@ -1,14 +1,11 @@
 package commanderpepper.advancetimer.viewmodel
 
 import android.app.Activity
-import android.content.BroadcastReceiver
 import android.content.Context
-import android.content.Intent
 import android.view.inputmethod.InputMethodManager
 import commanderpepper.advancetimer.alarmcreation.AlarmCreator
 import commanderpepper.advancetimer.model.UnitsOfTime
 import commanderpepper.advancetimer.model.getTriggerTime
-import commanderpepper.advancetimer.receivers.MyReceiver
 import commanderpepper.advancetimer.repository.AlarmRepository
 import commanderpepper.advancetimer.room.AlarmTimer
 import commanderpepper.advancetimer.room.AlarmTimerType
@@ -122,14 +119,27 @@ class AlarmTimerViewModel @Inject constructor(
      * Re-enable an alarm
      */
     suspend fun enableAlarmTimer(alarmTimerId: Int) {
-        val alarmTimer = alarmRepository.getAlarmTimer(alarmTimerId)
-//        val oldTrigger
-//        val newTriggerTime : UnitsOfTime.MilliSecond = getTriggerTime()
-//        when (alarmTimer.type) {
-//            is AlarmTimerType.OneOffTimer -> alarmCreator.makeOneOffAlarm(alarmTimer.requestCode, )
-//            is AlarmTimerType.RepeatingTimer ->
-//        }
-        alarmRepository.enableAlarmTimer(alarmTimerId)
+        var alarmTimer = alarmRepository.getAlarmTimer(alarmTimerId)
+        val newTriggerTime = getTriggerTime(alarmTimer.deltaTime)
+        alarmRepository.enableAlarmTimer(alarmTimerId, newTriggerTime)
+
+        val alarmTimerType = alarmTimer.type
+
+        alarmTimer = alarmRepository.getAlarmTimer(alarmTimerId)
+
+        when (alarmTimerType) {
+            AlarmTimerType.OneOffTimer -> alarmCreator.makeOneOffAlarm(
+                alarmTimer.requestCode,
+                alarmTimer.id.toLong(),
+                alarmTimer.triggerTime.amount
+            )
+            AlarmTimerType.RepeatingTimer -> alarmCreator.makeRepeatingAlarm(
+                alarmTimer.requestCode,
+                alarmTimer.id.toLong(),
+                alarmTimer.triggerTime.amount,
+                alarmTimer.repeatTime.amount
+            )
+        }
     }
 
     /**
