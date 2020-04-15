@@ -120,6 +120,12 @@ class AlarmTimerViewModel @Inject constructor(
      */
     suspend fun enableAlarmTimer(alarmTimerId: Int) {
         var alarmTimer = alarmRepository.getAlarmTimer(alarmTimerId)
+
+        //If the timer is active, disable it before restarting it.
+        if(alarmTimer.enabled){
+            disableAlarmTime(alarmTimerId)
+        }
+        
         val newTriggerTime = getTriggerTime(alarmTimer.deltaTime)
         alarmRepository.enableAlarmTimer(alarmTimerId, newTriggerTime)
 
@@ -149,6 +155,10 @@ class AlarmTimerViewModel @Inject constructor(
         alarmRepository.disableAlarmTimer(alarmTimerId)
         val alarmTimer = alarmRepository.getAlarmTimer(alarmTimerId)
         alarmCreator.cancelTimer(alarmTimer.id.toLong(), alarmTimer.requestCode)
+    }
+
+    suspend fun checkTimerStatus(alarmTimerId: Int): Boolean {
+        return alarmRepository.getAlarmTimer(alarmTimerId).enabled
     }
 }
 

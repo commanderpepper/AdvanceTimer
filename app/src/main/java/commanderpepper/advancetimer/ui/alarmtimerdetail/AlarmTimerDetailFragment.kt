@@ -62,7 +62,6 @@ class AlarmTimerDetailFragment : Fragment() {
         if (getAddFabStatus()) {
             addTimerFab.setOnClickListener {
                 val bundle = bundleOf(PARENT_KEY to getAlarmTimerId())
-
                 view.findNavController()
                     .navigate(R.id.action_alarmTimerDetail_to_alarmTimerNew, bundle)
             }
@@ -112,6 +111,8 @@ class AlarmTimerDetailFragment : Fragment() {
                     if (getAddFabStatus()) {
                         NavGraphAction(R.id.action_alarmTimerDetail_self)
                     } else {
+                        //Set the button to turn on. This makes sure the text is set when entering this fragment from a broadcast receiver.
+                        setTurnOnButtonText()
                         NavGraphAction(
                             0
                         )
@@ -147,6 +148,18 @@ class AlarmTimerDetailFragment : Fragment() {
                 Timber.d("Alarm to enable")
                 viewModel.restartTimer(getAlarmTimerId())
             }
+        }
+
+        setTurnOnButtonText()
+    }
+
+    /**
+     * If the timer is on, set the turn on button to state restart. If not, then set the timer to Turn On.
+     */
+    private fun setTurnOnButtonText() {
+        lifecycleScope.launch {
+            turnOnButton.text =
+                if (viewModel.timerIsEnabled(getAlarmTimerId())) "Restart" else "Turn On"
         }
     }
 
