@@ -6,4 +6,5 @@
     <dimen name="new_edittext_size">60dp</dimen>
     <dimen name="seperator_text_size">40sp</dimen>
     <dimen name="newtimergeneralmargin">8dp</dimen>
+    <dimen name="newTimerRadioButtonTextSize">14sp</dimen>
 </resources>

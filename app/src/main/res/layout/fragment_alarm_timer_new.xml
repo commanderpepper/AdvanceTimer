@@ -37,6 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/newtimergeneralmargin"
+            android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/timerTitle">
 
@@ -46,6 +47,7 @@
                 android:layout_height="wrap_content"
                 android:checked="true"
                 android:text="One-Off Timer"
+                android:textSize="@dimen/newTimerRadioButtonTextSize"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/timerTypeRadioGroup" />
 
@@ -54,6 +56,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Repeating Timer"
+                android:textSize="@dimen/newTimerRadioButtonTextSize"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/oneOffRadioButton" />
 
@@ -95,14 +98,43 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/repeatTimerText" />
 
+        <RadioGroup
+            android:id="@+id/timerStartGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/newtimergeneralmargin"
+            android:orientation="horizontal"
+            android:text="RadioButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/repeatTimerNumber">
+
+            <RadioButton
+                android:id="@+id/immediateStart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Starts after creation"
+                android:textSize="@dimen/newTimerRadioButtonTextSize" />
+
+            <RadioButton
+                android:id="@+id/delayedStart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Does not start after creation"
+                android:textSize="@dimen/newTimerRadioButtonTextSize" />
+
+        </RadioGroup>
+
+
         <Button
             android:id="@+id/add_alarmtimer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/newtimergeneralmargin"
+            android:orientation="horizontal"
             android:text="@string/save_button"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/repeatTimerNumber" />
+            app:layout_constraintTop_toBottomOf="@id/timerStartGroup" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

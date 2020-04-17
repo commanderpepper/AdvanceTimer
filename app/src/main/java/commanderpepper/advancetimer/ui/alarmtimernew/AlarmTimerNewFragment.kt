@@ -37,6 +37,7 @@ class AlarmTimerNewFragment : Fragment() {
     private lateinit var alarmTimerTitle: EditText
 
     private lateinit var alarmTypeRadioGroup: RadioGroup
+    private lateinit var timerStartGroup: RadioGroup
 
     private lateinit var triggerHourNumberPicker: it.sephiroth.android.library.numberpicker.NumberPicker
     private lateinit var triggerMinuteNumberPicker: it.sephiroth.android.library.numberpicker.NumberPicker
@@ -141,6 +142,7 @@ class AlarmTimerNewFragment : Fragment() {
         saveButton = view.findViewById(R.id.add_alarmtimer)
         alarmTimerTitle = view.findViewById(R.id.timerTitle)
         alarmTypeRadioGroup = view.findViewById(R.id.timerTypeRadioGroup)
+        timerStartGroup = view.findViewById(R.id.timerStartGroup)
 
         /**
          * Set the alarm timer type in the view model whenever the user switches types.
@@ -149,6 +151,15 @@ class AlarmTimerNewFragment : Fragment() {
             val alarmTimerType: AlarmTimerType =
                 if (i == R.id.oneOffRadioButton) AlarmTimerType.OneOffTimer else AlarmTimerType.RepeatingTimer
             alarmTimerViewModel.updateAlarmTimerType(alarmTimerType)
+        }
+
+        /**
+         * Set the timer start in the view model whenever the user switches start type.
+         */
+        timerStartGroup.setOnCheckedChangeListener { _, i ->
+            val timerStart: TimerStart =
+                if (i == R.id.immediateStart) TimerStart.Immediate else TimerStart.Delayed
+            alarmTimerViewModel.updateTimerStart(timerStart)
         }
 
 

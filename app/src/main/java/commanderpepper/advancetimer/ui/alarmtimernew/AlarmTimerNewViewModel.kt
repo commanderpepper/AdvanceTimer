@@ -1,7 +1,6 @@
 package commanderpepper.advancetimer.ui.alarmtimernew
 
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import commanderpepper.App
 import commanderpepper.advancetimer.model.UnitsOfTime
@@ -12,7 +11,6 @@ import commanderpepper.advancetimer.room.AlarmTimerType
 import commanderpepper.advancetimer.viewmodel.AlarmTimerViewModel
 import kotlinx.coroutines.flow.Flow
 import timber.log.Timber
-import java.util.*
 
 class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -32,8 +30,16 @@ class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(applic
 
     var alarmTimerTitle = "Timer Title"
 
+    var timerStart: TimerStart = TimerStart.Immediate
+        private set
+
     fun updateAlarmTimerType(alarmTimerType: AlarmTimerType) {
         this.alarmTimerType = alarmTimerType
+    }
+
+    fun updateTimerStart(timerStart: TimerStart) {
+        this.timerStart = timerStart
+        Timber.d("$timerStart")
     }
 
     /**
@@ -48,7 +54,8 @@ class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(applic
             parentId,
             alarmTimerType,
             calculateTimeInMilliseconds(repeatHour, repeatMinute, repeatSecond),
-            calculateTimeInMilliseconds(triggerHour, triggerMinute, triggerSecond)
+            calculateTimeInMilliseconds(triggerHour, triggerMinute, triggerSecond),
+            timerStart
         )
     }
 
@@ -75,7 +82,7 @@ class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(applic
     /**
      * Called when leaving the fragment via the save button
      */
-    fun setInputsToDefault(){
+    fun setInputsToDefault() {
         triggerHour = UnitsOfTime.Hour(0L)
         triggerMinute = UnitsOfTime.Minute(0L)
         triggerSecond = UnitsOfTime.Second(0L)
@@ -85,8 +92,13 @@ class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(applic
         repeatSecond = UnitsOfTime.Second(0L)
 
         alarmTimerType = AlarmTimerType.OneOffTimer
+        timerStart = TimerStart.Immediate
 
         alarmTimerTitle = "Timer Title"
     }
 }
 
+sealed class TimerStart {
+    object Immediate : TimerStart()
+    object Delayed : TimerStart()
+}

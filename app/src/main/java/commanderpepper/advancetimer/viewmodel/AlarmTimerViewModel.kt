@@ -9,11 +9,13 @@ import commanderpepper.advancetimer.model.getTriggerTime
 import commanderpepper.advancetimer.repository.AlarmRepository
 import commanderpepper.advancetimer.room.AlarmTimer
 import commanderpepper.advancetimer.room.AlarmTimerType
+import commanderpepper.advancetimer.ui.alarmtimernew.TimerStart
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.toList
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 
 const val TIMER_ID = "TIMER_ID"
@@ -65,17 +67,19 @@ class AlarmTimerViewModel @Inject constructor(
         parentId: Int?,
         alarmTimerType: AlarmTimerType,
         repeatTime: UnitsOfTime.MilliSecond,
-        deltaTime: UnitsOfTime.MilliSecond
+        deltaTime: UnitsOfTime.MilliSecond,
+        timerStart: TimerStart
     ): Flow<Int> {
 
         val requestCode = alarmCreator.getRequestCode()
 
         Timber.d("Request code used to create database alarm $requestCode")
+        Timber.d("$timerStart")
 
         val testAlarmTimer = AlarmTimer(
             title,
             alarmTimerType,
-            true,
+            timerStart is TimerStart.Immediate,
             deltaTime,
             triggerTime,
             repeatTime,
@@ -87,18 +91,20 @@ class AlarmTimerViewModel @Inject constructor(
             alarmRepository.insertAlarmTimerGetId(testAlarmTimer)
         }
 
-        when (alarmTimerType) {
-            AlarmTimerType.OneOffTimer -> alarmCreator.makeOneOffAlarm(
-                requestCode,
-                insertedId,
-                triggerTime.amount
-            )
-            AlarmTimerType.RepeatingTimer -> alarmCreator.makeRepeatingAlarm(
-                requestCode,
-                insertedId,
-                triggerTime.amount,
-                repeatTime.amount
-            )
+        if (timerStart is TimerStart.Immediate) {
+            when (alarmTimerType) {
+                AlarmTimerType.OneOffTimer -> alarmCreator.makeOneOffAlarm(
+                    requestCode,
+                    insertedId,
+                    triggerTime.amount
+                )
+                AlarmTimerType.RepeatingTimer -> alarmCreator.makeRepeatingAlarm(
+                    requestCode,
+                    insertedId,
+                    triggerTime.amount,
+                    repeatTime.amount
+                )
+            }
         }
 
         return flow {
@@ -122,10 +128,10 @@ class AlarmTimerViewModel @Inject constructor(
         var alarmTimer = alarmRepository.getAlarmTimer(alarmTimerId)
 
         //If the timer is active, disable it before restarting it.
-        if(alarmTimer.enabled){
+        if (alarmTimer.enabled) {
             disableAlarmTime(alarmTimerId)
         }
-        
+
         val newTriggerTime = getTriggerTime(alarmTimer.deltaTime)
         alarmRepository.enableAlarmTimer(alarmTimerId, newTriggerTime)
 
