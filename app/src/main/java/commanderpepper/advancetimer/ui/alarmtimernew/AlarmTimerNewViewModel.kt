@@ -3,10 +3,7 @@ package commanderpepper.advancetimer.ui.alarmtimernew
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import commanderpepper.App
-import commanderpepper.advancetimer.model.UnitsOfTime
-import commanderpepper.advancetimer.model.getTriggerTime
-import commanderpepper.advancetimer.model.plus
-import commanderpepper.advancetimer.model.toMillisecond
+import commanderpepper.advancetimer.model.*
 import commanderpepper.advancetimer.room.AlarmTimerType
 import commanderpepper.advancetimer.viewmodel.AlarmTimerViewModel
 import kotlinx.coroutines.flow.Flow
@@ -96,9 +93,4 @@ class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(applic
 
         alarmTimerTitle = "Timer Title"
     }
-}
-
-sealed class TimerStart {
-    object Immediate : TimerStart()
-    object Delayed : TimerStart()
 }
