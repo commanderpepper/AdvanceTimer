@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -16,6 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import commanderpepper.advancetimer.R
+import commanderpepper.advancetimer.model.TimerStart
 import commanderpepper.advancetimer.model.UnitsOfTime
 import commanderpepper.advancetimer.room.AlarmTimerType
 import commanderpepper.advancetimer.ui.alarmtimerdetail.DETAIL_TIMER_KEY
@@ -46,6 +48,9 @@ class AlarmTimerNewFragment : Fragment() {
     private lateinit var repeatHourNumberPicker: it.sephiroth.android.library.numberpicker.NumberPicker
     private lateinit var repeatMinuteNumberPicker: it.sephiroth.android.library.numberpicker.NumberPicker
     private lateinit var repeatSecondNumberPicker: it.sephiroth.android.library.numberpicker.NumberPicker
+
+    private lateinit var immediateStartRadioButton: RadioButton
+    private lateinit var delayedStartRadioButton: RadioButton
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -144,6 +149,17 @@ class AlarmTimerNewFragment : Fragment() {
         alarmTypeRadioGroup = view.findViewById(R.id.timerTypeRadioGroup)
         timerStartGroup = view.findViewById(R.id.timerStartGroup)
 
+        immediateStartRadioButton = view.findViewById(R.id.immediateStart)
+        delayedStartRadioButton = view.findViewById(R.id.delayedStart)
+
+        /**
+         * If a child timer is being created, set the radio text to the two child timer options.
+         */
+        if (getParentId() != null) {
+            immediateStartRadioButton.text = "Starts when parent starts"
+            delayedStartRadioButton.text = "Starts when parent ends"
+        }
+
         /**
          * Set the alarm timer type in the view model whenever the user switches types.
          */
@@ -157,8 +173,14 @@ class AlarmTimerNewFragment : Fragment() {
          * Set the timer start in the view model whenever the user switches start type.
          */
         timerStartGroup.setOnCheckedChangeListener { _, i ->
-            val timerStart: TimerStart =
+            var timerStart: TimerStart = TimerStart.Immediate
+
+            timerStart = if (getParentId() != null) {
                 if (i == R.id.immediateStart) TimerStart.Immediate else TimerStart.Delayed
+            } else {
+                if (i == R.id.immediateStart) TimerStart.ParentStart else TimerStart.ParentEnd
+            }
+
             alarmTimerViewModel.updateTimerStart(timerStart)
         }
 

@@ -4,12 +4,12 @@ import android.app.Activity
 import android.content.Context
 import android.view.inputmethod.InputMethodManager
 import commanderpepper.advancetimer.alarmcreation.AlarmCreator
+import commanderpepper.advancetimer.model.TimerStart
 import commanderpepper.advancetimer.model.UnitsOfTime
 import commanderpepper.advancetimer.model.getTriggerTime
 import commanderpepper.advancetimer.repository.AlarmRepository
 import commanderpepper.advancetimer.room.AlarmTimer
 import commanderpepper.advancetimer.room.AlarmTimerType
-import commanderpepper.advancetimer.ui.alarmtimernew.TimerStart
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -79,6 +79,7 @@ class AlarmTimerViewModel @Inject constructor(
         val testAlarmTimer = AlarmTimer(
             title,
             alarmTimerType,
+            timerStart,
             timerStart is TimerStart.Immediate,
             deltaTime,
             triggerTime,
