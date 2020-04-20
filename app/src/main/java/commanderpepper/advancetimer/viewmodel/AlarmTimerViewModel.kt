@@ -125,7 +125,7 @@ class AlarmTimerViewModel @Inject constructor(
     /**
      * Re-enable an alarm
      */
-    suspend fun enableAlarmTimer(alarmTimerId: Int) {
+    suspend fun enableAlarmTimer(alarmTimerId: Int, timerStart: TimerStart = TimerStart.Immediate) {
         var alarmTimer = alarmRepository.getAlarmTimer(alarmTimerId)
 
         //If the timer is active, disable it before restarting it.
@@ -140,6 +140,24 @@ class AlarmTimerViewModel @Inject constructor(
 
         alarmTimer = alarmRepository.getAlarmTimer(alarmTimerId)
 
+        startTimer(alarmTimerType, alarmTimer)
+
+        if (timerStart is TimerStart.Immediate) enableChildTimers(
+            alarmTimerId,
+            TimerStart.ParentStart
+        ) else enableChildTimers(
+            alarmTimerId,
+            TimerStart.ParentEnd
+        )
+    }
+
+    /**
+     * Start a timer
+     */
+    private fun startTimer(
+        alarmTimerType: AlarmTimerType,
+        alarmTimer: AlarmTimer
+    ) {
         when (alarmTimerType) {
             AlarmTimerType.OneOffTimer -> alarmCreator.makeOneOffAlarm(
                 alarmTimer.requestCode,
@@ -152,6 +170,22 @@ class AlarmTimerViewModel @Inject constructor(
                 alarmTimer.triggerTime.amount,
                 alarmTimer.repeatTime.amount
             )
+        }
+    }
+
+    /**
+     * Enable child timers.
+     */
+    suspend fun enableChildTimers(parentId: Int, timerStart: TimerStart = TimerStart.Immediate) {
+        val childTimers = alarmRepository.getChildrenTimers(parentId).toList()
+        if (childTimers.isEmpty()) {
+            return
+        } else {
+            childTimers.forEach {
+                if (timerStart == it.timerStart) {
+                    enableAlarmTimer(it.id)
+                }
+            }
         }
     }
 

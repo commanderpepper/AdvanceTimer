@@ -25,7 +25,7 @@ class AlarmCreator @Inject constructor(
     private val requestCodeGenerator = (context as App).appComponent.requestCodeGenerator()
 
     /**
-     * Makes a one off alarm with the alarm manager.
+     * Makes a one off alarm with the alarm manager and starts it.
      */
     fun makeOneOffAlarm(
         timerRequestCode: Int,
@@ -56,7 +56,7 @@ class AlarmCreator @Inject constructor(
     }
 
     /**
-     * Makes a repeating alarm with the alarm manager.
+     * Makes a repeating alarm with the alarm manager and starts it.
      */
     fun makeRepeatingAlarm(
         timerRequestCode: Int,
