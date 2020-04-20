@@ -227,4 +227,32 @@ class AlarmCreatorTest {
         alarmCreator.cancelTimer(0, 0)
     }
 
+    @Test
+    fun createTwoTimers_CheckIfBothExist(){
+        val sourceIntent = Intent(context, AlarmReceiver::class.java)
+
+        val requestCodeOne = requestCodeGenerator.getRequestCode()
+        val requestCodeTwo = requestCodeGenerator.getRequestCode()
+
+        alarmCreator.makeOneOffAlarm(requestCodeOne, 1, 2000000L)
+        alarmCreator.makeOneOffAlarm(requestCodeTwo, 2, 2000000L)
+
+        val alarmIntentOne: PendingIntent = PendingIntent.getBroadcast(
+            context,
+            requestCodeOne,
+            sourceIntent,
+            PendingIntent.FLAG_NO_CREATE
+        )
+
+        val alarmIntentTwo: PendingIntent = PendingIntent.getBroadcast(
+            context,
+            requestCodeTwo,
+            sourceIntent,
+            PendingIntent.FLAG_NO_CREATE
+        )
+
+        assertThat(alarmIntentOne, CoreMatchers.notNullValue())
+        assertThat(alarmIntentTwo, CoreMatchers.notNullValue())
+    }
+
 }

@@ -34,9 +34,7 @@ class AlarmCreator @Inject constructor(
     ) {
         val intent = Intent(context, MyReceiver::class.java)
         intent.putExtra(TIMER_ID, timerId)
-
-        Timber.d("Intent created, ${intent.action}")
-
+        
         Timber.d("Creating alarm with request code: $timerRequestCode")
 
         val pendingIntent =
@@ -70,8 +68,6 @@ class AlarmCreator @Inject constructor(
         val intent = Intent(context, MyReceiver::class.java)
         intent.putExtra(TIMER_ID, timerId)
 
-        Timber.d("Intent created, ${intent.action}")
-
         Timber.d("Creating alarm with request code: $timerRequestCode")
 
         val pendingIntent = PendingIntent.getBroadcast(
@@ -80,6 +76,7 @@ class AlarmCreator @Inject constructor(
             intent,
             PendingIntent.FLAG_CANCEL_CURRENT
         )
+
         val alarmManager: AlarmManager =
             context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
@@ -91,7 +88,7 @@ class AlarmCreator @Inject constructor(
         )
     }
 
-    fun getRequestCode() = requestCodeGenerator.getCurrentRequestCode()
+    fun getRequestCode() = requestCodeGenerator.getRequestCode()
 
     /**
      * Cancel a timer's pending intent and it's lock in the alarm manager.
@@ -123,7 +120,7 @@ class AlarmCreator @Inject constructor(
         }
     }
 
-    fun enableAlarm(timerId: Long, timerRequestCode: Int){
+    fun enableAlarm(timerId: Long, timerRequestCode: Int) {
         val intent = Intent(context, MyReceiver::class.java)
         intent.putExtra(TIMER_ID, timerId)
 
