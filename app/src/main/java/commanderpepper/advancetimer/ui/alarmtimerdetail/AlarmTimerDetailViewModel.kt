@@ -34,7 +34,6 @@ class AlarmTimerDetailViewModel(application: Application) : AndroidViewModel(app
 
     suspend fun restartTimer(alarmTimerId: Int) {
         alarmTimerViewModel.enableAlarmTimer(alarmTimerId)
-//        alarmTimerViewModel.enableChildTimers(alarmTimerId)
     }
 
     suspend fun stopTimer(alarmTimerId: Int) {

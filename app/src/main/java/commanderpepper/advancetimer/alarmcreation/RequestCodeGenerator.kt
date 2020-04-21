@@ -24,6 +24,7 @@ class RequestCodeGenerator @Inject constructor(val context: Context) {
         return requestCode
     }
 
+    @VisibleForTesting
     fun getCurrentRequestCode(): Int {
         val sharedPreferences =
             context.getSharedPreferences(REQUEST_CODE_FILE, Context.MODE_PRIVATE)

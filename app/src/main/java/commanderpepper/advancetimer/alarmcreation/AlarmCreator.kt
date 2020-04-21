@@ -32,20 +32,9 @@ class AlarmCreator @Inject constructor(
         timerId: Long,
         triggerAtMillis: Long
     ) {
-        val intent = Intent(context, MyReceiver::class.java)
-        intent.putExtra(TIMER_ID, timerId)
-        
-        Timber.d("Creating alarm with request code: $timerRequestCode")
+        val intent = createIntentForNewAlarm(timerId, context)
 
-        val pendingIntent =
-            PendingIntent.getBroadcast(
-                context,
-                timerRequestCode,
-                intent,
-                PendingIntent.FLAG_CANCEL_CURRENT
-            )
-
-        Timber.d("Creating pending intent, ${pendingIntent.creatorPackage} , ${pendingIntent.creatorUid} , ${pendingIntent.creatorUserHandle} , ${pendingIntent.intentSender}")
+        val pendingIntent = createPendingIntentForNewAlarm(context, timerRequestCode, intent)
 
         val alarmManager: AlarmManager =
             context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
@@ -62,20 +51,9 @@ class AlarmCreator @Inject constructor(
         triggerAtMillis: Long,
         intervalAtMillis: Long
     ) {
+        val intent = createIntentForNewAlarm(timerId, context)
 
-        Timber.d("Alarm creation ")
-
-        val intent = Intent(context, MyReceiver::class.java)
-        intent.putExtra(TIMER_ID, timerId)
-
-        Timber.d("Creating alarm with request code: $timerRequestCode")
-
-        val pendingIntent = PendingIntent.getBroadcast(
-            context,
-            timerRequestCode,
-            intent,
-            PendingIntent.FLAG_CANCEL_CURRENT
-        )
+        val pendingIntent = createPendingIntentForNewAlarm(context, timerRequestCode, intent)
 
         val alarmManager: AlarmManager =
             context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
@@ -130,7 +108,24 @@ class AlarmCreator @Inject constructor(
         val pendingIntent = PendingIntent.getBroadcast(
             context, timerRequestCode, intent, PendingIntent.FLAG_CANCEL_CURRENT
         )
+    }
 
+    private fun createIntentForNewAlarm(timerId: Long, context: Context): Intent {
+        return Intent(context, MyReceiver::class.java).apply {
+            putExtra(TIMER_ID, timerId)
+        }
+    }
 
+    private fun createPendingIntentForNewAlarm(
+        context: Context,
+        requestCode: Int,
+        intent: Intent
+    ): PendingIntent {
+        return PendingIntent.getBroadcast(
+            context,
+            requestCode,
+            intent,
+            PendingIntent.FLAG_CANCEL_CURRENT
+        )
     }
 }
