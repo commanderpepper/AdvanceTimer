@@ -39,6 +39,10 @@ class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(applic
         Timber.d("$timerStart")
     }
 
+    fun onTimerTitleChange(s: CharSequence, start: Int, before: Int, count: Int) {
+        alarmTimerTitle = s.toString()
+    }
+
     /**
      * The UI view model will ask the generic view model to create a timer. The generic view timer will return a Flow.
      */

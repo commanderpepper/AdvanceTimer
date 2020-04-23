@@ -11,12 +11,14 @@ import android.widget.RadioGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import commanderpepper.advancetimer.R
+import commanderpepper.advancetimer.databinding.FragmentAlarmTimerNewBinding
 import commanderpepper.advancetimer.model.TimerStart
 import commanderpepper.advancetimer.model.UnitsOfTime
 import commanderpepper.advancetimer.room.AlarmTimerType
@@ -35,6 +37,8 @@ class AlarmTimerNewFragment : Fragment() {
 
     private lateinit var saveButton: Button
     private val alarmTimerViewModel: AlarmTimerNewViewModel by activityViewModels()
+
+    private lateinit var binding: FragmentAlarmTimerNewBinding
 
     private lateinit var alarmTimerTitle: EditText
 
@@ -56,7 +60,11 @@ class AlarmTimerNewFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_alarm_timer_new, container, false)
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_alarm_timer_new, container, false)
+        binding.viewmodel = alarmTimerViewModel
+        return binding.root
+//        return inflater.inflate(R.layout.fragment_alarm_timer_new, container, false)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

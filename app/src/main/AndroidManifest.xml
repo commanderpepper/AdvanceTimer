@@ -14,10 +14,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.dismisstimer.DismissTimer"></activity>
-        <activity
-            android:name=".ui.entry.AlarmActivityTest"
-            android:label="@string/title_activity_alarm_test"
-            android:theme="@style/AppTheme.NoActionBar" />
 
         <receiver android:name=".receivers.MyReceiver" />
 
