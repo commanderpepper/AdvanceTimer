@@ -5,7 +5,10 @@ import androidx.lifecycle.AndroidViewModel
 import commanderpepper.App
 import commanderpepper.advancetimer.model.*
 import commanderpepper.advancetimer.room.AlarmTimerType
+import commanderpepper.advancetimer.ui.TimeSelectionOnClickHandler
 import commanderpepper.advancetimer.viewmodel.AlarmTimerViewModel
+import it.sephiroth.android.library.numberpicker.NumberPicker
+import it.sephiroth.android.library.numberpicker._OnNumberPickerChangeListener
 import kotlinx.coroutines.flow.Flow
 import timber.log.Timber
 
@@ -29,6 +32,35 @@ class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(applic
 
     var timerStart: TimerStart = TimerStart.Immediate
         private set
+
+    val triggerTimeSelectionOnClickHandler = object : TimeSelectionOnClickHandler {
+        override fun setHourListener(): _OnNumberPickerChangeListener.() -> Unit {
+            _OnNumberPickerChangeListener().onProgressChanged { numberPicker, i, b ->  }
+        }
+        
+        override fun minuteDoOnProgressChanged(func: _OnNumberPickerChangeListener.() -> Unit) {
+            TODO("Not yet implemented")
+        }
+
+        override fun secondDoOnProgressChanged(func: _OnNumberPickerChangeListener.() -> Unit) {
+            TODO("Not yet implemented")
+        }
+    }
+
+    val repeatTimeSelectionOnClickHandler = object : TimeSelectionOnClickHandler {
+        override fun NumberPicker.setHourListener(func: _OnNumberPickerChangeListener.() -> Unit) {
+            TODO("Not yet implemented")
+        }
+
+
+        override fun minuteDoOnProgressChanged(func: _OnNumberPickerChangeListener.() -> Unit) {
+            TODO("Not yet implemented")
+        }
+
+        override fun secondDoOnProgressChanged(func: _OnNumberPickerChangeListener.() -> Unit) {
+            TODO("Not yet implemented")
+        }
+    }
 
     fun updateAlarmTimerType(alarmTimerType: AlarmTimerType) {
         this.alarmTimerType = alarmTimerType
@@ -64,14 +96,6 @@ class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(applic
         return "Timer goes off in ${triggerHour.amount}h:${triggerMinute.amount}m:${triggerSecond.amount}s"
     }
 
-//    /**
-//     * The trigger time will be the time of alarm creation plus whatever the user inputted.
-//     */
-//    private fun getTriggerTime(triggerTime: UnitsOfTime.MilliSecond): UnitsOfTime.MilliSecond {
-//        val calendar = Calendar.getInstance()
-//        return UnitsOfTime.MilliSecond(calendar.timeInMillis) + triggerTime
-//    }
-
     private fun calculateTimeInMilliseconds(
         hour: UnitsOfTime.Hour,
         minute: UnitsOfTime.Minute,
@@ -97,4 +121,6 @@ class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(applic
 
         alarmTimerTitle = "Timer Title"
     }
+
+
 }

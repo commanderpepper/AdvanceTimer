@@ -25,6 +25,7 @@ import commanderpepper.advancetimer.room.AlarmTimerType
 import commanderpepper.advancetimer.ui.alarmtimerdetail.DETAIL_TIMER_KEY
 import commanderpepper.advancetimer.viewmodel.dismissKeyboard
 import it.sephiroth.android.library.numberpicker.doOnProgressChanged
+import it.sephiroth.android.library.numberpicker.setListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
@@ -105,52 +106,60 @@ class AlarmTimerNewFragment : Fragment() {
         }
 
         // Set the number picker amount and when the user changes the value update the view model
+        triggerHourNumberPicker.setListener {
+            this.onProgressChanged { numberPicker, i, b ->
+
+            }
+        }
         triggerHourNumberPicker.run {
+            setListener {
+
+            }
             progress = alarmTimerViewModel.triggerHour.amount.toInt()
             doOnProgressChanged { numberPicker, progress, formUser ->
                 alarmTimerViewModel.triggerHour = UnitsOfTime.Hour(progress.toLong())
             }
         }
-
-        // Set the number picker amount and when the user changes the value update the view model
-        triggerMinuteNumberPicker.run {
-            progress = alarmTimerViewModel.triggerMinute.amount.toInt()
-            doOnProgressChanged { numberPicker, progress, formUser ->
-                alarmTimerViewModel.triggerMinute = UnitsOfTime.Minute(progress.toLong())
-            }
-        }
-
-        // Set the number picker amount and when the user changes the value update the view model
-        triggerSecondNumberPicker.run {
-            progress = alarmTimerViewModel.triggerSecond.amount.toInt()
-            doOnProgressChanged { numberPicker, progress, formUser ->
-                alarmTimerViewModel.triggerSecond = UnitsOfTime.Second(progress.toLong())
-            }
-        }
-
-        // Set the number picker amount and when the user changes the value update the view model
-        repeatHourNumberPicker.run {
-            progress = alarmTimerViewModel.repeatHour.amount.toInt()
-            doOnProgressChanged { numberPicker, progress, formUser ->
-                alarmTimerViewModel.repeatHour = UnitsOfTime.Hour(progress.toLong())
-            }
-        }
-
-        // Set the number picker amount and when the user changes the value update the view model
-        repeatMinuteNumberPicker.run {
-            progress = alarmTimerViewModel.repeatMinute.amount.toInt()
-            doOnProgressChanged { numberPicker, progress, formUser ->
-                alarmTimerViewModel.repeatMinute = UnitsOfTime.Minute(progress.toLong())
-            }
-        }
-
-        // Set the number picker amount and when the user changes the value update the view model
-        repeatSecondNumberPicker.run {
-            progress = alarmTimerViewModel.repeatSecond.amount.toInt()
-            doOnProgressChanged { numberPicker, progress, formUser ->
-                alarmTimerViewModel.repeatSecond = UnitsOfTime.Second(progress.toLong())
-            }
-        }
+//
+//        // Set the number picker amount and when the user changes the value update the view model
+//        triggerMinuteNumberPicker.run {
+//            progress = alarmTimerViewModel.triggerMinute.amount.toInt()
+//            doOnProgressChanged { numberPicker, progress, formUser ->
+//                alarmTimerViewModel.triggerMinute = UnitsOfTime.Minute(progress.toLong())
+//            }
+//        }
+//
+//        // Set the number picker amount and when the user changes the value update the view model
+//        triggerSecondNumberPicker.run {
+//            progress = alarmTimerViewModel.triggerSecond.amount.toInt()
+//            doOnProgressChanged { numberPicker, progress, formUser ->
+//                alarmTimerViewModel.triggerSecond = UnitsOfTime.Second(progress.toLong())
+//            }
+//        }
+//
+//        // Set the number picker amount and when the user changes the value update the view model
+//        repeatHourNumberPicker.run {
+//            progress = alarmTimerViewModel.repeatHour.amount.toInt()
+//            doOnProgressChanged { numberPicker, progress, formUser ->
+//                alarmTimerViewModel.repeatHour = UnitsOfTime.Hour(progress.toLong())
+//            }
+//        }
+//
+//        // Set the number picker amount and when the user changes the value update the view model
+//        repeatMinuteNumberPicker.run {
+//            progress = alarmTimerViewModel.repeatMinute.amount.toInt()
+//            doOnProgressChanged { numberPicker, progress, formUser ->
+//                alarmTimerViewModel.repeatMinute = UnitsOfTime.Minute(progress.toLong())
+//            }
+//        }
+//
+//        // Set the number picker amount and when the user changes the value update the view model
+//        repeatSecondNumberPicker.run {
+//            progress = alarmTimerViewModel.repeatSecond.amount.toInt()
+//            doOnProgressChanged { numberPicker, progress, formUser ->
+//                alarmTimerViewModel.repeatSecond = UnitsOfTime.Second(progress.toLong())
+//            }
+//        }
 
         saveButton = view.findViewById(R.id.add_alarmtimer)
         alarmTimerTitle = view.findViewById(R.id.timerTitle)

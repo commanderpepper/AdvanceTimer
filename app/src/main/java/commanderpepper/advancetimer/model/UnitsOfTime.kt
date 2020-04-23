@@ -5,9 +5,18 @@ import java.util.*
 
 
 sealed class UnitsOfTime() {
-    data class Hour(val amount: Long) : UnitsOfTime()
-    data class Minute(val amount: Long) : UnitsOfTime()
-    data class Second(val amount: Long) : UnitsOfTime()
+    data class Hour(val amount: Long) : UnitsOfTime() {
+        fun toInt() = amount.toInt()
+    }
+
+    data class Minute(val amount: Long) : UnitsOfTime() {
+        fun toInt() = amount.toInt()
+    }
+
+    data class Second(val amount: Long) : UnitsOfTime() {
+        fun toInt() = amount.toInt()
+    }
+
     data class MilliSecond(val amount: Long) : UnitsOfTime()
 }
 

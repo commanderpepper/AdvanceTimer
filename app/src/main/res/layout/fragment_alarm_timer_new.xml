@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout>
+<layout xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -9,7 +9,8 @@
             type="commanderpepper.advancetimer.ui.alarmtimernew.AlarmTimerNewViewModel" />
     </data>
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -37,8 +38,8 @@
                 android:layout_margin="@dimen/newtimergeneralmargin"
                 android:ems="10"
                 android:inputType="textPersonName"
+                android:onTextChanged="@{viewmodel::onTimerTitleChange}"
                 android:text="@{viewmodel.alarmTimerTitle}"
-                android:onTextChanged="@{viewmodel.onTimerTitleChange}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/add_alarmtimer_text" />
 
@@ -88,7 +89,11 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/newtimergeneralmargin"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/timerSetsOffText" />
+                app:layout_constraintTop_toBottomOf="@id/timerSetsOffText"
+                bind:hourAmount="@{viewmodel.triggerHour}"
+                bind:minuteAmount="@{viewmodel.triggerMinute}"
+                bind:secondAmount="@{viewmodel.triggerSecond}"
+                bind:timeSelectionOnClickHandler="@{viewmodel.triggerTimeSelectionOnClickHandler}" />
 
             <TextView
                 android:id="@+id/repeatTimerText"
@@ -106,7 +111,11 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/newtimergeneralmargin"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/repeatTimerText" />
+                app:layout_constraintTop_toBottomOf="@id/repeatTimerText"
+                bind:hourAmount="@{viewmodel.repeatHour}"
+                bind:minuteAmount="@{viewmodel.repeatMinute}"
+                bind:secondAmount="@{viewmodel.repeatSecond}"
+                bind:timeSelectionOnClickHandler="@{viewmodel.repeatTimeSelectionOnClickHandler}" />
 
             <RadioGroup
                 android:id="@+id/timerStartGroup"
