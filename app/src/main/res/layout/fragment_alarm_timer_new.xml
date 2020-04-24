@@ -9,8 +9,7 @@
             type="commanderpepper.advancetimer.ui.alarmtimernew.AlarmTimerNewViewModel" />
     </data>
 
-    <ScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -92,8 +91,7 @@
                 app:layout_constraintTop_toBottomOf="@id/timerSetsOffText"
                 bind:hourAmount="@{viewmodel.triggerHour}"
                 bind:minuteAmount="@{viewmodel.triggerMinute}"
-                bind:secondAmount="@{viewmodel.triggerSecond}"
-                bind:timeSelectionOnClickHandler="@{viewmodel.triggerTimeSelectionOnClickHandler}" />
+                bind:secondAmount="@{viewmodel.triggerSecond}" />
 
             <TextView
                 android:id="@+id/repeatTimerText"
@@ -114,8 +112,7 @@
                 app:layout_constraintTop_toBottomOf="@id/repeatTimerText"
                 bind:hourAmount="@{viewmodel.repeatHour}"
                 bind:minuteAmount="@{viewmodel.repeatMinute}"
-                bind:secondAmount="@{viewmodel.repeatSecond}"
-                bind:timeSelectionOnClickHandler="@{viewmodel.repeatTimeSelectionOnClickHandler}" />
+                bind:secondAmount="@{viewmodel.repeatSecond}" />
 
             <RadioGroup
                 android:id="@+id/timerStartGroup"

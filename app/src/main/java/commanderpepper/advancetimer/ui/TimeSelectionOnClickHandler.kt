@@ -5,11 +5,11 @@ import it.sephiroth.android.library.numberpicker._OnNumberPickerChangeListener
 
 interface TimeSelectionOnClickHandler {
 
-    fun setHourListener() : _OnNumberPickerChangeListener.() -> Unit
+    fun setHourListener(numberPicker: NumberPicker): _OnNumberPickerChangeListener
 
-    fun minuteDoOnProgressChanged(func: it.sephiroth.android.library.numberpicker._OnNumberPickerChangeListener.() -> Unit)
+    fun setMinuteListener(numberPicker: NumberPicker): _OnNumberPickerChangeListener
 
-    fun secondDoOnProgressChanged(func: it.sephiroth.android.library.numberpicker._OnNumberPickerChangeListener.() -> Unit)
+    fun setSecondListener(numberPicker: NumberPicker): _OnNumberPickerChangeListener
 
 
 }

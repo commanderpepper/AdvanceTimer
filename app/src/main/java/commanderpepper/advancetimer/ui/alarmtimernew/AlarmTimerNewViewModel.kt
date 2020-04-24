@@ -9,6 +9,8 @@ import commanderpepper.advancetimer.ui.TimeSelectionOnClickHandler
 import commanderpepper.advancetimer.viewmodel.AlarmTimerViewModel
 import it.sephiroth.android.library.numberpicker.NumberPicker
 import it.sephiroth.android.library.numberpicker._OnNumberPickerChangeListener
+import it.sephiroth.android.library.numberpicker.doOnProgressChanged
+import it.sephiroth.android.library.numberpicker.setListener
 import kotlinx.coroutines.flow.Flow
 import timber.log.Timber
 
@@ -32,35 +34,6 @@ class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(applic
 
     var timerStart: TimerStart = TimerStart.Immediate
         private set
-
-    val triggerTimeSelectionOnClickHandler = object : TimeSelectionOnClickHandler {
-        override fun setHourListener(): _OnNumberPickerChangeListener.() -> Unit {
-            _OnNumberPickerChangeListener().onProgressChanged { numberPicker, i, b ->  }
-        }
-        
-        override fun minuteDoOnProgressChanged(func: _OnNumberPickerChangeListener.() -> Unit) {
-            TODO("Not yet implemented")
-        }
-
-        override fun secondDoOnProgressChanged(func: _OnNumberPickerChangeListener.() -> Unit) {
-            TODO("Not yet implemented")
-        }
-    }
-
-    val repeatTimeSelectionOnClickHandler = object : TimeSelectionOnClickHandler {
-        override fun NumberPicker.setHourListener(func: _OnNumberPickerChangeListener.() -> Unit) {
-            TODO("Not yet implemented")
-        }
-
-
-        override fun minuteDoOnProgressChanged(func: _OnNumberPickerChangeListener.() -> Unit) {
-            TODO("Not yet implemented")
-        }
-
-        override fun secondDoOnProgressChanged(func: _OnNumberPickerChangeListener.() -> Unit) {
-            TODO("Not yet implemented")
-        }
-    }
 
     fun updateAlarmTimerType(alarmTimerType: AlarmTimerType) {
         this.alarmTimerType = alarmTimerType
