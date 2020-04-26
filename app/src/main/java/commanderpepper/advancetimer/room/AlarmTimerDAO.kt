@@ -16,6 +16,12 @@ interface AlarmTimerDAO {
     @Delete
     suspend fun deleteAlarmTimer(alarmTimer: AlarmTimer)
 
+    @Query("DELETE FROM alarmtimer WHERE id == :alarmTimerId ")
+    suspend fun deleteTimer(alarmTimerId: Int)
+
+    @Query("DELETE FROM alarmtimer WHERE parentID == :parentId ")
+    suspend fun deleteChildTimers(parentId: Int)
+
     @Query("UPDATE AlarmTimer SET enabled = :alarmTimerEnabled WHERE id == :alarmTimerId")
     suspend fun modifyEnabledState(alarmTimerId: Int, alarmTimerEnabled: Boolean)
 

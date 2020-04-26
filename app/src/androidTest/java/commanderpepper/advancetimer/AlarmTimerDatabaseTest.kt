@@ -3,7 +3,9 @@ package commanderpepper.advancetimer
 import androidx.room.Room
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
+import commanderpepper.advancetimer.model.TimerStart
 import commanderpepper.advancetimer.model.toMilliseconds
+import commanderpepper.advancetimer.repository.AlarmRepository
 import commanderpepper.advancetimer.room.AlarmTimer
 import commanderpepper.advancetimer.room.AlarmTimerDAO
 import commanderpepper.advancetimer.room.AlarmTimerDatabase
@@ -17,12 +19,12 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.IOException
 
+
 @RunWith(AndroidJUnit4::class)
 class AlarmTimerDatabaseTest {
 
     private lateinit var alarmTimerDao: AlarmTimerDAO
     private lateinit var db: AlarmTimerDatabase
-
 
     @Before
     fun createDb() {
@@ -46,6 +48,7 @@ class AlarmTimerDatabaseTest {
         val testTimer = AlarmTimer(
             "te",
             AlarmTimerType.OneOffAlarm,
+            TimerStart.ParentStart,
             true,
             0.toMilliseconds(),
             0.toMilliseconds(),
@@ -222,6 +225,7 @@ class AlarmTimerDatabaseTest {
             val childTimer = AlarmTimer(
                 "child",
                 AlarmTimerType.OneOffAlarm,
+                TimerStart.ParentStart,
                 false,
                 1.toMilliseconds(), 0.toMilliseconds(), 0.toMilliseconds(), 0,
                 parentTimer.id
@@ -245,6 +249,7 @@ class AlarmTimerDatabaseTest {
         val testTimer = AlarmTimer(
             "test",
             AlarmTimerType.OneOffTimer,
+            TimerStart.ParentStart,
             false,
             1.toMilliseconds(),
             0.toMilliseconds(),
@@ -277,10 +282,18 @@ class AlarmTimerDatabaseTest {
         assertThat(retrievedTimer.triggerTime.amount, CoreMatchers.equalTo(5.toLong()))
     }
 
+    fun insertTimers_GetTimerGraph() = runBlocking {
+        val timerList = listOf(timerA, timerB, timerC, timerD, timerE, timerF)
+        timerList.forEach {
+            alarmTimerDao.insertAlarmTimer(it)
+        }
+    }
+
     companion object {
         private val timer = AlarmTimer(
             "test",
             AlarmTimerType.OneOffAlarm,
+            TimerStart.ParentStart,
             true,
             1.toMilliseconds(),
             0.toMilliseconds(),
@@ -291,6 +304,7 @@ class AlarmTimerDatabaseTest {
         private val childTimer = AlarmTimer(
             "test",
             AlarmTimerType.OneOffAlarm,
+            TimerStart.ParentStart,
             true,
             2.toMilliseconds(),
             1.toMilliseconds(),
@@ -298,6 +312,86 @@ class AlarmTimerDatabaseTest {
             3,
             1
         )
+
+        //Timer A is the parent Timer
+        private val timerA =
+            AlarmTimer(
+                "Timer A",
+                AlarmTimerType.OneOffTimer,
+                TimerStart.Immediate,
+                true,
+                0.toMilliseconds(),
+                0.toMilliseconds(),
+                0.toMilliseconds(),
+                0,
+                null
+            )
+
+        //Timer B is a child of timer A
+        private val timerB = AlarmTimer(
+            "Timer B",
+            AlarmTimerType.OneOffTimer,
+            TimerStart.Immediate,
+            true,
+            0.toMilliseconds(),
+            0.toMilliseconds(),
+            0.toMilliseconds(),
+            0,
+            1
+        )
+
+        //Timer C is a child of timer A
+        private val timerC = AlarmTimer(
+            "Timer C",
+            AlarmTimerType.OneOffTimer,
+            TimerStart.Immediate,
+            true,
+            0.toMilliseconds(),
+            0.toMilliseconds(),
+            0.toMilliseconds(),
+            0,
+            1
+        )
+
+        //Timer D is a child of timer A
+        private val timerD = AlarmTimer(
+            "Timer D",
+            AlarmTimerType.OneOffTimer,
+            TimerStart.Immediate,
+            true,
+            0.toMilliseconds(),
+            0.toMilliseconds(),
+            0.toMilliseconds(),
+            0,
+            1
+        )
+
+        //Timer E is a child of timer B
+        private val timerE = AlarmTimer(
+            "Timer E",
+            AlarmTimerType.OneOffTimer,
+            TimerStart.Immediate,
+            true,
+            0.toMilliseconds(),
+            0.toMilliseconds(),
+            0.toMilliseconds(),
+            0,
+            2
+        )
+
+        //Timer F is a child of timer C
+        val timerF = AlarmTimer(
+            "Timer F",
+            AlarmTimerType.OneOffTimer,
+            TimerStart.Immediate,
+            true,
+            0.toMilliseconds(),
+            0.toMilliseconds(),
+            0.toMilliseconds(),
+            0,
+            3
+        )
+
     }
 
 }

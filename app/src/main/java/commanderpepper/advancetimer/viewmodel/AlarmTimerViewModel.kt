@@ -201,6 +201,13 @@ class AlarmTimerViewModel @Inject constructor(
     suspend fun checkTimerStatus(alarmTimerId: Int): Boolean {
         return alarmRepository.getAlarmTimer(alarmTimerId).enabled
     }
+
+    /**
+     * Delete a timer.
+     */
+    suspend fun deleteTimer(alarmTimerId: Int) {
+        alarmRepository.disableAlarmTimer(alarmTimerId)
+    }
 }
 
 fun Activity.dismissKeyboard() {

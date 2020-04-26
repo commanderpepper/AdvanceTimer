@@ -7,6 +7,8 @@ import commanderpepper.advancetimer.room.AlarmTimerDatabase
 import commanderpepper.advancetimer.room.AlarmTimerType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.single
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -60,5 +62,29 @@ class AlarmRepository @Inject constructor(val context: Context) {
     ) {
         alarmTimerDAO.modifyEnabledState(alarmTimerId, true)
         alarmTimerDAO.modifyTriggerTime(alarmTimerId, newTriggerTime)
+    }
+
+    suspend fun deleteTimer(alarmTimerId: Int) {
+        alarmTimerDAO.deleteTimer(alarmTimerId)
+    }
+
+    @ExperimentalStdlibApi
+    suspend fun getAllTimersRelatedToParentTimer(parentId: Int): List<AlarmTimer> {
+        val childTimers =
+            alarmTimerDAO.getChildrenAlarmTimerList(parentId).toMutableList()
+
+        val stack = mutableListOf<AlarmTimer>()
+        stack.addAll(childTimers)
+
+        while (stack.isNotEmpty()) {
+            val firstTimer = stack.first()
+            stack.removeFirst()
+
+            val firstChildTimers = alarmTimerDAO.getChildrenAlarmTimerList(firstTimer.id)
+            stack.addAll(firstChildTimers)
+            childTimers.addAll(firstChildTimers)
+        }
+
+        return childTimers
     }
 }

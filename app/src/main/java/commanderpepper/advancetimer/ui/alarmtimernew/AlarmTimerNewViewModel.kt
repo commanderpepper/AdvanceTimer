@@ -5,12 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import commanderpepper.App
 import commanderpepper.advancetimer.model.*
 import commanderpepper.advancetimer.room.AlarmTimerType
-import commanderpepper.advancetimer.ui.TimeSelectionOnClickHandler
 import commanderpepper.advancetimer.viewmodel.AlarmTimerViewModel
-import it.sephiroth.android.library.numberpicker.NumberPicker
-import it.sephiroth.android.library.numberpicker._OnNumberPickerChangeListener
-import it.sephiroth.android.library.numberpicker.doOnProgressChanged
-import it.sephiroth.android.library.numberpicker.setListener
 import kotlinx.coroutines.flow.Flow
 import timber.log.Timber
 
