@@ -1,37 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.alarmtimerdetail.AlarmTimerDetailFragment">
 
     <TextView
-    android:id="@+id/detailTimerTitle"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:text="@string/dismiss_timer_title"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+        android:id="@+id/detailTimerTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="@string/dismiss_timer_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/turnOnTimer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Turn On"
         android:layout_margin="8dp"
+        android:text="Turn On"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/detailTimerTitle"/>
+        app:layout_constraintTop_toBottomOf="@id/detailTimerTitle" />
 
     <Button
         android:id="@+id/turnOffTimer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Turn Off"
         android:layout_margin="8dp"
+        android:text="Turn Off"
         app:layout_constraintStart_toEndOf="@id/turnOnTimer"
+        app:layout_constraintTop_toBottomOf="@id/detailTimerTitle" />
+
+    <Button
+        android:id="@+id/deleteTimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="Delete"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/detailTimerTitle" />
 
     <View
@@ -47,8 +55,8 @@
         android:id="@+id/detailParentTimerTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Parent Timer Title"
         android:layout_margin="8dp"
+        android:text="Parent Timer Title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mainTimerParentTimerSeperatorDetail" />
 
@@ -56,8 +64,8 @@
         android:id="@+id/parentTimerChildTimerSeperatorDetail"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
         android:layout_margin="8dp"
+        android:background="@android:color/darker_gray"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/detailParentTimerTitle" />
 

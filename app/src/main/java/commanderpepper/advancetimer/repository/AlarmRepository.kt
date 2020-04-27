@@ -35,7 +35,7 @@ class AlarmRepository @Inject constructor(val context: Context) {
         return alarmTimerDAO.getAlarmTimer(alarmTimerId)
     }
 
-    suspend fun deleteAlarmTimer(alarmTimer: AlarmTimer) {
+    private suspend fun deleteAlarmTimer(alarmTimer: AlarmTimer) {
         alarmTimerDAO.deleteAlarmTimer(alarmTimer)
     }
 
@@ -66,12 +66,29 @@ class AlarmRepository @Inject constructor(val context: Context) {
         alarmTimerDAO.modifyTriggerTime(alarmTimerId, newTriggerTime)
     }
 
+    suspend fun checkForTimer(alarmTimerId: Int): Boolean {
+        return try {
+            val result = alarmTimerDAO.checkForTimer(alarmTimerId) == 1
+            result
+        } catch (e: Exception) {
+            Timber.d(e.toString())
+            false
+        }
+    }
+
+    @ExperimentalStdlibApi
     suspend fun deleteTimer(alarmTimerId: Int) {
         alarmTimerDAO.deleteTimer(alarmTimerId)
+        val timerGraph = getAllTimersRelatedToParentTimer(alarmTimerId)
+        timerGraph.forEach {
+            deleteAlarmTimer(it)
+        }
     }
 
     @ExperimentalStdlibApi
     suspend fun getAllTimersRelatedToParentTimer(parentId: Int): List<AlarmTimer> {
+        val rootParentTimer = alarmTimerDAO.getAlarmTimer(parentId)
+
         val childTimers =
             alarmTimerDAO.getChildrenAlarmTimerList(parentId).toMutableList()
 
@@ -87,6 +104,7 @@ class AlarmRepository @Inject constructor(val context: Context) {
             childTimers.addAll(firstChildTimers)
         }
 
+        childTimers.add(0, rootParentTimer)
         return childTimers
     }
 

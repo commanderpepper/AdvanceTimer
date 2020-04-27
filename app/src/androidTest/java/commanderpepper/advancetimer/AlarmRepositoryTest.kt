@@ -16,6 +16,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.IOException
 import org.junit.Assert.assertThat
+import org.junit.Assert.assertTrue
 
 @RunWith(AndroidJUnit4::class)
 class AlarmRepositoryTest {
@@ -40,6 +41,41 @@ class AlarmRepositoryTest {
         val timerFromDB = alarmRepository.getAlarmTimer(1)
 
         assertThat(timerFromDB.title, CoreMatchers.equalTo(timerA.title))
+    }
+
+    @Test
+    @ExperimentalStdlibApi
+    fun insertTimers_GetTimerGraph() = runBlocking {
+        val timerList = listOf(timerA, timerB, timerC, timerD, timerE, timerF)
+        timerList.forEach {
+            alarmRepository.insertAlarmTimerGetId(it)
+        }
+
+        val retrievedTimerList = alarmRepository.getAllTimersRelatedToParentTimer(1)
+        assertThat(retrievedTimerList.size, CoreMatchers.equalTo(timerList.size))
+    }
+
+    @Test
+    @ExperimentalStdlibApi
+    fun insertOneTimer_GetTimerGraph() = runBlocking {
+        alarmRepository.insertAlarmTimerGetId(timerA)
+
+        val retrievedTimerList = alarmRepository.getAllTimersRelatedToParentTimer(1)
+        assertThat(retrievedTimerList.size, CoreMatchers.equalTo(1))
+    }
+
+    @ExperimentalStdlibApi
+    @Test
+    fun insertOneTimer_DeleteTimer_CheckForTimer() = runBlocking {
+        val timerList = listOf(timerA, timerB, timerC, timerD, timerE, timerF)
+        timerList.forEach {
+            alarmRepository.insertAlarmTimerGetId(it)
+        }
+
+        alarmRepository.deleteTimer(1)
+
+        val doesTimerExist = alarmRepository.checkForTimer(1)
+        assertTrue(!doesTimerExist)
     }
 
     companion object {

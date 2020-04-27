@@ -203,7 +203,7 @@ class AlarmTimerViewModel @Inject constructor(
     }
 
     /**
-     * Delete a timer.
+     * Delete a timer, this will delete a timer and all its child timers.
      */
     suspend fun deleteTimer(alarmTimerId: Int) {
         alarmRepository.disableAlarmTimer(alarmTimerId)

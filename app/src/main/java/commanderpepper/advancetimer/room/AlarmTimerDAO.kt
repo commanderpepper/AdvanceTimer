@@ -16,6 +16,9 @@ interface AlarmTimerDAO {
     @Delete
     suspend fun deleteAlarmTimer(alarmTimer: AlarmTimer)
 
+    @Query("SELECT COUNT (1) FROM alarmtimer WHERE id == :alarmTimerId ")
+    suspend fun checkForTimer(alarmTimerId: Int): Int
+
     @Query("DELETE FROM alarmtimer WHERE id == :alarmTimerId ")
     suspend fun deleteTimer(alarmTimerId: Int)
 
