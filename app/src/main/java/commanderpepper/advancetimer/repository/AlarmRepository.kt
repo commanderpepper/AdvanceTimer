@@ -1,6 +1,8 @@
 package commanderpepper.advancetimer.repository
 
 import android.content.Context
+import androidx.annotation.VisibleForTesting
+import androidx.room.Room
 import commanderpepper.advancetimer.model.UnitsOfTime
 import commanderpepper.advancetimer.room.AlarmTimer
 import commanderpepper.advancetimer.room.AlarmTimerDatabase
@@ -13,8 +15,8 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class AlarmRepository @Inject constructor(val context: Context) {
-    private val database = AlarmTimerDatabase.getInstance(context)
-    private val alarmTimerDAO = database.alarmTimerDAO()
+    private var database = AlarmTimerDatabase.getInstance(context)
+    private var alarmTimerDAO = database.alarmTimerDAO()
 
     suspend fun getParentTimersFlow(): Flow<AlarmTimer> {
         Timber.d("Getting parent timers")
@@ -86,5 +88,18 @@ class AlarmRepository @Inject constructor(val context: Context) {
         }
 
         return childTimers
+    }
+
+    @VisibleForTesting
+    fun setDatabaseForTesting() {
+        database = Room.inMemoryDatabaseBuilder(context, AlarmTimerDatabase::class.java)
+            .allowMainThreadQueries()
+            .build()
+        alarmTimerDAO = database.alarmTimerDAO()
+    }
+
+    @VisibleForTesting
+    fun closeDatabase() {
+        database.close()
     }
 }
