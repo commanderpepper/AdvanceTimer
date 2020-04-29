@@ -64,9 +64,29 @@ class AlarmRepositoryTest {
         assertThat(retrievedTimerList.size, CoreMatchers.equalTo(1))
     }
 
+    @Test
+    @ExperimentalStdlibApi
+    fun insertManyTimers_GetTimerGraph() = runBlocking {
+        val timerList = listOf(timerA, timerB, timerC, timerD, timerE, timerF)
+        timerList.forEach {
+            alarmRepository.insertAlarmTimerGetId(it)
+        }
+
+        val retrievedTimerList = alarmRepository.getAllTimersRelatedToParentTimer(1)
+        assertThat(retrievedTimerList.size, CoreMatchers.equalTo(timerList.size))
+    }
+
+    @Test
+    fun insertOneTimer_CheckIfTimerExists() = runBlocking {
+        alarmRepository.insertAlarmTimerGetId(timerA)
+        
+        val doesTimerAExist = alarmRepository.checkForTimer(1)
+        assertTrue(doesTimerAExist)
+    }
+
     @ExperimentalStdlibApi
     @Test
-    fun insertOneTimer_DeleteTimer_CheckForTimer() = runBlocking {
+    fun insertOneTimer_DeleteTimer_CheckForEmptyTimerList() = runBlocking {
         val timerList = listOf(timerA, timerB, timerC, timerD, timerE, timerF)
         timerList.forEach {
             alarmRepository.insertAlarmTimerGetId(it)
@@ -74,9 +94,11 @@ class AlarmRepositoryTest {
 
         alarmRepository.deleteTimer(1)
 
-        val doesTimerExist = alarmRepository.checkForTimer(1)
-        assertTrue(!doesTimerExist)
+        val timerListAfter = alarmRepository.getParentTimersList()
+        assertTrue(timerListAfter.isEmpty())
     }
+
+
 
     companion object {
         //Timer A is the parent Timer

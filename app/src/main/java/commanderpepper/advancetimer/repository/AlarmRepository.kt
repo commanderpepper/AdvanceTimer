@@ -67,18 +67,11 @@ class AlarmRepository @Inject constructor(val context: Context) {
     }
 
     suspend fun checkForTimer(alarmTimerId: Int): Boolean {
-        return try {
-            val result = alarmTimerDAO.checkForTimer(alarmTimerId) == 1
-            result
-        } catch (e: Exception) {
-            Timber.d(e.toString())
-            false
-        }
+        return alarmTimerDAO.checkForTimer(alarmTimerId) == 1
     }
 
     @ExperimentalStdlibApi
     suspend fun deleteTimer(alarmTimerId: Int) {
-        alarmTimerDAO.deleteTimer(alarmTimerId)
         val timerGraph = getAllTimersRelatedToParentTimer(alarmTimerId)
         timerGraph.forEach {
             deleteAlarmTimer(it)
