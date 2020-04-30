@@ -79,7 +79,7 @@ class AlarmRepositoryTest {
     @Test
     fun insertOneTimer_CheckIfTimerExists() = runBlocking {
         alarmRepository.insertAlarmTimerGetId(timerA)
-        
+
         val doesTimerAExist = alarmRepository.checkForTimer(1)
         assertTrue(doesTimerAExist)
     }

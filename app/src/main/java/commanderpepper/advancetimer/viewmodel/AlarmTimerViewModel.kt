@@ -3,6 +3,7 @@ package commanderpepper.advancetimer.viewmodel
 import android.app.Activity
 import android.content.Context
 import android.view.inputmethod.InputMethodManager
+import androidx.annotation.VisibleForTesting
 import commanderpepper.advancetimer.alarmcreation.AlarmCreator
 import commanderpepper.advancetimer.model.TimerStart
 import commanderpepper.advancetimer.model.UnitsOfTime
@@ -205,8 +206,14 @@ class AlarmTimerViewModel @Inject constructor(
     /**
      * Delete a timer, this will delete a timer and all its child timers.
      */
+    @ExperimentalStdlibApi
     suspend fun deleteTimer(alarmTimerId: Int) {
-        alarmRepository.disableAlarmTimer(alarmTimerId)
+        alarmRepository.deleteTimer(alarmTimerId)
+    }
+
+    @VisibleForTesting
+    fun setUpAlarmRepoForTesting(){
+        alarmRepository.setDatabaseForTesting()
     }
 }
 
