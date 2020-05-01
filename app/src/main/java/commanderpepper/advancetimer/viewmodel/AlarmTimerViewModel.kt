@@ -208,11 +208,14 @@ class AlarmTimerViewModel @Inject constructor(
      */
     @ExperimentalStdlibApi
     suspend fun deleteTimer(alarmTimerId: Int) {
+        alarmRepository.getAllTimersRelatedToParentTimer(alarmTimerId).forEach {
+            alarmCreator.cancelTimer(it.id.toLong(), it.requestCode)
+        }
         alarmRepository.deleteTimer(alarmTimerId)
     }
 
     @VisibleForTesting
-    fun setUpAlarmRepoForTesting(){
+    fun setUpAlarmRepoForTesting() {
         alarmRepository.setDatabaseForTesting()
     }
 }

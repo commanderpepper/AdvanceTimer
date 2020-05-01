@@ -43,4 +43,9 @@ class AlarmTimerDetailViewModel(application: Application) : AndroidViewModel(app
     suspend fun timerIsEnabled(alarmTimerId: Int): Boolean {
         return alarmTimerViewModel.checkTimerStatus(alarmTimerId)
     }
+
+    @ExperimentalStdlibApi
+    suspend fun deleteTimer(alarmTimerId: Int) {
+        alarmTimerViewModel.deleteTimer(alarmTimerId)
+    }
 }

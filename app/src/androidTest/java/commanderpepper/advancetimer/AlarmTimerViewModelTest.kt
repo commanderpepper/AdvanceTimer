@@ -100,7 +100,7 @@ class AlarmTimerViewModelTest {
         assertThat(result, CoreMatchers.equalTo(1))
 
         alarmTimerViewModel.deleteTimer(1)
-        
+
         val timerList = alarmTimerViewModel.getParentAlarmTimers()
         assertTrue(timerList.isEmpty())
     }

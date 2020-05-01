@@ -36,6 +36,7 @@ class AlarmTimerDetailFragment : Fragment() {
 
     private lateinit var turnOnButton: Button
     private lateinit var turnOffButton: Button
+    private lateinit var deleteButton: Button
 
     private val alarmTimerId: Int = getAlarmTimerId()
 
@@ -46,6 +47,7 @@ class AlarmTimerDetailFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_alarm_timer_detail, container, false)
     }
 
+    @ExperimentalStdlibApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -55,6 +57,7 @@ class AlarmTimerDetailFragment : Fragment() {
         addTimerFab = view.findViewById(R.id.detail_create_alarmtimer_fab)
         turnOnButton = view.findViewById(R.id.turnOnTimer)
         turnOffButton = view.findViewById(R.id.turnOffTimer)
+        deleteButton = view.findViewById(R.id.deleteTimer)
 
         /**
          * If the Floating Action Button enabled then add an onClickListener to the Floating Action Button.
@@ -147,6 +150,17 @@ class AlarmTimerDetailFragment : Fragment() {
             lifecycleScope.launch {
                 Timber.d("Alarm to enable")
                 viewModel.restartTimer(getAlarmTimerId())
+            }
+        }
+
+        /**
+         * Delete a timer
+         */
+        deleteButton.setOnClickListener {
+            lifecycleScope.launch {
+//                viewModel.deleteTimer(getAlarmTimerId())
+                val deleteDialog = DeleteDialog()
+                deleteDialog.show(childFragmentManager, "Dismiss")
             }
         }
 
