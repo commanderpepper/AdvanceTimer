@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -26,7 +28,7 @@ import timber.log.Timber
 val DETAIL_TIMER_KEY = "alarmTimerId"
 val FAB_KEY = "showAddTimerFAB"
 
-class AlarmTimerDetailFragment : Fragment() {
+class AlarmTimerDetailFragment : Fragment(), DeleteDialog.DeleteDialogListener {
 
     private val viewModel: AlarmTimerDetailViewModel by activityViewModels()
     private lateinit var detailTimerTitleView: TextView
@@ -157,12 +159,12 @@ class AlarmTimerDetailFragment : Fragment() {
          * Delete a timer
          */
         deleteButton.setOnClickListener {
-            lifecycleScope.launch {
 //                viewModel.deleteTimer(getAlarmTimerId())
-                val deleteDialog = DeleteDialog()
-                deleteDialog.show(childFragmentManager, "Dismiss")
-            }
+            val deleteDialog = DeleteDialog()
+            deleteDialog.setTargetFragment(this, 0)
+            deleteDialog.show(parentFragmentManager, "Dismiss")
         }
+
 
         setTurnOnButtonText()
     }
@@ -189,6 +191,14 @@ class AlarmTimerDetailFragment : Fragment() {
      */
     private fun getAddFabStatus(): Boolean {
         return arguments?.getBoolean(FAB_KEY, true) ?: true
+    }
+
+    override fun onDialogPositiveClick(dialog: DialogFragment) {
+        Toast.makeText(context, "Confirm selected", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onDialogNegativeClick(dialog: DialogFragment) {
+        Toast.makeText(context, "Cancel selected", Toast.LENGTH_SHORT).show()
     }
 
 }
