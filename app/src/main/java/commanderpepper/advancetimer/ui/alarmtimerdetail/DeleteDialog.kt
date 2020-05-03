@@ -34,7 +34,7 @@ class DeleteDialog : DialogFragment() {
             val builder: AlertDialog.Builder = AlertDialog.Builder(it)
 
             builder.setTitle("Warning!")
-            builder.setMessage("Deleting this timer will also delete all of its child timers.")
+            builder.setMessage("Deleting this timer will also delete all of its children timers.")
 
             builder.setPositiveButton("Delete",
                 DialogInterface.OnClickListener { dialog, which ->

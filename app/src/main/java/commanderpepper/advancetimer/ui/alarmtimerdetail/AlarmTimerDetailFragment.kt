@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -39,8 +40,6 @@ class AlarmTimerDetailFragment : Fragment(), DeleteDialog.DeleteDialogListener {
     private lateinit var turnOnButton: Button
     private lateinit var turnOffButton: Button
     private lateinit var deleteButton: Button
-
-    private val alarmTimerId: Int = getAlarmTimerId()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -193,12 +192,15 @@ class AlarmTimerDetailFragment : Fragment(), DeleteDialog.DeleteDialogListener {
         return arguments?.getBoolean(FAB_KEY, true) ?: true
     }
 
+    @ExperimentalStdlibApi
     override fun onDialogPositiveClick(dialog: DialogFragment) {
-        Toast.makeText(context, "Confirm selected", Toast.LENGTH_SHORT).show()
+        lifecycleScope.launch {
+            viewModel.deleteTimer(getAlarmTimerId())
+            findNavController().popBackStack()
+        }
     }
 
     override fun onDialogNegativeClick(dialog: DialogFragment) {
-        Toast.makeText(context, "Cancel selected", Toast.LENGTH_SHORT).show()
     }
 
 }
