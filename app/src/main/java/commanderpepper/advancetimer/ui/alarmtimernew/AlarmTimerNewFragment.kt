@@ -104,7 +104,6 @@ class AlarmTimerNewFragment : Fragment() {
             repeatSecondNumberPicker = findViewById(R.id.secondNumber)
         }
 
-
         // Set the number picker amount and when the user changes the value update the view model
         triggerHourNumberPicker.run {
             doOnProgressChanged { numberPicker, progress, formUser ->
@@ -161,6 +160,7 @@ class AlarmTimerNewFragment : Fragment() {
         if (getParentId() != null) {
             immediateStartRadioButton.text = "Starts when parent starts"
             delayedStartRadioButton.text = "Starts when parent ends"
+            alarmTimerViewModel.updateTimerStart(TimerStart.ParentStart)
         }
 
         /**
@@ -172,13 +172,13 @@ class AlarmTimerNewFragment : Fragment() {
             alarmTimerViewModel.updateAlarmTimerType(alarmTimerType)
         }
 
+
+
         /**
          * Set the timer start in the view model whenever the user switches start type.
          */
         timerStartGroup.setOnCheckedChangeListener { _, i ->
-            var timerStart: TimerStart = TimerStart.Immediate
-
-            timerStart = if (getParentId() != null) {
+            val timerStart = if (getParentId() != null) {
                 if (i == R.id.immediateStart) TimerStart.Immediate else TimerStart.Delayed
             } else {
                 if (i == R.id.immediateStart) TimerStart.ParentStart else TimerStart.ParentEnd
