@@ -23,17 +23,18 @@ class AlarmTimerViewHolder(private val view: View) : RecyclerView.ViewHolder(vie
 
         title = view.findViewById(R.id.parent_alarmtimer_itemview_name)
         enabled = view.findViewById(R.id.isEnabled)
-        timeLeft = view.findViewById(R.id.timeleft)
         type = view.findViewById(R.id.alarmType)
+        timeLeft = view.findViewById(R.id.timeleft)
+
 
         val calendar = Calendar.getInstance().apply {
             timeInMillis = alarmTimer.triggerTime.amount
         }
 
-        title.text = alarmTimer.title
-        enabled.text = if (alarmTimer.enabled) "On" else "Off"
-        timeLeft.text = calendar.time.toString()
-        type.text = alarmTimer.type.getTypeAsString()
+        title.text = "Title: ${alarmTimer.title}"
+        enabled.text = "Status: ${if (alarmTimer.enabled) "On" else "Off"}"
+        type.text = "Type ${alarmTimer.type.getTypeAsString()}"
+        timeLeft.text = "Time: ${calendar.time}"
     }
 
 }
