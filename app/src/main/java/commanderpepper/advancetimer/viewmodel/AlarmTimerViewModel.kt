@@ -214,10 +214,19 @@ class AlarmTimerViewModel @Inject constructor(
         alarmRepository.deleteTimer(alarmTimerId)
     }
 
+    suspend fun enableAllParentEndTimers(parentId: Int) {
+        val parentEndChildTimerList =
+            getChildAlarmTimers(parentId).filter { it.timerStart == TimerStart.ParentEnd }
+        parentEndChildTimerList.forEach {
+            alarmCreator.enableAlarm(it.id.toLong(), it.requestCode)
+        }
+    }
+
     @VisibleForTesting
     fun setUpAlarmRepoForTesting() {
         alarmRepository.setDatabaseForTesting()
     }
+
 }
 
 fun Activity.dismissKeyboard() {
