@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import commanderpepper.App
 import commanderpepper.advancetimer.R
+import commanderpepper.advancetimer.model.TimerStart
 import commanderpepper.advancetimer.receivers.DISMISS_TIMER_ID
 import commanderpepper.advancetimer.ui.NavGraphAction
 import commanderpepper.advancetimer.ui.alarmtimerdetail.AlarmTimerDetailFragment
@@ -37,18 +38,18 @@ class DismissTimer : AppCompatActivity() {
         val dismissId = intent.getLongExtra(DISMISS_TIMER_ID, -1)
 
         lifecycleScope.launch {
-            viewModel.enableAllParentEndTimers(dismissId.toInt())
+            viewModel.enableParentEndChildTimers(dismissId.toInt())
+
+            val fragment = AlarmTimerDetailFragment()
+            val bundle = bundleOf(DETAIL_TIMER_KEY to dismissId.toInt())
+            bundle.putBoolean(FAB_KEY, false)
+
+            fragment.arguments = bundle
+
+            val manager = supportFragmentManager
+            manager.beginTransaction()
+                .replace(R.id.dismissDetailFragment, fragment)
+                .commit()
         }
-
-        val fragment = AlarmTimerDetailFragment()
-        val bundle = bundleOf(DETAIL_TIMER_KEY to dismissId.toInt())
-        bundle.putBoolean(FAB_KEY, false)
-
-        fragment.arguments = bundle
-
-        val manager = supportFragmentManager
-        manager.beginTransaction()
-            .replace(R.id.dismissDetailFragment, fragment)
-            .commit()
     }
 }

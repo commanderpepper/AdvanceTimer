@@ -98,18 +98,6 @@ class AlarmCreator @Inject constructor(
         }
     }
 
-    fun enableAlarm(timerId: Long, timerRequestCode: Int) {
-        val intent = Intent(context, MyReceiver::class.java)
-        intent.putExtra(TIMER_ID, timerId)
-
-        val alarmManager: AlarmManager =
-            context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
-        val pendingIntent = PendingIntent.getBroadcast(
-            context, timerRequestCode, intent, PendingIntent.FLAG_CANCEL_CURRENT
-        )
-    }
-
     private fun createIntentForNewAlarm(timerId: Long, context: Context): Intent {
         return Intent(context, MyReceiver::class.java).apply {
             putExtra(TIMER_ID, timerId)

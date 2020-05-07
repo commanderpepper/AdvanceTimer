@@ -105,6 +105,7 @@ class AlarmTimerDetailFragment : Fragment(), DeleteDialog.DeleteDialogListener {
          */
         lifecycleScope.launch {
             val childTimers = viewModel.retrieveChildTimers(getAlarmTimerId())
+            Timber.d(childTimers.toString())
 
             /**
              * Set up the adapter for the recycler view. If the FAB is disabled then so is the ability to go to child timers.

@@ -179,9 +179,9 @@ class AlarmTimerNewFragment : Fragment() {
          */
         timerStartGroup.setOnCheckedChangeListener { _, i ->
             val timerStart = if (getParentId() != null) {
-                if (i == R.id.immediateStart) TimerStart.Immediate else TimerStart.Delayed
-            } else {
                 if (i == R.id.immediateStart) TimerStart.ParentStart else TimerStart.ParentEnd
+            } else {
+                if (i == R.id.immediateStart) TimerStart.Immediate else TimerStart.Delayed
             }
 
             alarmTimerViewModel.updateTimerStart(timerStart)

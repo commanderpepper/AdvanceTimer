@@ -16,7 +16,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.toList
 import timber.log.Timber
-import java.util.*
 import javax.inject.Inject
 
 const val TIMER_ID = "TIMER_ID"
@@ -126,7 +125,7 @@ class AlarmTimerViewModel @Inject constructor(
     /**
      * Re-enable an alarm
      */
-    suspend fun enableAlarmTimer(alarmTimerId: Int, timerStart: TimerStart = TimerStart.Immediate) {
+    suspend fun enableAlarmTimer(alarmTimerId: Int) {
         var alarmTimer = alarmRepository.getAlarmTimer(alarmTimerId)
 
         //If the timer is active, disable it before restarting it.
@@ -135,21 +134,18 @@ class AlarmTimerViewModel @Inject constructor(
         }
 
         val newTriggerTime = getTriggerTime(alarmTimer.deltaTime)
+        // Set the timer status from false to true and modify the trigger time.
         alarmRepository.enableAlarmTimer(alarmTimerId, newTriggerTime)
 
         val alarmTimerType = alarmTimer.type
 
         alarmTimer = alarmRepository.getAlarmTimer(alarmTimerId)
 
+        // Start the timer in the alarm creator
         startTimer(alarmTimerType, alarmTimer)
 
-        if (timerStart is TimerStart.Immediate) enableChildTimers(
-            alarmTimerId,
-            TimerStart.ParentStart
-        ) else enableChildTimers(
-            alarmTimerId,
-            TimerStart.ParentEnd
-        )
+        // Enable all child timers scheduled to start when this timer begins
+        enableParentStartChildTimers(alarmTimerId)
     }
 
     /**
@@ -174,18 +170,45 @@ class AlarmTimerViewModel @Inject constructor(
         }
     }
 
-    /**
-     * Enable child timers.
-     */
-    suspend fun enableChildTimers(parentId: Int, timerStart: TimerStart = TimerStart.Immediate) {
+    private fun turnOnTimer(alarmTimer: AlarmTimer){
+        when (alarmTimer.type) {
+            AlarmTimerType.OneOffTimer -> alarmCreator.makeOneOffAlarm(
+                alarmTimer.requestCode,
+                alarmTimer.id.toLong(),
+                alarmTimer.triggerTime.amount
+            )
+            AlarmTimerType.RepeatingTimer -> alarmCreator.makeRepeatingAlarm(
+                alarmTimer.requestCode,
+                alarmTimer.id.toLong(),
+                alarmTimer.triggerTime.amount,
+                alarmTimer.repeatTime.amount
+            )
+        }
+    }
+
+    suspend fun enableParentStartChildTimers(parentId: Int){
         val childTimers = alarmRepository.getChildrenTimers(parentId).toList()
+            .filter{ it.timerStart == TimerStart.ParentStart }
         if (childTimers.isEmpty()) {
             return
         } else {
             childTimers.forEach {
-                if (timerStart == it.timerStart) {
-                    enableAlarmTimer(it.id)
-                }
+                enableAlarmTimer(it.id)
+            }
+        }
+    }
+
+    /**
+     * Turn on all child timers that were scheduled to begin when their parent timer has ended.
+     */
+    suspend fun enableParentEndChildTimers(parentId: Int) {
+        val childTimers = alarmRepository.getChildrenTimers(parentId).toList()
+            .filter{ it.timerStart == TimerStart.ParentEnd }
+        if (childTimers.isEmpty()) {
+            return
+        } else {
+            childTimers.forEach {
+                enableAlarmTimer(it.id)
             }
         }
     }
@@ -212,14 +235,6 @@ class AlarmTimerViewModel @Inject constructor(
             alarmCreator.cancelTimer(it.id.toLong(), it.requestCode)
         }
         alarmRepository.deleteTimer(alarmTimerId)
-    }
-
-    suspend fun enableAllParentEndTimers(parentId: Int) {
-        val parentEndChildTimerList =
-            getChildAlarmTimers(parentId).filter { it.timerStart == TimerStart.ParentEnd }
-        parentEndChildTimerList.forEach {
-            alarmCreator.enableAlarm(it.id.toLong(), it.requestCode)
-        }
     }
 
     @VisibleForTesting
