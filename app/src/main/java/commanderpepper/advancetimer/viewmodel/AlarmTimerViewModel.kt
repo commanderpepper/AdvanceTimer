@@ -170,23 +170,7 @@ class AlarmTimerViewModel @Inject constructor(
         }
     }
 
-    private fun turnOnTimer(alarmTimer: AlarmTimer){
-        when (alarmTimer.type) {
-            AlarmTimerType.OneOffTimer -> alarmCreator.makeOneOffAlarm(
-                alarmTimer.requestCode,
-                alarmTimer.id.toLong(),
-                alarmTimer.triggerTime.amount
-            )
-            AlarmTimerType.RepeatingTimer -> alarmCreator.makeRepeatingAlarm(
-                alarmTimer.requestCode,
-                alarmTimer.id.toLong(),
-                alarmTimer.triggerTime.amount,
-                alarmTimer.repeatTime.amount
-            )
-        }
-    }
-
-    suspend fun enableParentStartChildTimers(parentId: Int){
+    private suspend fun enableParentStartChildTimers(parentId: Int){
         val childTimers = alarmRepository.getChildrenTimers(parentId).toList()
             .filter{ it.timerStart == TimerStart.ParentStart }
         if (childTimers.isEmpty()) {

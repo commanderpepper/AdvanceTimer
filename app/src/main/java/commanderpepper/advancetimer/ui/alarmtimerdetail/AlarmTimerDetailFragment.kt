@@ -96,7 +96,7 @@ class AlarmTimerDetailFragment : Fragment(), DeleteDialog.DeleteDialogListener {
          */
         lifecycleScope.launch {
             parentDetailTimerTitleView.text = withContext(lifecycleScope.coroutineContext) {
-                viewModel.retrieveParentTimerTitle(getAlarmTimerId())
+                "Parent timer: " + viewModel.retrieveParentTimerTitle(getAlarmTimerId())
             }
         }
 

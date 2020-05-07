@@ -32,13 +32,23 @@
         app:layout_constraintTop_toBottomOf="@id/isEnabled" />
 
     <TextView
-        android:id="@+id/timeleft"
+        android:id="@+id/timerTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        android:textSize="20sp"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/alarmType" />
+
+    <TextView
+        android:id="@+id/timerStrategy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:textSize="16sp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/timerTime"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
