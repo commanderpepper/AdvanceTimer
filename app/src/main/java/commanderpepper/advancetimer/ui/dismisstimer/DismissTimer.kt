@@ -40,7 +40,7 @@ class DismissTimer : AppCompatActivity() {
         lifecycleScope.launch {
             viewModel.enableParentEndChildTimers(dismissId.toInt())
 
-            val fragment = AlarmTimerDetailFragment()
+            val fragment = AlarmTimerDismissFragment()
             val bundle = bundleOf(DETAIL_TIMER_KEY to dismissId.toInt())
             bundle.putBoolean(FAB_KEY, false)
 
