@@ -60,25 +60,10 @@ class AlarmTimerDetailFragment : Fragment(), DeleteDialog.DeleteDialogListener {
         turnOffButton = view.findViewById(R.id.turnOffTimer)
         deleteButton = view.findViewById(R.id.deleteTimer)
 
-        /**
-         * If the Floating Action Button enabled then add an onClickListener to the Floating Action Button.
-         */
-        if (getAddFabStatus()) {
-            addTimerFab.setOnClickListener {
-                val bundle = bundleOf(PARENT_KEY to getAlarmTimerId())
-                view.findNavController()
-                    .navigate(R.id.action_alarmTimerDetail_to_alarmTimerNew, bundle)
-            }
-        } else {
-            /**
-             * When the Floating Action Button is disabled, assume that we are entering from a broadcast and therefore modify the timer state and hide the Floating Action Button.
-             */
-            addTimerFab.hide()
-            lifecycleScope.launch {
-                withContext(lifecycleScope.coroutineContext) {
-                    viewModel.modifyEnabledState(getAlarmTimerId())
-                }
-            }
+        addTimerFab.setOnClickListener {
+            val bundle = bundleOf(PARENT_KEY to getAlarmTimerId())
+            view.findNavController()
+                .navigate(R.id.action_alarmTimerDetail_to_alarmTimerNew, bundle)
         }
 
         /**
@@ -107,22 +92,7 @@ class AlarmTimerDetailFragment : Fragment(), DeleteDialog.DeleteDialogListener {
             val childTimers = viewModel.retrieveChildTimers(getAlarmTimerId())
             Timber.d(childTimers.toString())
 
-            /**
-             * Set up the adapter for the recycler view. If the FAB is disabled then so is the ability to go to child timers.
-             */
-            val adapter =
-                AlarmTimerAdapter(
-                    childTimers,
-                    if (getAddFabStatus()) {
-                        NavGraphAction(R.id.action_alarmTimerDetail_self)
-                    } else {
-                        //Set the button to turn on. This makes sure the text is set when entering this fragment from a broadcast receiver.
-                        setTurnOnButtonText()
-                        NavGraphAction(
-                            0
-                        )
-                    }
-                )
+            val adapter = AlarmTimerAdapter(childTimers, NavGraphAction(R.id.action_alarmTimerDetail_self))
 
             val manager = LinearLayoutManager(this@AlarmTimerDetailFragment.context)
 
@@ -132,7 +102,6 @@ class AlarmTimerDetailFragment : Fragment(), DeleteDialog.DeleteDialogListener {
             childTimersRecyclerView.adapter = adapter
             childTimersRecyclerView.layoutManager = manager
             childTimersRecyclerView.addItemDecoration(dividerItemDecoration)
-
         }
 
         /**
@@ -159,12 +128,10 @@ class AlarmTimerDetailFragment : Fragment(), DeleteDialog.DeleteDialogListener {
          * Delete a timer
          */
         deleteButton.setOnClickListener {
-//                viewModel.deleteTimer(getAlarmTimerId())
             val deleteDialog = DeleteDialog()
             deleteDialog.setTargetFragment(this, 0)
             deleteDialog.show(parentFragmentManager, "Dismiss")
         }
-
 
         setTurnOnButtonText()
     }
@@ -184,13 +151,6 @@ class AlarmTimerDetailFragment : Fragment(), DeleteDialog.DeleteDialogListener {
      */
     private fun getAlarmTimerId(): Int {
         return arguments?.getInt(DETAIL_TIMER_KEY) ?: -1
-    }
-
-    /**
-     * Get FAB status argument passed to this fragment, I assume it to be true.
-     */
-    private fun getAddFabStatus(): Boolean {
-        return arguments?.getBoolean(FAB_KEY, true) ?: true
     }
 
     @ExperimentalStdlibApi

@@ -28,6 +28,7 @@
         android:id="@+id/dismissParentChildSeparator"
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_margin="8dp"
         android:background="@android:color/darker_gray"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/dismissTimerButton" />
@@ -44,6 +45,7 @@
         android:id="@+id/dismissParentListSeparator"
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_margin="8dp"
         android:background="@android:color/darker_gray"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/dismissParentTimerTitle" />

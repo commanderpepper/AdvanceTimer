@@ -44,6 +44,13 @@ class AlarmTimerDismissFragment : Fragment() {
         dismissChildList = view.findViewById(R.id.dismissChildTimerList)
 
         /**
+         * Turn off a timer
+         */
+        lifecycleScope.launch {
+            viewModel.modifyEnabledState(getAlarmTimerId())
+        }
+
+        /**
          * Set the timer title
          */
         lifecycleScope.launch {

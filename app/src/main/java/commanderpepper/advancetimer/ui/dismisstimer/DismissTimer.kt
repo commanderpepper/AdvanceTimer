@@ -42,7 +42,7 @@ class DismissTimer : AppCompatActivity() {
 
             val fragment = AlarmTimerDismissFragment()
             val bundle = bundleOf(DETAIL_TIMER_KEY to dismissId.toInt())
-            bundle.putBoolean(FAB_KEY, false)
+//            bundle.putBoolean(FAB_KEY, false)
 
             fragment.arguments = bundle
 

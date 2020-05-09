@@ -61,7 +61,7 @@ class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(applic
     }
 
     fun createGenericTitle(): String {
-        return "Timer goes off in ${triggerHour.amount}h:${triggerMinute.amount}m:${triggerSecond.amount}s"
+        return "${triggerHour.amount}h:${triggerMinute.amount}m:${triggerSecond.amount}s Timer"
     }
 
     private fun calculateTimeInMilliseconds(

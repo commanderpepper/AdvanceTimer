@@ -172,8 +172,6 @@ class AlarmTimerNewFragment : Fragment() {
             alarmTimerViewModel.updateAlarmTimerType(alarmTimerType)
         }
 
-
-
         /**
          * Set the timer start in the view model whenever the user switches start type.
          */
@@ -186,7 +184,6 @@ class AlarmTimerNewFragment : Fragment() {
 
             alarmTimerViewModel.updateTimerStart(timerStart)
         }
-
 
         saveButton.setOnClickListener { saveButton ->
             /**
