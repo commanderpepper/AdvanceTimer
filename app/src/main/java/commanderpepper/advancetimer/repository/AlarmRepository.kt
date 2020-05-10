@@ -66,6 +66,10 @@ class AlarmRepository @Inject constructor(val context: Context) {
         alarmTimerDAO.modifyTriggerTime(alarmTimerId, newTriggerTime)
     }
 
+    suspend fun modifyTriggerTime(alarmTimerId: Int, newTriggerTime: UnitsOfTime.MilliSecond){
+        alarmTimerDAO.modifyTriggerTime(alarmTimerId, newTriggerTime)
+    }
+
     suspend fun checkForTimer(alarmTimerId: Int): Boolean {
         return alarmTimerDAO.checkForTimer(alarmTimerId) == 1
     }

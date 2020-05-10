@@ -122,6 +122,13 @@ class AlarmTimerViewModel @Inject constructor(
         }
     }
 
+    suspend fun modifyTriggerTime(alarmTimerId: Int) {
+        val alarmTimer = alarmRepository.getAlarmTimer(alarmTimerId)
+
+        val newTriggerTime = getTriggerTime(alarmTimer.deltaTime)
+        alarmRepository.modifyTriggerTime(alarmTimerId, newTriggerTime)
+    }
+
     /**
      * Re-enable an alarm
      */
@@ -170,9 +177,9 @@ class AlarmTimerViewModel @Inject constructor(
         }
     }
 
-    private suspend fun enableParentStartChildTimers(parentId: Int){
+    private suspend fun enableParentStartChildTimers(parentId: Int) {
         val childTimers = alarmRepository.getChildrenTimers(parentId).toList()
-            .filter{ it.timerStart == TimerStart.ParentStart }
+            .filter { it.timerStart == TimerStart.ParentStart }
         if (childTimers.isEmpty()) {
             return
         } else {
@@ -187,7 +194,7 @@ class AlarmTimerViewModel @Inject constructor(
      */
     suspend fun enableParentEndChildTimers(parentId: Int) {
         val childTimers = alarmRepository.getChildrenTimers(parentId).toList()
-            .filter{ it.timerStart == TimerStart.ParentEnd }
+            .filter { it.timerStart == TimerStart.ParentEnd }
         if (childTimers.isEmpty()) {
             return
         } else {

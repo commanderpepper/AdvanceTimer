@@ -17,6 +17,7 @@ import commanderpepper.advancetimer.ui.NavGraphAction
 import commanderpepper.advancetimer.ui.alarmtimerdetail.DETAIL_TIMER_KEY
 import commanderpepper.advancetimer.ui.recyclerview.AlarmTimerAdapter
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class AlarmTimerDismissFragment : Fragment() {
 
@@ -25,6 +26,7 @@ class AlarmTimerDismissFragment : Fragment() {
     private lateinit var dismissTimerTitle: TextView
     private lateinit var dismissParentTimerTitle: TextView
     private lateinit var dismissButton: Button
+    private lateinit var dismissTurnOff: Button
     private lateinit var dismissChildList: RecyclerView
 
     override fun onCreateView(
@@ -42,12 +44,14 @@ class AlarmTimerDismissFragment : Fragment() {
         dismissParentTimerTitle = view.findViewById(R.id.dismissParentTimerTitle)
         dismissButton = view.findViewById(R.id.dismissTimerButton)
         dismissChildList = view.findViewById(R.id.dismissChildTimerList)
+        dismissTurnOff = view.findViewById(R.id.dismissTurnOffButton)
 
         /**
-         * Turn off a timer
+         * Modify the timer
          */
         lifecycleScope.launch {
             viewModel.modifyEnabledState(getAlarmTimerId())
+            viewModel.modifyTriggerTime(getAlarmTimerId())
         }
 
         /**
@@ -82,6 +86,13 @@ class AlarmTimerDismissFragment : Fragment() {
             dismissChildList.adapter = adapter
             dismissChildList.layoutManager = manager
             dismissChildList.addItemDecoration(dividerItemDecoration)
+        }
+
+        dismissTurnOff.setOnClickListener {
+            lifecycleScope.launch {
+                Timber.d("Alarm to disable ${getAlarmTimerId()}")
+                viewModel.stopTimer(getAlarmTimerId())
+            }
         }
     }
 
