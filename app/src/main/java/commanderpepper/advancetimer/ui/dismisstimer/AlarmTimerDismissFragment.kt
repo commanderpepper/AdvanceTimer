@@ -1,5 +1,6 @@
 package commanderpepper.advancetimer.ui.dismisstimer
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +17,9 @@ import commanderpepper.advancetimer.R
 import commanderpepper.advancetimer.ui.NavGraphAction
 import commanderpepper.advancetimer.ui.alarmtimerdetail.DETAIL_TIMER_KEY
 import commanderpepper.advancetimer.ui.recyclerview.AlarmTimerAdapter
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class AlarmTimerDismissFragment : Fragment() {
@@ -28,6 +31,8 @@ class AlarmTimerDismissFragment : Fragment() {
     private lateinit var dismissButton: Button
     private lateinit var dismissTurnOff: Button
     private lateinit var dismissChildList: RecyclerView
+
+    private lateinit var mediaPlayer: MediaPlayer
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,6 +50,8 @@ class AlarmTimerDismissFragment : Fragment() {
         dismissButton = view.findViewById(R.id.dismissTimerButton)
         dismissChildList = view.findViewById(R.id.dismissChildTimerList)
         dismissTurnOff = view.findViewById(R.id.dismissTurnOffButton)
+
+        mediaPlayer = MediaPlayer.create(this.context, R.raw.bell_ringing_04)
 
         /**
          * Modify the timer
@@ -93,6 +100,10 @@ class AlarmTimerDismissFragment : Fragment() {
                 Timber.d("Alarm to disable ${getAlarmTimerId()}")
                 viewModel.stopTimer(getAlarmTimerId())
             }
+        }
+
+        dismissButton.setOnClickListener {
+            mediaPlayer.stop()
         }
     }
 
