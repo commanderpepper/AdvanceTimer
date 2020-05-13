@@ -51,7 +51,13 @@ class AlarmTimerDismissFragment : Fragment() {
         dismissChildList = view.findViewById(R.id.dismissChildTimerList)
         dismissTurnOff = view.findViewById(R.id.dismissTurnOffButton)
 
-        mediaPlayer = MediaPlayer.create(this.context, R.raw.bell_ringing_04)
+        if(viewModel.mediaPlayerState !is MediaPlayerState.Stopped){
+            mediaPlayer = MediaPlayer.create(this.context, R.raw.bell_ringing_04).apply {
+                start()
+                isLooping = true
+            }
+            viewModel.setMediaPlayerToPlaying()
+        }
 
         /**
          * Modify the timer
@@ -100,10 +106,11 @@ class AlarmTimerDismissFragment : Fragment() {
                 Timber.d("Alarm to disable ${getAlarmTimerId()}")
                 viewModel.stopTimer(getAlarmTimerId())
             }
+            stopMediaPlayer()
         }
 
         dismissButton.setOnClickListener {
-            mediaPlayer.stop()
+            stopMediaPlayer()
         }
     }
 
@@ -112,5 +119,23 @@ class AlarmTimerDismissFragment : Fragment() {
      */
     private fun getAlarmTimerId(): Int {
         return arguments?.getInt(DETAIL_TIMER_KEY) ?: -1
+    }
+
+    private fun stopMediaPlayer(){
+        if(viewModel.mediaPlayerState !is MediaPlayerState.Stopped){
+            mediaPlayer.stop()
+            viewModel.setMediaPlayerToStopped()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        /**
+         * Stop the media player when the fragment is no longer the main focus but do not set the state to stopped.
+         * The state is set to stopped when the user dismisses or turns off the alarm.
+         */
+        if(viewModel.mediaPlayerState  !is MediaPlayerState.Stopped){
+            mediaPlayer.stop()
+        }
     }
 }

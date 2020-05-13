@@ -6,7 +6,19 @@ import commanderpepper.App
 import commanderpepper.advancetimer.room.AlarmTimer
 
 class AlarmTimerDismissViewModel(application: Application) : AndroidViewModel(application) {
-    private val alarmTimerViewModel = (application as App).appComponent.alarmTimerViewModelGenerator()
+    private val alarmTimerViewModel =
+        (application as App).appComponent.alarmTimerViewModelGenerator()
+
+    var mediaPlayerState: MediaPlayerState = MediaPlayerState.Playing
+        private set
+
+    fun setMediaPlayerToPlaying(){
+        mediaPlayerState = MediaPlayerState.Playing
+    }
+
+    fun setMediaPlayerToStopped(){
+        mediaPlayerState = MediaPlayerState.Stopped
+    }
 
     suspend fun retrieveTimer(timerId: Int): AlarmTimer {
         return alarmTimerViewModel.getAlarmTimer(timerId)
@@ -38,7 +50,7 @@ class AlarmTimerDismissViewModel(application: Application) : AndroidViewModel(ap
         alarmTimerViewModel.modifyAlarmTimer(alarmTimerId)
     }
 
-    suspend fun modifyTriggerTime(alarmTimerId: Int){
+    suspend fun modifyTriggerTime(alarmTimerId: Int) {
         alarmTimerViewModel.modifyTriggerTime(alarmTimerId)
     }
 }

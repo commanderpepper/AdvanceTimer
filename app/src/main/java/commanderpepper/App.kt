@@ -6,13 +6,11 @@ import commanderpepper.advancetimer.BuildConfig
 import commanderpepper.advancetimer.alarmcreation.AlarmCreator
 import commanderpepper.advancetimer.alarmcreation.RequestCodeGenerator
 import commanderpepper.advancetimer.repository.AlarmRepository
-import commanderpepper.advancetimer.ui.alarmtimerlist.AlarmListViewModel
 import commanderpepper.advancetimer.viewmodel.AlarmTimerViewModel
 import dagger.Component
 import dagger.Module
 import dagger.Provides
 import timber.log.Timber
-import javax.inject.Named
 import javax.inject.Singleton
 
 @Singleton
@@ -26,21 +24,6 @@ interface ApplicationComponent {
     fun requestCodeGenerator(): RequestCodeGenerator
 
     fun alarmTimerViewModelGenerator(): AlarmTimerViewModel
-
-    /**
-     * Inject into the UI View Model
-     */
-    fun injectAlarmListViewModel(alarmListViewModel: AlarmListViewModel)
-
-    /**
-     * Inject into alarm creator
-     */
-    fun injectAlarmCreator(alarmCreator: AlarmCreator)
-
-    /**
-     * Application context
-     */
-    fun getContext(): Context
 }
 
 @Module
@@ -75,6 +58,7 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
