@@ -35,13 +35,13 @@ class DismissTimer : AppCompatActivity() {
 
         setContentView(R.layout.activity_dismiss_timer)
 
-        val dismissId = intent.getLongExtra(DISMISS_TIMER_ID, -1)
+        val dismissId = intent.getIntExtra(DISMISS_TIMER_ID, -1)
 
         lifecycleScope.launch {
-            viewModel.enableParentEndChildTimers(dismissId.toInt())
+            viewModel.enableParentEndChildTimers(dismissId)
 
             val fragment = AlarmTimerDismissFragment()
-            val bundle = bundleOf(DETAIL_TIMER_KEY to dismissId.toInt())
+            val bundle = bundleOf(DETAIL_TIMER_KEY to dismissId)
 //            bundle.putBoolean(FAB_KEY, false)
 
             fragment.arguments = bundle

@@ -96,12 +96,12 @@ class AlarmTimerViewModel @Inject constructor(
             when (alarmTimerType) {
                 AlarmTimerType.OneOffTimer -> alarmCreator.makeOneOffAlarm(
                     requestCode,
-                    insertedId,
+                    insertedId.toInt(),
                     triggerTime.amount
                 )
                 AlarmTimerType.RepeatingTimer -> alarmCreator.makeRepeatingAlarm(
                     requestCode,
-                    insertedId,
+                    insertedId.toInt(),
                     triggerTime.amount,
                     repeatTime.amount
                 )
@@ -165,12 +165,12 @@ class AlarmTimerViewModel @Inject constructor(
         when (alarmTimerType) {
             AlarmTimerType.OneOffTimer -> alarmCreator.makeOneOffAlarm(
                 alarmTimer.requestCode,
-                alarmTimer.id.toLong(),
+                alarmTimer.id,
                 alarmTimer.triggerTime.amount
             )
             AlarmTimerType.RepeatingTimer -> alarmCreator.makeRepeatingAlarm(
                 alarmTimer.requestCode,
-                alarmTimer.id.toLong(),
+                alarmTimer.id,
                 alarmTimer.triggerTime.amount,
                 alarmTimer.repeatTime.amount
             )

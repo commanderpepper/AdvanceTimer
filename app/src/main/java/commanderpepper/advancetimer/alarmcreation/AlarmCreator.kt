@@ -29,7 +29,7 @@ class AlarmCreator @Inject constructor(
      */
     fun makeOneOffAlarm(
         timerRequestCode: Int,
-        timerId: Long,
+        timerId: Int,
         triggerAtMillis: Long
     ) {
         val intent = createIntentForNewAlarm(timerId, context)
@@ -47,7 +47,7 @@ class AlarmCreator @Inject constructor(
      */
     fun makeRepeatingAlarm(
         timerRequestCode: Int,
-        timerId: Long,
+        timerId: Int,
         triggerAtMillis: Long,
         intervalAtMillis: Long
     ) {
@@ -98,7 +98,7 @@ class AlarmCreator @Inject constructor(
         }
     }
 
-    private fun createIntentForNewAlarm(timerId: Long, context: Context): Intent {
+    private fun createIntentForNewAlarm(timerId: Int, context: Context): Intent {
         return Intent(context, MyReceiver::class.java).apply {
             putExtra(TIMER_ID, timerId)
         }
