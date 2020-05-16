@@ -1,11 +1,13 @@
 package commanderpepper.advancetimer.ui.alarmtimerdetail
 
+import android.app.ProgressDialog.show
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
@@ -110,6 +112,7 @@ class AlarmTimerDetailFragment : Fragment(), DeleteDialog.DeleteDialogListener {
                 Timber.d("Alarm to disable ${getAlarmTimerId()}")
                 viewModel.stopTimer(getAlarmTimerId())
             }
+            Toast.makeText(this@AlarmTimerDetailFragment.requireContext(), "Timer turned off", Toast.LENGTH_SHORT).show()
         }
 
         /**
@@ -120,6 +123,7 @@ class AlarmTimerDetailFragment : Fragment(), DeleteDialog.DeleteDialogListener {
                 Timber.d("Alarm to enable")
                 viewModel.restartTimer(getAlarmTimerId())
             }
+            Toast.makeText(this@AlarmTimerDetailFragment.requireContext(), "Timer turned on", Toast.LENGTH_SHORT).show()
         }
 
         /**
@@ -155,6 +159,7 @@ class AlarmTimerDetailFragment : Fragment(), DeleteDialog.DeleteDialogListener {
     override fun onDialogPositiveClick(dialog: DialogFragment) {
         lifecycleScope.launch {
             viewModel.deleteTimer(getAlarmTimerId())
+            Toast.makeText(this@AlarmTimerDetailFragment.requireContext(), "Timer deleted", Toast.LENGTH_SHORT).show()
             findNavController().popBackStack()
         }
     }

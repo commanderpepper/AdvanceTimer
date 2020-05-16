@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -107,10 +108,12 @@ class AlarmTimerDismissFragment : Fragment() {
                 viewModel.stopTimer(getAlarmTimerId())
             }
             stopMediaPlayer()
+            Toast.makeText(this@AlarmTimerDismissFragment.requireContext(), "Timer turned off", Toast.LENGTH_SHORT).show()
         }
 
         dismissButton.setOnClickListener {
             stopMediaPlayer()
+            Toast.makeText(this@AlarmTimerDismissFragment.requireContext(), "Timer dismissed", Toast.LENGTH_SHORT).show()
         }
     }
 
