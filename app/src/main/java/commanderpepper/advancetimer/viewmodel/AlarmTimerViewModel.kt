@@ -91,22 +91,10 @@ class AlarmTimerViewModel @Inject constructor(
         val insertedId = withContext(scope.coroutineContext) {
             alarmRepository.insertAlarmTimerGetId(testAlarmTimer)
         }
-
-        if (timerStart is TimerStart.Immediate) {
-            when (alarmTimerType) {
-                AlarmTimerType.OneOffTimer -> alarmCreator.makeOneOffAlarm(
-                    requestCode,
-                    insertedId.toInt(),
-                    triggerTime.amount
-                )
-                AlarmTimerType.RepeatingTimer -> alarmCreator.makeRepeatingAlarm(
-                    requestCode,
-                    insertedId.toInt(),
-                    triggerTime.amount,
-                    repeatTime.amount
-                )
-            }
-        }
+        
+        alarmCreator.makeOneOffAlarm(
+            requestCode, insertedId.toInt(), triggerTime.amount
+        )
 
         return flow {
             emit(insertedId.toInt())
@@ -155,6 +143,14 @@ class AlarmTimerViewModel @Inject constructor(
         enableParentStartChildTimers(alarmTimerId)
     }
 
+    suspend fun renableAlarmTimer(alarmTimerId: Int) {
+        val alarmTimer = alarmRepository.getAlarmTimer(alarmTimerId)
+
+        if (alarmTimer.type == AlarmTimerType.RepeatingTimer) {
+            enableAlarmTimer(alarmTimer.id)
+        }
+    }
+
     /**
      * Start a timer
      */
@@ -162,19 +158,11 @@ class AlarmTimerViewModel @Inject constructor(
         alarmTimerType: AlarmTimerType,
         alarmTimer: AlarmTimer
     ) {
-        when (alarmTimerType) {
-            AlarmTimerType.OneOffTimer -> alarmCreator.makeOneOffAlarm(
-                alarmTimer.requestCode,
-                alarmTimer.id,
-                alarmTimer.triggerTime.amount
-            )
-            AlarmTimerType.RepeatingTimer -> alarmCreator.makeRepeatingAlarm(
-                alarmTimer.requestCode,
-                alarmTimer.id,
-                alarmTimer.triggerTime.amount,
-                alarmTimer.repeatTime.amount
-            )
-        }
+        alarmCreator.makeOneOffAlarm(
+            alarmTimer.requestCode,
+            alarmTimer.id,
+            alarmTimer.triggerTime.amount
+        )
     }
 
     private suspend fun enableParentStartChildTimers(parentId: Int) {

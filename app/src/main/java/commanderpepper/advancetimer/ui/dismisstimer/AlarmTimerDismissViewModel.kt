@@ -53,4 +53,8 @@ class AlarmTimerDismissViewModel(application: Application) : AndroidViewModel(ap
     suspend fun modifyTriggerTime(alarmTimerId: Int) {
         alarmTimerViewModel.modifyTriggerTime(alarmTimerId)
     }
+
+    suspend fun renableTimer(alarmTimerId: Int){
+        alarmTimerViewModel.renableAlarmTimer(alarmTimerId)
+    }
 }
