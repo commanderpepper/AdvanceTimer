@@ -53,7 +53,7 @@ class RequestCodeDatabaseTest {
         val alarmTimer = AlarmTimer(
             "Test Alarm Timer",
             AlarmTimerType.OneOffAlarm, TimerStart.ParentStart,
-            true, 1L.toMilliseconds(), 1L.toMilliseconds(), 1L.toMilliseconds(),
+            true, 1L.toMilliseconds(), 1L.toMilliseconds(),
             requestCodeGenerator.getRequestCode(),
             null
         )
@@ -68,14 +68,14 @@ class RequestCodeDatabaseTest {
             val alarmTimerRQOne = AlarmTimer(
                 "Test Alarm Timer",
                 AlarmTimerType.OneOffAlarm, TimerStart.ParentStart,
-                true, 1L.toMilliseconds(), 1L.toMilliseconds(), 1L.toMilliseconds(),
+                true, 1L.toMilliseconds(), 1L.toMilliseconds(),
                 requestCodeGenerator.getRequestCode(),
                 1
             )
             val alarmTimerRQTwo = AlarmTimer(
                 "Test Alarm Timer",
                 AlarmTimerType.OneOffAlarm, TimerStart.ParentStart,
-                true, 1L.toMilliseconds(), 1L.toMilliseconds(), 1L.toMilliseconds(),
+                true, 1L.toMilliseconds(), 1L.toMilliseconds(),
                 requestCodeGenerator.getRequestCode(),
                 2
             )

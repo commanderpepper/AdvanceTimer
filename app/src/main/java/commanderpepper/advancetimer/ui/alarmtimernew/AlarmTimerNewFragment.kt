@@ -50,9 +50,9 @@ class AlarmTimerNewFragment : Fragment() {
     private lateinit var triggerMinuteNumberPicker: it.sephiroth.android.library.numberpicker.NumberPicker
     private lateinit var triggerSecondNumberPicker: it.sephiroth.android.library.numberpicker.NumberPicker
 
-    private lateinit var repeatHourNumberPicker: it.sephiroth.android.library.numberpicker.NumberPicker
-    private lateinit var repeatMinuteNumberPicker: it.sephiroth.android.library.numberpicker.NumberPicker
-    private lateinit var repeatSecondNumberPicker: it.sephiroth.android.library.numberpicker.NumberPicker
+//    private lateinit var repeatHourNumberPicker: it.sephiroth.android.library.numberpicker.NumberPicker
+//    private lateinit var repeatMinuteNumberPicker: it.sephiroth.android.library.numberpicker.NumberPicker
+//    private lateinit var repeatSecondNumberPicker: it.sephiroth.android.library.numberpicker.NumberPicker
 
     private lateinit var immediateStartRadioButton: RadioButton
     private lateinit var delayedStartRadioButton: RadioButton
@@ -98,11 +98,11 @@ class AlarmTimerNewFragment : Fragment() {
         /**
          * Get the number pickers for the interval time
          */
-        view.findViewById<ConstraintLayout>(R.id.repeatTimerNumber).run {
-            repeatHourNumberPicker = findViewById(R.id.hourNumber)
-            repeatMinuteNumberPicker = findViewById(R.id.minuteNumber)
-            repeatSecondNumberPicker = findViewById(R.id.secondNumber)
-        }
+//        view.findViewById<ConstraintLayout>(R.id.repeatTimerNumber).run {
+//            repeatHourNumberPicker = findViewById(R.id.hourNumber)
+//            repeatMinuteNumberPicker = findViewById(R.id.minuteNumber)
+//            repeatSecondNumberPicker = findViewById(R.id.secondNumber)
+//        }
 
         // Set the number picker amount and when the user changes the value update the view model
         triggerHourNumberPicker.run {
@@ -126,25 +126,25 @@ class AlarmTimerNewFragment : Fragment() {
         }
 
         // Set the number picker amount and when the user changes the value update the view model
-        repeatHourNumberPicker.run {
-            doOnProgressChanged { numberPicker, progress, formUser ->
-                alarmTimerViewModel.repeatHour = UnitsOfTime.Hour(progress.toLong())
-            }
-        }
+//        repeatHourNumberPicker.run {
+//            doOnProgressChanged { numberPicker, progress, formUser ->
+//                alarmTimerViewModel.repeatHour = UnitsOfTime.Hour(progress.toLong())
+//            }
+//        }
 
         // Set the number picker amount and when the user changes the value update the view model
-        repeatMinuteNumberPicker.run {
-            doOnProgressChanged { numberPicker, progress, formUser ->
-                alarmTimerViewModel.repeatMinute = UnitsOfTime.Minute(progress.toLong())
-            }
-        }
+//        repeatMinuteNumberPicker.run {
+//            doOnProgressChanged { numberPicker, progress, formUser ->
+//                alarmTimerViewModel.repeatMinute = UnitsOfTime.Minute(progress.toLong())
+//            }
+//        }
 
         // Set the number picker amount and when the user changes the value update the view model
-        repeatSecondNumberPicker.run {
-            doOnProgressChanged { numberPicker, progress, formUser ->
-                alarmTimerViewModel.repeatSecond = UnitsOfTime.Second(progress.toLong())
-            }
-        }
+//        repeatSecondNumberPicker.run {
+//            doOnProgressChanged { numberPicker, progress, formUser ->
+//                alarmTimerViewModel.repeatSecond = UnitsOfTime.Second(progress.toLong())
+//            }
+//        }
 
         saveButton = view.findViewById(R.id.add_alarmtimer)
         alarmTimerTitle = view.findViewById(R.id.timerTitle)

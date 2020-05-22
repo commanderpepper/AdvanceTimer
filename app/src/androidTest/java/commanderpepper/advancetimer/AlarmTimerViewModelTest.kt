@@ -40,7 +40,6 @@ class AlarmTimerViewModelTest {
             null,
             AlarmTimerType.OneOffTimer,
             2L.toMilliseconds(),
-            4L.toMilliseconds(),
             TimerStart.ParentStart
         )
         val result = returnFlow.first()
@@ -58,7 +57,6 @@ class AlarmTimerViewModelTest {
             null,
             AlarmTimerType.OneOffTimer,
             2L.toMilliseconds(),
-            4L.toMilliseconds(),
             TimerStart.ParentStart
         )
 
@@ -71,7 +69,6 @@ class AlarmTimerViewModelTest {
             1,
             AlarmTimerType.OneOffTimer,
             2L.toMilliseconds(),
-            4L.toMilliseconds(),
             TimerStart.ParentStart
         )
 
@@ -93,7 +90,6 @@ class AlarmTimerViewModelTest {
             null,
             AlarmTimerType.OneOffTimer,
             2L.toMilliseconds(),
-            4L.toMilliseconds(),
             TimerStart.ParentStart
         )
         val result = returnFlow.first()

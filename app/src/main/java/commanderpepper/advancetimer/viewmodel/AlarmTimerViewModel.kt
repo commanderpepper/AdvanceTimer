@@ -66,7 +66,6 @@ class AlarmTimerViewModel @Inject constructor(
         triggerTime: UnitsOfTime.MilliSecond,
         parentId: Int?,
         alarmTimerType: AlarmTimerType,
-        repeatTime: UnitsOfTime.MilliSecond,
         deltaTime: UnitsOfTime.MilliSecond,
         timerStart: TimerStart
     ): Flow<Int> {
@@ -83,7 +82,6 @@ class AlarmTimerViewModel @Inject constructor(
             timerStart is TimerStart.Immediate,
             deltaTime,
             triggerTime,
-            repeatTime,
             requestCode,
             parentId
         )
@@ -91,7 +89,7 @@ class AlarmTimerViewModel @Inject constructor(
         val insertedId = withContext(scope.coroutineContext) {
             alarmRepository.insertAlarmTimerGetId(testAlarmTimer)
         }
-        
+
         alarmCreator.makeOneOffAlarm(
             requestCode, insertedId.toInt(), triggerTime.amount
         )

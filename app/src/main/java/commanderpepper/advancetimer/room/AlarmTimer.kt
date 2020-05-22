@@ -20,8 +20,6 @@ data class AlarmTimer(
     val deltaTime: UnitsOfTime.MilliSecond,
     @ColumnInfo(name = "triggerTime")
     val triggerTime: UnitsOfTime.MilliSecond,
-    @ColumnInfo(name = "repeatTime")
-    val repeatTime : UnitsOfTime.MilliSecond,
     @ColumnInfo(name = "requestCode")
     var requestCode: Int,
     @ColumnInfo(name = "parentID")

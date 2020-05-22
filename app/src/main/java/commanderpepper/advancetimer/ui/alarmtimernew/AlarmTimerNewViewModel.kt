@@ -49,22 +49,21 @@ class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(applic
     suspend fun createTimer(
         parentId: Int?
     ): Flow<Int> {
+
+        val timeInMilliSecond = calculateTimeInMilliseconds(triggerHour, triggerMinute, triggerSecond)
+
         return alarmTimerViewModel.createTimer(
             alarmTimerTitle,
-            getTriggerTime(calculateTimeInMilliseconds(triggerHour, triggerMinute, triggerSecond)),
+            getTriggerTime(timeInMilliSecond),
             parentId,
             alarmTimerType,
-            calculateTimeInMilliseconds(repeatHour, repeatMinute, repeatSecond),
-            calculateTimeInMilliseconds(triggerHour, triggerMinute, triggerSecond),
+            timeInMilliSecond,
             timerStart
         )
     }
 
     fun createGenericTitle(): String {
-        return when (alarmTimerType) {
-            AlarmTimerType.OneOffTimer -> "${triggerHour.amount}h:${triggerMinute.amount}m:${triggerSecond.amount}s Timer"
-            else -> "${repeatHour.amount}h:${repeatMinute.amount}m:${repeatSecond.amount}s Timer"
-        }
+        return "${triggerHour.amount}h:${triggerMinute.amount}m:${triggerSecond.amount}s Timer"
     }
 
     private fun calculateTimeInMilliseconds(

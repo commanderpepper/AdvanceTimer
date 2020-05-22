@@ -110,7 +110,6 @@ class AlarmRepositoryTest {
                 true,
                 0.toMilliseconds(),
                 0.toMilliseconds(),
-                0.toMilliseconds(),
                 0,
                 null
             )
@@ -121,7 +120,6 @@ class AlarmRepositoryTest {
             AlarmTimerType.OneOffTimer,
             TimerStart.Immediate,
             true,
-            0.toMilliseconds(),
             0.toMilliseconds(),
             0.toMilliseconds(),
             0,
@@ -136,7 +134,6 @@ class AlarmRepositoryTest {
             true,
             0.toMilliseconds(),
             0.toMilliseconds(),
-            0.toMilliseconds(),
             0,
             1
         )
@@ -147,7 +144,6 @@ class AlarmRepositoryTest {
             AlarmTimerType.OneOffTimer,
             TimerStart.Immediate,
             true,
-            0.toMilliseconds(),
             0.toMilliseconds(),
             0.toMilliseconds(),
             0,
@@ -162,7 +158,6 @@ class AlarmRepositoryTest {
             true,
             0.toMilliseconds(),
             0.toMilliseconds(),
-            0.toMilliseconds(),
             0,
             2
         )
@@ -173,7 +168,6 @@ class AlarmRepositoryTest {
             AlarmTimerType.OneOffTimer,
             TimerStart.Immediate,
             true,
-            0.toMilliseconds(),
             0.toMilliseconds(),
             0.toMilliseconds(),
             0,

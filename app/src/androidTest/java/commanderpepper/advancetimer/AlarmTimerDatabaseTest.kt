@@ -52,7 +52,6 @@ class AlarmTimerDatabaseTest {
             true,
             0.toMilliseconds(),
             0.toMilliseconds(),
-            0.toMilliseconds(),
             0,
             null
         )
@@ -227,7 +226,7 @@ class AlarmTimerDatabaseTest {
                 AlarmTimerType.OneOffAlarm,
                 TimerStart.ParentStart,
                 false,
-                1.toMilliseconds(), 0.toMilliseconds(), 0.toMilliseconds(), 0,
+                1.toMilliseconds(), 0.toMilliseconds(), 0,
                 parentTimer.id
             )
             alarmTimerDao.insertAlarmTimer(childTimer)
@@ -252,7 +251,6 @@ class AlarmTimerDatabaseTest {
             TimerStart.ParentStart,
             false,
             1.toMilliseconds(),
-            0.toMilliseconds(),
             0.toMilliseconds(),
             0,
             null
@@ -297,7 +295,6 @@ class AlarmTimerDatabaseTest {
             true,
             1.toMilliseconds(),
             0.toMilliseconds(),
-            0.toMilliseconds(),
             0,
             null
         )
@@ -308,7 +305,6 @@ class AlarmTimerDatabaseTest {
             true,
             2.toMilliseconds(),
             1.toMilliseconds(),
-            3.toMilliseconds(),
             3,
             1
         )
@@ -320,7 +316,6 @@ class AlarmTimerDatabaseTest {
                 AlarmTimerType.OneOffTimer,
                 TimerStart.Immediate,
                 true,
-                0.toMilliseconds(),
                 0.toMilliseconds(),
                 0.toMilliseconds(),
                 0,
@@ -335,7 +330,6 @@ class AlarmTimerDatabaseTest {
             true,
             0.toMilliseconds(),
             0.toMilliseconds(),
-            0.toMilliseconds(),
             0,
             1
         )
@@ -346,7 +340,6 @@ class AlarmTimerDatabaseTest {
             AlarmTimerType.OneOffTimer,
             TimerStart.Immediate,
             true,
-            0.toMilliseconds(),
             0.toMilliseconds(),
             0.toMilliseconds(),
             0,
@@ -361,7 +354,6 @@ class AlarmTimerDatabaseTest {
             true,
             0.toMilliseconds(),
             0.toMilliseconds(),
-            0.toMilliseconds(),
             0,
             1
         )
@@ -374,7 +366,6 @@ class AlarmTimerDatabaseTest {
             true,
             0.toMilliseconds(),
             0.toMilliseconds(),
-            0.toMilliseconds(),
             0,
             2
         )
@@ -385,7 +376,6 @@ class AlarmTimerDatabaseTest {
             AlarmTimerType.OneOffTimer,
             TimerStart.Immediate,
             true,
-            0.toMilliseconds(),
             0.toMilliseconds(),
             0.toMilliseconds(),
             0,
