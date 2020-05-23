@@ -4,12 +4,9 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.os.SystemClock
 import commanderpepper.App
 import commanderpepper.advancetimer.receivers.MyReceiver
 import commanderpepper.advancetimer.viewmodel.TIMER_ID
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import timber.log.Timber
 import javax.inject.Inject
 

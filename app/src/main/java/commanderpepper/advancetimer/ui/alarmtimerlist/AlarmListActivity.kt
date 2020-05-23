@@ -1,8 +1,7 @@
 package commanderpepper.advancetimer.ui.alarmtimerlist
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import androidx.appcompat.app.AppCompatActivity
 import commanderpepper.advancetimer.R
 
 class AlarmListActivity : AppCompatActivity() {

@@ -15,12 +15,9 @@ class RequestCodeTest {
 
     @Test
     fun getCode() {
-        val context = InstrumentationRegistry.getInstrumentation().targetContext
         val applicationContext = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext
 
         val requestCodeGenerator = (applicationContext as App).appComponent.requestCodeGenerator()
-
-//        val requestCodeGenerator = RequestCodeGenerator(context)
 
         val int =
             requestCodeGenerator.getRequestCode()

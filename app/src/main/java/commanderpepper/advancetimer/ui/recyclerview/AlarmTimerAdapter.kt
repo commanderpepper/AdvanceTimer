@@ -31,8 +31,6 @@ class AlarmTimerAdapter(val list: List<AlarmTimer>, val navGraphAction: NavGraph
                 val bundle = bundleOf("alarmTimerId" to list[position].id)
                 val navController = view.findNavController()
                 navController.navigate(navGraphAction.action, bundle)
-            } else {
-
             }
         }
     }

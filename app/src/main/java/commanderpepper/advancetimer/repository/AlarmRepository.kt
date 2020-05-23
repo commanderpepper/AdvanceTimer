@@ -9,8 +9,6 @@ import commanderpepper.advancetimer.room.AlarmTimerDatabase
 import commanderpepper.advancetimer.room.AlarmTimerType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.single
 import timber.log.Timber
 import javax.inject.Inject
 

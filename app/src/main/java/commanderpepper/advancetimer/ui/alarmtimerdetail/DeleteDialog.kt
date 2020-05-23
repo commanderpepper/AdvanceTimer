@@ -23,8 +23,7 @@ class DeleteDialog : DialogFragment() {
         super.onAttach(context)
         try {
             listener = targetFragment as DeleteDialogListener
-        }
-        catch (e: ClassCastException){
+        } catch (e: ClassCastException) {
             throw ClassCastException((context.toString()) + "must implement DeleteDialogInterface")
         }
     }
@@ -36,17 +35,19 @@ class DeleteDialog : DialogFragment() {
             builder.setTitle("Warning!")
             builder.setMessage("Deleting this timer will also delete all of its children timers.")
 
-            builder.setPositiveButton("Delete",
-                DialogInterface.OnClickListener { dialog, which ->
-                    Timber.d("Delete clicked")
-                    listener.onDialogPositiveClick(this)
-                })
+            builder.setPositiveButton(
+                "Delete"
+            ) { _, _ ->
+                Timber.d("Delete clicked")
+                listener.onDialogPositiveClick(this)
+            }
 
-            builder.setNegativeButton("Cancel",
-                DialogInterface.OnClickListener { dialog, which ->
-                    Timber.d("Cancel clicked")
-                    listener.onDialogNegativeClick(this)
-                })
+            builder.setNegativeButton(
+                "Cancel"
+            ) { _, _ ->
+                Timber.d("Cancel clicked")
+                listener.onDialogNegativeClick(this)
+            }
 
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null ")

@@ -4,7 +4,7 @@ import androidx.room.TypeConverter
 import java.util.*
 
 
-sealed class UnitsOfTime() {
+sealed class UnitsOfTime {
     data class Hour(val amount: Long) : UnitsOfTime() {
         fun toInt() = amount.toInt()
     }
@@ -45,7 +45,7 @@ fun getTriggerTime(triggerTime: UnitsOfTime.MilliSecond): UnitsOfTime.MilliSecon
     return UnitsOfTime.MilliSecond(calendar.timeInMillis) + triggerTime
 }
 
-class UnitsOfTimeConverter() {
+class UnitsOfTimeConverter {
 
     @TypeConverter
     fun longToUnitsOfTime(amount: Long) = UnitsOfTime.MilliSecond(amount)

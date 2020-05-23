@@ -9,7 +9,7 @@ sealed class TimerStart {
     object ParentEnd : TimerStart()
 }
 
-class TimerStartConverter() {
+class TimerStartConverter {
 
     @TypeConverter
     fun stringToTimerStart(timerStart: String): TimerStart {

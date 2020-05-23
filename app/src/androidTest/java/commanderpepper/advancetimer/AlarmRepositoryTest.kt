@@ -2,7 +2,6 @@ package commanderpepper.advancetimer
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
-import commanderpepper.App
 import commanderpepper.advancetimer.model.TimerStart
 import commanderpepper.advancetimer.model.toMilliseconds
 import commanderpepper.advancetimer.repository.AlarmRepository
@@ -11,12 +10,12 @@ import commanderpepper.advancetimer.room.AlarmTimerType
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers
 import org.junit.After
+import org.junit.Assert.assertThat
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.IOException
-import org.junit.Assert.assertThat
-import org.junit.Assert.assertTrue
 
 @RunWith(AndroidJUnit4::class)
 class AlarmRepositoryTest {

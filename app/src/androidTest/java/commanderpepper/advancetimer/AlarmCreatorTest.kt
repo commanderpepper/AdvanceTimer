@@ -10,11 +10,10 @@ import commanderpepper.advancetimer.alarmcreation.AlarmCreator
 import commanderpepper.advancetimer.alarmcreation.RequestCodeGenerator
 import commanderpepper.advancetimer.receivers.AlarmReceiver
 import org.hamcrest.CoreMatchers
-import org.junit.After
+import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.junit.Assert.assertThat
 
 
 /**
