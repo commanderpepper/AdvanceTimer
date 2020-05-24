@@ -29,7 +29,10 @@
             android:name="receivers.AlarmReceiver"
             android:enabled="true"
             android:exported="true" />
-        <receiver android:name=".receivers.RebootReceiver">
+        <receiver
+            android:name=".receivers.RebootReceiver"
+            android:enabled="true"
+            android:process=":remote">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>

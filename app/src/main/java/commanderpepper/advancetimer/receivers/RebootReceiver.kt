@@ -18,15 +18,22 @@ class RebootReceiver : BroadcastReceiver() {
     val scope = CoroutineScope(Dispatchers.Main + job)
 
 
-    override fun onReceive(context: Context?, intent: Intent?) {
+    override fun onReceive(context: Context, intent: Intent) {
+
+        Timber.d("Before debugger")
+        android.os.Debug.waitForDebugger()
+        Timber.d("After debugger")
+
+        Timber.d("$context")
 
         Timber.d("Inside Reboot Receiver")
 
-        val application = context!!.applicationContext as App
+        val application = context.applicationContext as App
         val viewModel = application.appComponent.alarmTimerViewModelGenerator()
 
         scope.launch {
-            Timber.d(viewModel.getParentAlarmTimers().toString())
+            val list = viewModel.getParentAlarmTimers().toString()
+            Timber.d(list)
         }
     }
 
