@@ -45,4 +45,7 @@ interface AlarmTimerDAO {
 
     @Query("SELECT * FROM AlarmTimer WHERE parentID == :parentId")
     suspend fun getChildrenAlarmTimerList(parentId: Int): List<AlarmTimer>
+
+    @Query("SELECT * FROM AlarmTimer WHERE enabled == 1")
+    suspend fun getAllEnabledTimers(): List<AlarmTimer>
 }

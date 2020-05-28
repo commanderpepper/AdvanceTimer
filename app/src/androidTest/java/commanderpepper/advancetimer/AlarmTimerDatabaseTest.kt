@@ -10,6 +10,7 @@ import commanderpepper.advancetimer.room.AlarmTimer
 import commanderpepper.advancetimer.room.AlarmTimerDAO
 import commanderpepper.advancetimer.room.AlarmTimerDatabase
 import commanderpepper.advancetimer.room.AlarmTimerType
+import junit.framework.Assert.assertTrue
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers
 import org.junit.After
@@ -285,6 +286,47 @@ class AlarmTimerDatabaseTest {
         timerList.forEach {
             alarmTimerDao.insertAlarmTimer(it)
         }
+    }
+
+    @Test
+    fun insertTimers_CheckForEnabledTimer() = runBlocking {
+        val timerA = AlarmTimer(
+            "test",
+            AlarmTimerType.OneOffAlarm,
+            TimerStart.ParentStart,
+            false,
+            1.toMilliseconds(),
+            0.toMilliseconds(),
+            0,
+            null
+        )
+        val timerB = AlarmTimer(
+            "Timer B",
+            AlarmTimerType.OneOffTimer,
+            TimerStart.Immediate,
+            true,
+            0.toMilliseconds(),
+            0.toMilliseconds(),
+            0,
+            1
+        )
+        val timerC = AlarmTimer(
+            "Timer C",
+            AlarmTimerType.OneOffTimer,
+            TimerStart.Immediate,
+            true,
+            0.toMilliseconds(),
+            0.toMilliseconds(),
+            0,
+            1
+        )
+
+        alarmTimerDao.insertAlarmTimer(timerA)
+        alarmTimerDao.insertAlarmTimer(timerB)
+        alarmTimerDao.insertAlarmTimer(timerC)
+
+        val list = alarmTimerDao.getAllEnabledTimers()
+        assertTrue(list.size == 2)
     }
 
     companion object {

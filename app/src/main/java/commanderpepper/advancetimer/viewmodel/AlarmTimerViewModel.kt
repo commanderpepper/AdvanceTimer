@@ -5,9 +5,7 @@ import android.content.Context
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.VisibleForTesting
 import commanderpepper.advancetimer.alarmcreation.AlarmCreator
-import commanderpepper.advancetimer.model.TimerStart
-import commanderpepper.advancetimer.model.UnitsOfTime
-import commanderpepper.advancetimer.model.getTriggerTime
+import commanderpepper.advancetimer.model.*
 import commanderpepper.advancetimer.repository.AlarmRepository
 import commanderpepper.advancetimer.room.AlarmTimer
 import commanderpepper.advancetimer.room.AlarmTimerType
@@ -16,6 +14,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.toList
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 
 const val TIMER_ID = "TIMER_ID"
@@ -130,12 +129,10 @@ class AlarmTimerViewModel @Inject constructor(
         // Set the timer status from false to true and modify the trigger time.
         alarmRepository.enableAlarmTimer(alarmTimerId, newTriggerTime)
 
-        val alarmTimerType = alarmTimer.type
-
         alarmTimer = alarmRepository.getAlarmTimer(alarmTimerId)
 
         // Start the timer in the alarm creator
-        startTimer(alarmTimerType, alarmTimer)
+        startTimer(alarmTimer)
 
         // Enable all child timers scheduled to start when this timer begins
         enableParentStartChildTimers(alarmTimerId)
@@ -153,7 +150,6 @@ class AlarmTimerViewModel @Inject constructor(
      * Start a timer
      */
     private fun startTimer(
-        alarmTimerType: AlarmTimerType,
         alarmTimer: AlarmTimer
     ) {
         alarmCreator.makeOneOffAlarm(
@@ -212,6 +208,17 @@ class AlarmTimerViewModel @Inject constructor(
             alarmCreator.cancelTimer(it.id.toLong(), it.requestCode)
         }
         alarmRepository.deleteTimer(alarmTimerId)
+    }
+
+    suspend fun restartEnabledTimers() {
+        val enabledTimers = alarmRepository.getEnabledTimers()
+        enabledTimers.forEach {
+            restartTimer(it)
+        }
+    }
+
+    private fun restartTimer(alarmTimer: AlarmTimer) {
+        alarmCreator.makeOneOffAlarm(alarmTimer.requestCode, alarmTimer.id, alarmTimer.triggerTime.amount)
     }
 
     @VisibleForTesting

@@ -14,26 +14,15 @@ import timber.log.Timber
  */
 class RebootReceiver : BroadcastReceiver() {
 
-    val job = SupervisorJob()
-    val scope = CoroutineScope(Dispatchers.Main + job)
-
+    private val job = SupervisorJob()
+    private val scope = CoroutineScope(Dispatchers.Default + job)
 
     override fun onReceive(context: Context, intent: Intent) {
-
-        Timber.d("Before debugger")
-        android.os.Debug.waitForDebugger()
-        Timber.d("After debugger")
-
-        Timber.d("$context")
-
-        Timber.d("Inside Reboot Receiver")
-
         val application = context.applicationContext as App
         val viewModel = application.appComponent.alarmTimerViewModelGenerator()
 
         scope.launch {
-            val list = viewModel.getParentAlarmTimers().toString()
-            Timber.d(list)
+            viewModel.restartEnabledTimers()
         }
     }
 

@@ -103,6 +103,8 @@ class AlarmRepository @Inject constructor(val context: Context) {
         return childTimers
     }
 
+    suspend fun getEnabledTimers() = database.alarmTimerDAO().getAllEnabledTimers()
+
     @VisibleForTesting
     fun setDatabaseForTesting() {
         database = Room.inMemoryDatabaseBuilder(context, AlarmTimerDatabase::class.java)

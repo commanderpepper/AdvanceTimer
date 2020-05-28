@@ -66,14 +66,6 @@ class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(applic
         return "${triggerHour.amount}h:${triggerMinute.amount}m:${triggerSecond.amount}s Timer"
     }
 
-    private fun calculateTimeInMilliseconds(
-        hour: UnitsOfTime.Hour,
-        minute: UnitsOfTime.Minute,
-        second: UnitsOfTime.Second
-    ): UnitsOfTime.MilliSecond {
-        return hour.toMillisecond() + minute.toMillisecond() + second.toMillisecond()
-    }
-
     /**
      * Called when leaving the fragment via the save button
      */

@@ -13,6 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".ui.dismisstimer.DismissTimer" />
 
         <receiver android:name=".receivers.MyReceiver" />
@@ -29,14 +30,15 @@
             android:name="receivers.AlarmReceiver"
             android:enabled="true"
             android:exported="true" />
+
         <receiver
             android:name=".receivers.RebootReceiver"
-            android:enabled="true"
-            android:process=":remote">
+            android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
     </application>
 
 </manifest>

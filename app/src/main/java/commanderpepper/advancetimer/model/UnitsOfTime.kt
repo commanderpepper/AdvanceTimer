@@ -45,6 +45,14 @@ fun getTriggerTime(triggerTime: UnitsOfTime.MilliSecond): UnitsOfTime.MilliSecon
     return UnitsOfTime.MilliSecond(calendar.timeInMillis) + triggerTime
 }
 
+fun calculateTimeInMilliseconds(
+    hour: UnitsOfTime.Hour,
+    minute: UnitsOfTime.Minute,
+    second: UnitsOfTime.Second
+): UnitsOfTime.MilliSecond {
+    return hour.toMillisecond() + minute.toMillisecond() + second.toMillisecond()
+}
+
 class UnitsOfTimeConverter {
 
     @TypeConverter
