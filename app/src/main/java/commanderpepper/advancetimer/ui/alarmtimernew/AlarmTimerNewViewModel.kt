@@ -2,6 +2,8 @@ package commanderpepper.advancetimer.ui.alarmtimernew
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import commanderpepper.App
 import commanderpepper.advancetimer.model.*
 import commanderpepper.advancetimer.room.AlarmTimerType
@@ -13,6 +15,10 @@ class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(applic
 
     private val alarmTimerViewModel: AlarmTimerViewModel =
         (application as App).appComponent.alarmTimerViewModelGenerator()
+
+    var timeHour: UnitsOfTime.Hour = UnitsOfTime.Hour(0L)
+    var timeMinute: UnitsOfTime.Minute = UnitsOfTime.Minute(0L)
+    var timeSecond: UnitsOfTime.Second = UnitsOfTime.Second(0L)
 
     var triggerHour: UnitsOfTime.Hour = UnitsOfTime.Hour(0L)
     var triggerMinute: UnitsOfTime.Minute = UnitsOfTime.Minute(0L)
@@ -30,8 +36,18 @@ class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(applic
     var timerStart: TimerStart = TimerStart.Immediate
         private set
 
+    private val _repeatVisibility = MutableLiveData<Boolean>(alarmTimerType == AlarmTimerType.RepeatingTimer)
+    val repeatVisibility : LiveData<Boolean> = _repeatVisibility
+
+    private val _delayVisibility = MutableLiveData<Boolean>(timerStart == TimerStart.Delayed)
+    val delayVisibility : LiveData<Boolean> = _delayVisibility
+
     fun updateAlarmTimerType(alarmTimerType: AlarmTimerType) {
         this.alarmTimerType = alarmTimerType
+    }
+
+    fun updateRepeatVisibility(visibility: Boolean){
+        _repeatVisibility.value = visibility
     }
 
     fun updateTimerStart(timerStart: TimerStart) {
@@ -50,14 +66,16 @@ class AlarmTimerNewViewModel(application: Application) : AndroidViewModel(applic
         parentId: Int?
     ): Flow<Int> {
 
-        val timeInMilliSecond = calculateTimeInMilliseconds(triggerHour, triggerMinute, triggerSecond)
+        val delayTimeInMilliSecond = calculateTimeInMilliseconds(triggerHour, triggerMinute, triggerSecond)
+        val repeatTimeInMilliSecond = calculateTimeInMilliseconds(repeatHour, repeatMinute, repeatSecond)
+
 
         return alarmTimerViewModel.createTimer(
             alarmTimerTitle,
-            getTriggerTime(timeInMilliSecond),
+            repeatTimeInMilliSecond,
             parentId,
             alarmTimerType,
-            timeInMilliSecond,
+            delayTimeInMilliSecond,
             timerStart
         )
     }

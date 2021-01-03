@@ -4,10 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.RadioButton
-import android.widget.RadioGroup
+import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
@@ -38,7 +35,7 @@ class AlarmTimerNewFragment : Fragment() {
     private lateinit var saveButton: Button
     private val alarmTimerViewModel: AlarmTimerNewViewModel by activityViewModels()
 
-    private lateinit var binding: FragmentAlarmTimerNewBinding
+//    private lateinit var binding: FragmentAlarmTimerNewBinding
 
     private lateinit var alarmTimerTitle: EditText
 
@@ -52,12 +49,13 @@ class AlarmTimerNewFragment : Fragment() {
     private lateinit var immediateStartRadioButton: RadioButton
     private lateinit var delayedStartRadioButton: RadioButton
 
+    private lateinit var binding : FragmentAlarmTimerNewBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_alarm_timer_new, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_alarm_timer_new, container, false)
         binding.viewmodel = alarmTimerViewModel
         return binding.root
     }
@@ -84,10 +82,10 @@ class AlarmTimerNewFragment : Fragment() {
         /**
          * Get the number pickers for the trigger time
          */
-        view.findViewById<ConstraintLayout>(R.id.oneOffTimerNumber).run {
-            triggerHourNumberPicker = findViewById(R.id.hourNumber)
-            triggerMinuteNumberPicker = findViewById(R.id.minuteNumber)
-            triggerSecondNumberPicker = findViewById(R.id.secondNumber)
+        binding.oneOffTimerNumber.run {
+            triggerHourNumberPicker = this.hourNumber
+            triggerMinuteNumberPicker = this.minuteNumber
+            triggerSecondNumberPicker = this.secondNumber
         }
 
         // Set the number picker amount and when the user changes the value update the view model
@@ -119,6 +117,9 @@ class AlarmTimerNewFragment : Fragment() {
         immediateStartRadioButton = view.findViewById(R.id.immediateStart)
         delayedStartRadioButton = view.findViewById(R.id.delayedStart)
 
+        val repeatText: TextView = view.findViewById(R.id.timerRepeatsText)
+        val repeatNumbers = view.findViewById<View>(R.id.repeatTimerNumber)
+
         /**
          * If a child timer is being created, set the radio text to the two child timer options.
          */
@@ -135,19 +136,40 @@ class AlarmTimerNewFragment : Fragment() {
             val alarmTimerType: AlarmTimerType =
                 if (i == R.id.oneOffRadioButton) AlarmTimerType.OneOffTimer else AlarmTimerType.RepeatingTimer
             alarmTimerViewModel.updateAlarmTimerType(alarmTimerType)
+
+            alarmTimerViewModel.updateRepeatVisibility(alarmTimerType == AlarmTimerType.RepeatingTimer )
         }
 
         /**
          * Set the timer start in the view model whenever the user switches start type.
          */
         timerStartGroup.setOnCheckedChangeListener { _, i ->
-            val timerStart = if (getParentId() != null) {
-                if (i == R.id.immediateStart) TimerStart.ParentStart else TimerStart.ParentEnd
-            } else {
-                if (i == R.id.immediateStart) TimerStart.Immediate else TimerStart.Delayed
-            }
+            val timerStart =
+                if (getParentId() != null) {
+                    if (i == R.id.immediateStart)
+                        TimerStart.ParentStart
+                    else
+                        TimerStart.ParentEnd
+                } else {
+                    if (i == R.id.immediateStart)
+                        TimerStart.Immediate
+                    else
+                        TimerStart.Delayed
+                }
 
             alarmTimerViewModel.updateTimerStart(timerStart)
+
+        }
+
+        alarmTimerViewModel.repeatVisibility.observe(viewLifecycleOwner){
+            if(it){
+                repeatNumbers.visibility = View.VISIBLE
+                repeatText.visibility = View.VISIBLE
+            }
+            else {
+                repeatNumbers.visibility = View.GONE
+                repeatText.visibility = View.GONE
+            }
         }
 
         saveButton.setOnClickListener { saveButton ->

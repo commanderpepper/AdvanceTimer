@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="android.view.View"/>
+
         <variable
             name="viewmodel"
             type="commanderpepper.advancetimer.ui.alarmtimernew.AlarmTimerNewViewModel" />
@@ -72,27 +74,6 @@
 
             </RadioGroup>
 
-            <TextView
-                android:id="@+id/timerSetsOffText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/newtimergeneralmargin"
-                android:text="Timer sets off in:"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/timerTypeRadioGroup" />
-
-            <include
-                android:id="@+id/oneOffTimerNumber"
-                layout="@layout/time_selection"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/newtimergeneralmargin"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/timerSetsOffText"
-                bind:hourAmount="@{viewmodel.triggerHour}"
-                bind:minuteAmount="@{viewmodel.triggerMinute}"
-                bind:secondAmount="@{viewmodel.triggerSecond}" />
-
             <RadioGroup
                 android:id="@+id/timerStartGroup"
                 android:layout_width="wrap_content"
@@ -101,7 +82,7 @@
                 android:orientation="horizontal"
                 android:text="RadioButton"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/oneOffTimerNumber">
+                app:layout_constraintTop_toBottomOf="@id/timerTypeRadioGroup">
 
                 <RadioButton
                     android:id="@+id/immediateStart"
@@ -120,6 +101,52 @@
 
             </RadioGroup>
 
+            <TextView
+                android:id="@+id/timerSetsOffText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/newtimergeneralmargin"
+                android:text="Timer length:"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/timerStartGroup"
+                android:visibility="@{viewmodel.delayVisibility ? View.VISIBLE : View.GONE}"/>
+
+            <include
+                android:id="@+id/oneOffTimerNumber"
+                layout="@layout/time_selection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/newtimergeneralmargin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/timerSetsOffText"
+                bind:hourAmount="@{viewmodel.triggerHour}"
+                bind:minuteAmount="@{viewmodel.triggerMinute}"
+                bind:secondAmount="@{viewmodel.triggerSecond}"
+                android:visibility="@{viewmodel.delayVisibility ? View.VISIBLE : View.GONE}"/>
+
+            <TextView
+                android:id="@+id/timerRepeatsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/newtimergeneralmargin"
+                android:text="Timer repeats every:"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/oneOffTimerNumber"
+                android:visibility="@{viewmodel.repeatVisibility.booleanValue() ? View.VISIBLE : View.GONE}"/>
+
+            <include
+                android:id="@+id/repeatTimerNumber"
+                layout="@layout/time_selection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/newtimergeneralmargin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/timerRepeatsText"
+                bind:hourAmount="@{viewmodel.triggerHour}"
+                bind:minuteAmount="@{viewmodel.triggerMinute}"
+                bind:secondAmount="@{viewmodel.triggerSecond}"
+                android:visibility="@{viewmodel.repeatVisibility.booleanValue() ? View.VISIBLE : View.GONE}"/>
+
 
             <Button
                 android:id="@+id/add_alarmtimer"
@@ -129,7 +156,7 @@
                 android:orientation="horizontal"
                 android:text="@string/save_button"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/timerStartGroup" />
+                app:layout_constraintTop_toBottomOf="@id/repeatTimerNumber" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

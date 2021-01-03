@@ -5,6 +5,8 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="new_edittext_size">60dp</dimen>
     <dimen name="seperator_text_size">40sp</dimen>
-    <dimen name="newtimergeneralmargin">8dp</dimen>
+    <dimen name="newtimergeneralmargin">16dp</dimen>
     <dimen name="newTimerRadioButtonTextSize">14sp</dimen>
+    <dimen name="horizontal_alarmtimer_item_margin">16dp</dimen>
+    <dimen name="vertical_alarmtimer_item_margin">8dp</dimen>
 </resources>

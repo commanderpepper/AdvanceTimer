@@ -61,7 +61,7 @@ class AlarmRepository @Inject constructor(val context: Context) {
         newTriggerTime: UnitsOfTime.MilliSecond
     ) {
         alarmTimerDAO.modifyEnabledState(alarmTimerId, true)
-        alarmTimerDAO.modifyTriggerTime(alarmTimerId, newTriggerTime)
+//        alarmTimerDAO.modifyTriggerTime(alarmTimerId, newTriggerTime)
     }
 
     suspend fun modifyTriggerTime(alarmTimerId: Int, newTriggerTime: UnitsOfTime.MilliSecond){

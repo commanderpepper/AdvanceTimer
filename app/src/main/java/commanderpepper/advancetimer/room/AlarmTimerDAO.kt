@@ -28,10 +28,10 @@ interface AlarmTimerDAO {
     @Query("UPDATE AlarmTimer SET enabled = :alarmTimerEnabled WHERE id == :alarmTimerId")
     suspend fun modifyEnabledState(alarmTimerId: Int, alarmTimerEnabled: Boolean)
 
-    @Query("UPDATE AlarmTimer SET triggerTime = :newTriggerTime WHERE id == :alarmTimerId")
+    @Query("UPDATE AlarmTimer SET delayTime = :newTriggerTime WHERE id == :alarmTimerId")
     suspend fun modifyTriggerTime(alarmTimerId: Int, newTriggerTime: Int)
 
-    @Query("UPDATE AlarmTimer SET triggerTime = :newTriggerTime WHERE id == :alarmTimerId")
+    @Query("UPDATE AlarmTimer SET delayTime = :newTriggerTime WHERE id == :alarmTimerId")
     suspend fun modifyTriggerTime(alarmTimerId: Int, newTriggerTime: UnitsOfTime.MilliSecond)
 
     @Query("SELECT * FROM AlarmTimer")

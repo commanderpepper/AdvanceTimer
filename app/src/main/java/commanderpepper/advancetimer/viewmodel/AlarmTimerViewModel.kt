@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.toList
 import timber.log.Timber
-import java.util.*
 import javax.inject.Inject
 
 const val TIMER_ID = "TIMER_ID"
@@ -62,16 +61,16 @@ class AlarmTimerViewModel @Inject constructor(
      */
     suspend fun createTimer(
         title: String,
-        triggerTime: UnitsOfTime.MilliSecond,
+        repeatTime: UnitsOfTime.MilliSecond,
         parentId: Int?,
         alarmTimerType: AlarmTimerType,
         deltaTime: UnitsOfTime.MilliSecond,
         timerStart: TimerStart
     ): Flow<Int> {
 
-        val requestCode = alarmCreator.getRequestCode()
-
-        Timber.d("Request code used to create database alarm $requestCode")
+//        val requestCode = alarmCreator.getRequestCode()
+//
+//        Timber.d("Request code used to create database alarm $requestCode")
         Timber.d("$timerStart")
 
         val testAlarmTimer = AlarmTimer(
@@ -80,8 +79,7 @@ class AlarmTimerViewModel @Inject constructor(
             timerStart,
             timerStart is TimerStart.Immediate,
             deltaTime,
-            triggerTime,
-            requestCode,
+            repeatTime,
             parentId
         )
 
@@ -90,8 +88,10 @@ class AlarmTimerViewModel @Inject constructor(
         }
 
         alarmCreator.makeOneOffAlarm(
-            requestCode, insertedId.toInt(), triggerTime.amount
+            deltaTime.amount, insertedId.toInt()
         )
+
+//        alarmCreator.makeOneOffAlarm(triggerTime.amount, insertedId.toInt())
 
         return flow {
             emit(insertedId.toInt())
@@ -107,12 +107,12 @@ class AlarmTimerViewModel @Inject constructor(
         }
     }
 
-    suspend fun modifyTriggerTime(alarmTimerId: Int) {
-        val alarmTimer = alarmRepository.getAlarmTimer(alarmTimerId)
-
-        val newTriggerTime = getTriggerTime(alarmTimer.deltaTime)
-        alarmRepository.modifyTriggerTime(alarmTimerId, newTriggerTime)
-    }
+//    suspend fun modifyTriggerTime(alarmTimerId: Int) {
+//        val alarmTimer = alarmRepository.getAlarmTimer(alarmTimerId)
+//
+//        val newTriggerTime = getTriggerTime(alarmTimer.deltaTime)
+//        alarmRepository.modifyTriggerTime(alarmTimerId, newTriggerTime)
+//    }
 
     /**
      * Re-enable an alarm
@@ -121,11 +121,11 @@ class AlarmTimerViewModel @Inject constructor(
         var alarmTimer = alarmRepository.getAlarmTimer(alarmTimerId)
 
         //If the timer is active, disable it before restarting it.
-        if (alarmTimer.enabled) {
-            disableAlarmTime(alarmTimerId)
-        }
+//        if (alarmTimer.enabled) {
+//            disableAlarmTime(alarmTimerId)
+//        }
 
-        val newTriggerTime = getTriggerTime(alarmTimer.deltaTime)
+        val newTriggerTime = UnitsOfTime.MilliSecond(1L)
         // Set the timer status from false to true and modify the trigger time.
         alarmRepository.enableAlarmTimer(alarmTimerId, newTriggerTime)
 
@@ -135,7 +135,7 @@ class AlarmTimerViewModel @Inject constructor(
         startTimer(alarmTimer)
 
         // Enable all child timers scheduled to start when this timer begins
-        enableParentStartChildTimers(alarmTimerId)
+//        enableParentStartChildTimers(alarmTimerId)
     }
 
     suspend fun renableAlarmTimer(alarmTimerId: Int) {
@@ -153,9 +153,8 @@ class AlarmTimerViewModel @Inject constructor(
         alarmTimer: AlarmTimer
     ) {
         alarmCreator.makeOneOffAlarm(
-            alarmTimer.requestCode,
+            alarmTimer.delayTime.amount,
             alarmTimer.id,
-            alarmTimer.triggerTime.amount
         )
     }
 
@@ -191,8 +190,8 @@ class AlarmTimerViewModel @Inject constructor(
      */
     suspend fun disableAlarmTime(alarmTimerId: Int) {
         alarmRepository.disableAlarmTimer(alarmTimerId)
-        val alarmTimer = alarmRepository.getAlarmTimer(alarmTimerId)
-        alarmCreator.cancelTimer(alarmTimer.id.toLong(), alarmTimer.requestCode)
+//        val alarmTimer = alarmRepository.getAlarmTimer(alarmTimerId)
+//        alarmCreator.cancelTimer(alarmTimer.id)
     }
 
     suspend fun checkTimerStatus(alarmTimerId: Int): Boolean {
@@ -205,7 +204,7 @@ class AlarmTimerViewModel @Inject constructor(
     @ExperimentalStdlibApi
     suspend fun deleteTimer(alarmTimerId: Int) {
         alarmRepository.getAllTimersRelatedToParentTimer(alarmTimerId).forEach {
-            alarmCreator.cancelTimer(it.id.toLong(), it.requestCode)
+            alarmCreator.cancelTimer(it.id)
         }
         alarmRepository.deleteTimer(alarmTimerId)
     }
@@ -218,7 +217,7 @@ class AlarmTimerViewModel @Inject constructor(
     }
 
     private fun restartTimer(alarmTimer: AlarmTimer) {
-        alarmCreator.makeOneOffAlarm(alarmTimer.requestCode, alarmTimer.id, alarmTimer.triggerTime.amount)
+        alarmCreator.makeOneOffAlarm(alarmTimer.delayTime.amount, alarmTimer.id)
     }
 
     @VisibleForTesting

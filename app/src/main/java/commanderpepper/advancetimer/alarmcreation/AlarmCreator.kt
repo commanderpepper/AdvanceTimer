@@ -4,10 +4,14 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import androidx.work.*
 import commanderpepper.App
+import commanderpepper.advancetimer.receivers.DISMISS_TIMER_ID
 import commanderpepper.advancetimer.receivers.MyReceiver
 import commanderpepper.advancetimer.viewmodel.TIMER_ID
+import commanderpepper.advancetimer.workmanager.AlarmWorker
 import timber.log.Timber
+import java.time.Duration
 import javax.inject.Inject
 
 
@@ -24,44 +28,77 @@ class AlarmCreator @Inject constructor(
     /**
      * Makes a one off alarm with the alarm manager and starts it.
      */
-    fun makeOneOffAlarm(
-        timerRequestCode: Int,
-        timerId: Int,
-        triggerAtMillis: Long
-    ) {
-        val intent = createIntentForNewAlarm(timerId, context)
+//    fun makeOneOffAlarm(
+//        timerRequestCode: Int,
+//        timerId: Int,
+//        triggerAtMillis: Long
+//    ) {
+//        val intent = createIntentForNewAlarm(timerId, context)
+//
+//        val pendingIntent = createPendingIntentForNewAlarm(context, timerRequestCode, intent)
+//
+//        val alarmManager: AlarmManager =
+//            context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+//
+//        alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent)
+//    }
 
-        val pendingIntent = createPendingIntentForNewAlarm(context, timerRequestCode, intent)
+    /**
+     * Makes a one off alarm with Work Manager
+     */
+    fun makeOneOffAlarm(triggerAtMillis: Long = 0L, timerId: Int) {
+        val request = OneTimeWorkRequestBuilder<AlarmWorker>()
+            .setInitialDelay(Duration.ofMillis(triggerAtMillis))
+            .setInputData(workDataOf(DISMISS_TIMER_ID to timerId))
+            .build()
 
-        val alarmManager: AlarmManager =
-            context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        WorkManager.getInstance(context).enqueueUniqueWork(
+            timerId.toString(),
+            ExistingWorkPolicy.REPLACE,
+            request
+        )
+    }
 
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent)
+    fun makeRepeatingAlarm(triggerAtMillis: Long = 0L, repeatAtMillis: Long, timerId: Int) {
+        val request = PeriodicWorkRequestBuilder<AlarmWorker>(Duration.ofMillis(repeatAtMillis))
+            .setInitialDelay(Duration.ofMillis(triggerAtMillis))
+            .setInputData(workDataOf(DISMISS_TIMER_ID to timerId))
+            .build()
+
+        WorkManager.getInstance(context).enqueueUniquePeriodicWork(
+            timerId.toString(),
+            ExistingPeriodicWorkPolicy.REPLACE,
+            request
+        )
+    }
+
+    fun cancelTimer(timerId: Int){
+        WorkManager.getInstance(context).cancelUniqueWork(timerId.toString())
     }
 
     /**
      * Makes a repeating alarm with the alarm manager and starts it.
      */
-    fun makeRepeatingAlarm(
-        timerRequestCode: Int,
-        timerId: Int,
-        triggerAtMillis: Long,
-        intervalAtMillis: Long
-    ) {
-        val intent = createIntentForNewAlarm(timerId, context)
-
-        val pendingIntent = createPendingIntentForNewAlarm(context, timerRequestCode, intent)
-
-        val alarmManager: AlarmManager =
-            context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
-        alarmManager.setRepeating(
-            AlarmManager.RTC_WAKEUP,
-            triggerAtMillis,
-            intervalAtMillis,
-            pendingIntent
-        )
-    }
+//    fun makeRepeatingAlarm(
+//        timerRequestCode: Int,
+//        timerId: Int,
+//        triggerAtMillis: Long,
+//        intervalAtMillis: Long
+//    ) {
+//        val intent = createIntentForNewAlarm(timerId, context)
+//
+//        val pendingIntent = createPendingIntentForNewAlarm(context, timerRequestCode, intent)
+//
+//        val alarmManager: AlarmManager =
+//            context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+//
+//        alarmManager.setRepeating(
+//            AlarmManager.RTC_WAKEUP,
+//            triggerAtMillis,
+//            intervalAtMillis,
+//            pendingIntent
+//        )
+//    }
 
     fun getRequestCode() = requestCodeGenerator.getRequestCode()
 

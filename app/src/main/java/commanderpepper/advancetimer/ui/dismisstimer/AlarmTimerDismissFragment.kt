@@ -65,7 +65,7 @@ class AlarmTimerDismissFragment : Fragment() {
          */
         lifecycleScope.launch {
             viewModel.modifyEnabledState(getAlarmTimerId())
-            viewModel.modifyTriggerTime(getAlarmTimerId())
+//            viewModel.modifyTriggerTime(getAlarmTimerId())
             viewModel.renableTimer(getAlarmTimerId())
         }
 
