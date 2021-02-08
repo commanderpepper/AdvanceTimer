@@ -52,6 +52,10 @@ internal class AlarmTimerViewModelModule {
     )
 }
 
+/**
+ * Exposes two different modules a RequestCodeGenerator and AlarmTimerViewModel and exposes the application context
+ */
+
 class App : Application() {
 
     lateinit var appComponent: ApplicationComponent

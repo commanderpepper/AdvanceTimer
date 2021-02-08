@@ -4,20 +4,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import commanderpepper.advancetimer.R
+import commanderpepper.advancetimer.databinding.ParentAlarmtimerItemviewBinding
 import commanderpepper.advancetimer.room.AlarmTimer
 import commanderpepper.advancetimer.ui.NavGraphAction
+import java.util.zip.Inflater
 
 
-class AlarmTimerAdapter(val list: List<AlarmTimer>, val navGraphAction: NavGraphAction) :
+class AlarmTimerAdapter(val list: List<AlarmTimer>, private val navGraphAction: NavGraphAction) :
     RecyclerView.Adapter<AlarmTimerViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlarmTimerViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.parent_alarmtimer_itemview, parent, false)
+        val binding : ParentAlarmtimerItemviewBinding = DataBindingUtil.inflate(inflater, R.layout.parent_alarmtimer_itemview, parent, false)
         return AlarmTimerViewHolder(
-            view
+            binding
         )
     }
 

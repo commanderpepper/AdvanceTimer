@@ -25,5 +25,9 @@
     <string name="secondHint">Seconds</string>
 
     <string name="timerTitleDetail">Title: %1$s</string>
+    <string name="parentTimerTitleDetail">Parent timer: %1$s</string>
+
+    <string name="parent_alarmtimer_title">Title: %s</string>
+    <string name="parent_alarmtimer_type">Type: %s</string>
 
 </resources>

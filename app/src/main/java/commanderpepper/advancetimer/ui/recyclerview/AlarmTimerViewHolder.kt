@@ -4,44 +4,34 @@ import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import commanderpepper.advancetimer.R
+import commanderpepper.advancetimer.databinding.ParentAlarmtimerItemviewBinding
 import commanderpepper.advancetimer.model.TimerStart
 import commanderpepper.advancetimer.room.AlarmTimer
 import commanderpepper.advancetimer.room.getTypeAsString
 import io.reactivex.BackpressureOverflowStrategy
+import kotlinx.android.synthetic.main.fragment_alarm_timer_new.view.*
 import java.util.*
 
-class AlarmTimerViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
-
-    private lateinit var title: TextView
-    private lateinit var enabled: TextView
-    private lateinit var timerTime: TextView
-    private lateinit var type: TextView
-    private lateinit var timerStrategy: TextView
+class AlarmTimerViewHolder(private val binding: ParentAlarmtimerItemviewBinding) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(
         alarmTimer: AlarmTimer,
         onClick: (View) -> Unit
     ) {
-        view.setOnClickListener(onClick)
-
-        title = view.findViewById(R.id.parent_alarmtimer_itemview_name)
-        enabled = view.findViewById(R.id.isEnabled)
-        type = view.findViewById(R.id.alarmType)
-        timerTime = view.findViewById(R.id.timerTime)
-        timerStrategy = view.findViewById(R.id.timerStrategy)
+        binding.root.setOnClickListener(onClick)
+        binding.alarmTimer = alarmTimer
 
         val calendar = Calendar.getInstance().apply {
-            timeInMillis = alarmTimer.delayTime.amount
+            timeInMillis = alarmTimer.calendarTime.amount
         }
 
-        title.text = "Title: ${alarmTimer.title}"
-        enabled.text = "Status: ${if (alarmTimer.enabled) "On" else "Off"}"
-        type.text = "Type: ${alarmTimer.type.getTypeAsString()}"
-        timerTime.text = "Trigger time: ${calendar.time}"
+        binding.isEnabled.text = "Status: ${if (alarmTimer.enabled) "On" else "Off"}"
+        binding.alarmType.text = "Type: ${alarmTimer.type.getTypeAsString()}"
+        binding.timerTime.text = "Trigger time: ${calendar.time}"
 
         if (alarmTimer.parentID != null) {
-            timerStrategy.visibility = View.VISIBLE
-            timerStrategy.text = when (alarmTimer.timerStart) {
+            binding.timerStrategy.visibility = View.VISIBLE
+            binding.timerStrategy.text = when (alarmTimer.timerStart) {
                 TimerStart.ParentStart -> "Strategy: Parent Starts"
                 else -> "Strategy: Parent Ends"
             }

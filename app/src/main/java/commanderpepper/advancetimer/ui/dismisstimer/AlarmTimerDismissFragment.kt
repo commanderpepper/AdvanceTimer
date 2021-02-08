@@ -8,13 +8,16 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import commanderpepper.advancetimer.R
+import commanderpepper.advancetimer.databinding.FragmentAlarmTimerDismissBinding
 import commanderpepper.advancetimer.ui.NavGraphAction
 import commanderpepper.advancetimer.ui.alarmtimerdetail.DETAIL_TIMER_KEY
 import commanderpepper.advancetimer.ui.recyclerview.AlarmTimerAdapter
@@ -25,32 +28,30 @@ import timber.log.Timber
 
 class AlarmTimerDismissFragment : Fragment() {
 
-    private val viewModel: AlarmTimerDismissViewModel by activityViewModels()
-
-    private lateinit var dismissTimerTitle: TextView
-    private lateinit var dismissParentTimerTitle: TextView
-    private lateinit var dismissButton: Button
-    private lateinit var dismissTurnOff: Button
-    private lateinit var dismissChildList: RecyclerView
+    private val viewModel: AlarmTimerDismissViewModel by viewModels()
 
     private lateinit var mediaPlayer: MediaPlayer
+    private lateinit var binding: FragmentAlarmTimerDismissBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_alarm_timer_dismiss, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_alarm_timer_dismiss, container, false)
+        binding.vm = viewModel
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        dismissTimerTitle = view.findViewById(R.id.dismissTimerTitle)
-        dismissParentTimerTitle = view.findViewById(R.id.dismissParentTimerTitle)
-        dismissButton = view.findViewById(R.id.dismissTimerButton)
-        dismissChildList = view.findViewById(R.id.dismissChildTimerList)
-        dismissTurnOff = view.findViewById(R.id.dismissTurnOffButton)
+        /**
+         * Set the timer title
+         */
+        lifecycleScope.launch {
+            binding.dismissTimerTitle.text = viewModel.retrieveParentTimerTitle(getAlarmTimerId())
+        }
 
         if(viewModel.mediaPlayerState !is MediaPlayerState.Stopped){
             mediaPlayer = MediaPlayer.create(this.context, R.raw.bell_ringing_04).apply {
@@ -65,24 +66,22 @@ class AlarmTimerDismissFragment : Fragment() {
          */
         lifecycleScope.launch {
             viewModel.modifyEnabledState(getAlarmTimerId())
-//            viewModel.modifyTriggerTime(getAlarmTimerId())
-            viewModel.renableTimer(getAlarmTimerId())
+            viewModel.modifyTriggerTime(getAlarmTimerId())
+//            viewModel.renableTimer(getAlarmTimerId())
         }
 
         /**
          * Set the timer title
          */
         lifecycleScope.launch {
-            val title = viewModel.retrieveTimerTitle(getAlarmTimerId())
-            dismissTimerTitle.text = getString(R.string.timerTitleDetail, title)
+            binding.dismissTimerTitle.text = getString(R.string.timerTitleDetail, viewModel.retrieveTimerTitle(getAlarmTimerId()))
         }
 
         /**
          * Set parent timer title
          */
         lifecycleScope.launch {
-            val title = "Parent timer: " + viewModel.retrieveParentTimerTitle(getAlarmTimerId())
-            dismissParentTimerTitle.text = title
+            binding.dismissParentTimerTitle.text = getString(R.string.parentTimerTitleDetail, viewModel.retrieveParentTimerTitle(getAlarmTimerId()))
         }
 
         /**
@@ -98,12 +97,14 @@ class AlarmTimerDismissFragment : Fragment() {
             val dividerItemDecoration =
                 DividerItemDecoration(this@AlarmTimerDismissFragment.context, manager.orientation)
 
-            dismissChildList.adapter = adapter
-            dismissChildList.layoutManager = manager
-            dismissChildList.addItemDecoration(dividerItemDecoration)
+            binding.dismissChildTimerList
+
+            binding.dismissChildTimerList.adapter = adapter
+            binding.dismissChildTimerList.layoutManager = manager
+            binding.dismissChildTimerList.addItemDecoration(dividerItemDecoration)
         }
 
-        dismissTurnOff.setOnClickListener {
+        binding.dismissTurnOffButton.setOnClickListener {
             lifecycleScope.launch {
                 Timber.d("Alarm to disable ${getAlarmTimerId()}")
                 viewModel.stopTimer(getAlarmTimerId())
@@ -112,7 +113,7 @@ class AlarmTimerDismissFragment : Fragment() {
             Toast.makeText(this@AlarmTimerDismissFragment.requireContext(), "Timer turned off", Toast.LENGTH_SHORT).show()
         }
 
-        dismissButton.setOnClickListener {
+        binding.dismissTimerButton.setOnClickListener {
             stopMediaPlayer()
             Toast.makeText(this@AlarmTimerDismissFragment.requireContext(), "Timer dismissed", Toast.LENGTH_SHORT).show()
         }

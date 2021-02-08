@@ -9,9 +9,11 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -20,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import commanderpepper.advancetimer.R
+import commanderpepper.advancetimer.databinding.FragmentAlarmTimerDetailBinding
 import commanderpepper.advancetimer.ui.NavGraphAction
 import commanderpepper.advancetimer.ui.alarmtimernew.PARENT_KEY
 import commanderpepper.advancetimer.ui.recyclerview.AlarmTimerAdapter
@@ -32,35 +35,24 @@ val FAB_KEY = "showAddTimerFAB"
 
 class AlarmTimerDetailFragment : Fragment(), DeleteDialog.DeleteDialogListener {
 
-    private val viewModel: AlarmTimerDetailViewModel by activityViewModels()
-    private lateinit var detailTimerTitleView: TextView
-    private lateinit var parentDetailTimerTitleView: TextView
-    private lateinit var childTimersRecyclerView: RecyclerView
-    private lateinit var addTimerFab: FloatingActionButton
+    private val viewModel: AlarmTimerDetailViewModel by viewModels()
 
-    private lateinit var turnOnButton: Button
-    private lateinit var turnOffButton: Button
-    private lateinit var deleteButton: Button
+    private lateinit var binding: FragmentAlarmTimerDetailBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_alarm_timer_detail, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_alarm_timer_detail, container, false)
+        binding.vm = viewModel
+        return binding.root
     }
 
     @ExperimentalStdlibApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        detailTimerTitleView = view.findViewById(R.id.detailTimerTitle)
-        parentDetailTimerTitleView = view.findViewById(R.id.detailParentTimerTitle)
-        childTimersRecyclerView = view.findViewById(R.id.detailChildTimerList)
-        addTimerFab = view.findViewById(R.id.detail_create_alarmtimer_fab)
-        turnOnButton = view.findViewById(R.id.turnOnTimer)
-        turnOffButton = view.findViewById(R.id.turnOffTimer)
-        deleteButton = view.findViewById(R.id.deleteTimer)
 
-        addTimerFab.setOnClickListener {
+        binding.detailCreateAlarmtimerFab.setOnClickListener {
             val bundle = bundleOf(PARENT_KEY to getAlarmTimerId())
             view.findNavController()
                 .navigate(R.id.action_alarmTimerDetail_to_alarmTimerNew, bundle)
@@ -73,14 +65,14 @@ class AlarmTimerDetailFragment : Fragment(), DeleteDialog.DeleteDialogListener {
             val title = withContext(lifecycleScope.coroutineContext) {
                 viewModel.retrieveTimer(getAlarmTimerId()).title
             }
-            detailTimerTitleView.text = getString(R.string.timerTitleDetail, title)
+            binding.detailTimerTitle.text = getString(R.string.timerTitleDetail, title)
         }
 
         /**
          * Retrieve the name of the parent timer and update the parent title view.
          */
         lifecycleScope.launch {
-            parentDetailTimerTitleView.text = withContext(lifecycleScope.coroutineContext) {
+            binding.detailParentTimerTitle.text = withContext(lifecycleScope.coroutineContext) {
                 "Parent timer: " + viewModel.retrieveParentTimerTitle(getAlarmTimerId())
             }
         }
@@ -99,15 +91,15 @@ class AlarmTimerDetailFragment : Fragment(), DeleteDialog.DeleteDialogListener {
             val dividerItemDecoration =
                 DividerItemDecoration(this@AlarmTimerDetailFragment.context, manager.orientation)
 
-            childTimersRecyclerView.adapter = adapter
-            childTimersRecyclerView.layoutManager = manager
-            childTimersRecyclerView.addItemDecoration(dividerItemDecoration)
+            binding.detailChildTimerList.adapter = adapter
+            binding.detailChildTimerList.layoutManager = manager
+            binding.detailChildTimerList.addItemDecoration(dividerItemDecoration)
         }
 
         /**
          * Turn off a timer.
          */
-        turnOffButton.setOnClickListener {
+        binding.turnOffTimer.setOnClickListener {
             lifecycleScope.launch {
                 Timber.d("Alarm to disable ${getAlarmTimerId()}")
                 viewModel.stopTimer(getAlarmTimerId())
@@ -118,7 +110,7 @@ class AlarmTimerDetailFragment : Fragment(), DeleteDialog.DeleteDialogListener {
         /**
          * Turn on a timer.
          */
-        turnOnButton.setOnClickListener {
+        binding.turnOnTimer.setOnClickListener {
             lifecycleScope.launch {
                 Timber.d("Alarm to enable")
                 viewModel.restartTimer(getAlarmTimerId())
@@ -129,7 +121,7 @@ class AlarmTimerDetailFragment : Fragment(), DeleteDialog.DeleteDialogListener {
         /**
          * Delete a timer
          */
-        deleteButton.setOnClickListener {
+        binding.deleteTimer.setOnClickListener {
             val deleteDialog = DeleteDialog()
             deleteDialog.setTargetFragment(this, 0)
             deleteDialog.show(parentFragmentManager, "Dismiss")
@@ -143,7 +135,7 @@ class AlarmTimerDetailFragment : Fragment(), DeleteDialog.DeleteDialogListener {
      */
     private fun setTurnOnButtonText() {
         lifecycleScope.launch {
-            turnOnButton.text =
+            binding.turnOnTimer.text =
                 if (viewModel.timerIsEnabled(getAlarmTimerId())) "Restart" else "Turn On"
         }
     }

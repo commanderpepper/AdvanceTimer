@@ -16,8 +16,8 @@ class AlarmWorker(val context: Context, params: WorkerParameters) : Worker(conte
         val timerId = inputData.getInt(DISMISS_TIMER_ID, -1)
 
         if (timerId == -1) return Result.failure()
-        intent.putExtra(DISMISS_TIMER_ID, timerId)
 
+        intent.putExtra(DISMISS_TIMER_ID, timerId)
         Handler(Looper.getMainLooper()).post {
             intent.flags = FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)

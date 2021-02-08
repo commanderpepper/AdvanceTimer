@@ -17,12 +17,10 @@ data class AlarmTimer(
     val timerStart: TimerStart,
     @ColumnInfo(name = "enabled")
     val enabled: Boolean,
-    @ColumnInfo(name = "delayTime")
-    val delayTime: UnitsOfTime.MilliSecond,
-    @ColumnInfo(name = "repeatTime")
-    val repeatTime: UnitsOfTime.MilliSecond,
     @ColumnInfo(name = "time")
     val time: UnitsOfTime.MilliSecond,
+    @ColumnInfo(name = "calendarTime")
+    val calendarTime: UnitsOfTime.MilliSecond,
     @ColumnInfo(name = "parentID")
     val parentID: Int?,
     @PrimaryKey(autoGenerate = true)

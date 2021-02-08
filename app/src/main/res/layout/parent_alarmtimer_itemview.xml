@@ -1,64 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/parent_alarmtimer_itemview_name"
+    <data>
+        <variable
+            name="alarmTimer"
+            type="commanderpepper.advancetimer.room.AlarmTimer" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="@dimen/vertical_alarmtimer_item_margin"
-        android:layout_marginHorizontal="@dimen/horizontal_alarmtimer_item_margin"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="This is a title"/>
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/isEnabled"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="@dimen/vertical_alarmtimer_item_margin"
-        android:layout_marginHorizontal="@dimen/horizontal_alarmtimer_item_margin"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/parent_alarmtimer_itemview_name"
-        tools:text="Enabled"/>
+        <TextView
+            android:id="@+id/parent_alarmtimer_itemview_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/horizontal_alarmtimer_item_margin"
+            android:layout_marginVertical="@dimen/vertical_alarmtimer_item_margin"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="This is a title"
+            android:text="@{String.format(@string/parent_alarmtimer_title, alarmTimer.title)}"/>
 
-    <TextView
-        android:id="@+id/alarmType"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="@dimen/vertical_alarmtimer_item_margin"
-        android:layout_marginHorizontal="@dimen/horizontal_alarmtimer_item_margin"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/isEnabled"
-        tools:text="One off"/>
+        <TextView
+            android:id="@+id/isEnabled"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/horizontal_alarmtimer_item_margin"
+            android:layout_marginVertical="@dimen/vertical_alarmtimer_item_margin"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/parent_alarmtimer_itemview_name"
+            tools:text="Enabled" />
 
-    <TextView
-        android:id="@+id/timerTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="@dimen/vertical_alarmtimer_item_margin"
-        android:layout_marginHorizontal="@dimen/horizontal_alarmtimer_item_margin"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/alarmType"
-        tools:text="1234"/>
+        <TextView
+            android:id="@+id/alarmType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/horizontal_alarmtimer_item_margin"
+            android:layout_marginVertical="@dimen/vertical_alarmtimer_item_margin"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/isEnabled"
+            tools:text="One off"/>
 
-    <TextView
-        android:id="@+id/timerStrategy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="@dimen/vertical_alarmtimer_item_margin"
-        android:layout_marginHorizontal="@dimen/horizontal_alarmtimer_item_margin"
-        android:textSize="16sp"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/timerTime"/>
+        <TextView
+            android:id="@+id/timerTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/horizontal_alarmtimer_item_margin"
+            android:layout_marginVertical="@dimen/vertical_alarmtimer_item_margin"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/alarmType"
+            tools:text="1234" />
+
+        <TextView
+            android:id="@+id/timerStrategy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/horizontal_alarmtimer_item_margin"
+            android:layout_marginVertical="@dimen/vertical_alarmtimer_item_margin"
+            android:textSize="16sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/timerTime" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
+
