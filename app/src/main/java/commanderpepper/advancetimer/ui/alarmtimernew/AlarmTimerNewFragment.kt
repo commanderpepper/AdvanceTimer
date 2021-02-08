@@ -129,10 +129,10 @@ class AlarmTimerNewFragment : Fragment() {
              * If the user didn't change the title, a generic title is generated.
              */
             alarmTimerViewModel.alarmTimerTitle =
-                if (binding.addAlarmtimerText.toString() == resources.getString(R.string.alarmtimer_title_hint)) {
+                if (binding.timerTitle.text.toString() == resources.getString(R.string.alarmtimer_title_hint)) {
                     alarmTimerViewModel.createGenericTitle()
                 } else {
-                    binding.addAlarmtimerText.toString()
+                    binding.timerTitle.text.toString()
                 }
 
             lifecycleScope.launch {
